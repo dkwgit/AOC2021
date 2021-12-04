@@ -44,6 +44,10 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             int result_04_01 = Day_04_01();
             int result_04_01_actual = 39984;
             result_04_01.Should().Be(result_04_01_actual, "Day_04_01 has a wrong result");
+            int result_04_02 = Day_04_02();
+            int result_04_02_actual = 8468;
+            result_04_02.Should().Be(result_04_02_actual, "Day_04_01 has a wrong result");
+
         }
 
         public static int[] Day_01_01_Input { get; set; } =  Process_Day_01_01_Input();
@@ -417,6 +421,30 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             }
 
             Console.WriteLine($"Day_04_01: No win found!");
+            return result;
+        }
+
+        public static int Day_04_02()
+        {
+            (List<int> numbers, List<BingoBoard> boards) = Day_04_01_Input;
+
+            int visitRound = 0;
+            int visitNumber = 0;
+
+            foreach (int number in numbers)
+            {
+                foreach (var board in boards)
+                {
+                    board.AnnounceNumberAndCheck(number, visitRound, visitNumber++);
+                }
+                visitRound++;
+            }
+
+
+            var lastWinningBoard = boards.Where(b => b.WinningNumber != -1).Select(b => b).OrderByDescending(b => b.VisitNumber).First();
+            int result = lastWinningBoard.CalculateWinResult();
+
+            Console.WriteLine($"Day_04_02 result: {result}");
             return result;
         }
     }

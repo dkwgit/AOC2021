@@ -50,6 +50,10 @@ namespace AOC2021
 
         public bool AnnounceNumberAndCheck(int number, int visitRound, int visitNumber)
         {
+            if (WinningNumber != -1)
+            {
+                return true;
+            }
             VisitRound = visitRound;
             VisitNumber = visitNumber;
             LastAnnounced = number;
