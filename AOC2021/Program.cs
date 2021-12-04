@@ -10,6 +10,7 @@ namespace AOC2021
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Linq;
     using System.Text.RegularExpressions;
     using AOC2021.Bingo;
@@ -36,6 +37,8 @@ namespace AOC2021
         /// <param name="args">Command line args.</param>
         public static void Main(string[] args)
         {
+            Stopwatch sw = new();
+            sw.Start();
             int result_01_01 = Day_01_01();
             int result_01_01_actual = 1167;
             result_01_01.Should().Be(result_01_01_actual, "Day_01_01 has a wrong result");
@@ -62,11 +65,13 @@ namespace AOC2021
             int result_04_02 = Day_04_02();
             int result_04_02_actual = 8468;
             result_04_02.Should().Be(result_04_02_actual, "Day_04_01 has a wrong result");
+            sw.Stop();
+            Console.WriteLine($"Total run time in ms: {sw.ElapsedMilliseconds}");
         }
 
         private static int[] Process_Day_01_01_Input()
         {
-            return File.ReadAllLines("../../../Day_01_01.txt").Select(x =>
+            return File.ReadAllLines("./Day_01_01.txt").Select(x =>
             {
                 int.TryParse(x, out int result);
                 return result;
@@ -75,7 +80,7 @@ namespace AOC2021
 
         private static List<(int Forward, int Vertical)> Process_Day_02_01_Input()
         {
-            return File.ReadAllLines("../../../Day_02_01.txt").Select(s =>
+            return File.ReadAllLines("./Day_02_01.txt").Select(s =>
             {
                 int forward = 0;
                 int vertical = 0;
@@ -107,7 +112,7 @@ namespace AOC2021
         {
             int aim = 0;
 
-            return File.ReadAllLines("../../../Day_02_01.txt").Select(s =>
+            return File.ReadAllLines("./Day_02_01.txt").Select(s =>
             {
                 int forward = 0;
                 int vertical = 0;
@@ -141,7 +146,7 @@ namespace AOC2021
         private static (List<BitVector32> DiagRows, int DiagColumns) Process_Day_03_01_Input()
         {
             int columnCount = -1;
-            var list = File.ReadAllLines("../../../Day_03_01.txt").Select(s =>
+            var list = File.ReadAllLines("./Day_03_01.txt").Select(s =>
             {
                 if (columnCount == -1)
                 {
@@ -172,7 +177,7 @@ namespace AOC2021
 
         private static (List<int> Numbers, List<BingoBoard> Boards) Process_Day_04_01_Input()
         {
-            List<string> lines = File.ReadAllLines("../../../Day_04_01.txt").ToList();
+            List<string> lines = File.ReadAllLines("./Day_04_01.txt").ToList();
             List<BingoBoard> boards = new();
 
             List<int> numbers = lines[0].Split(",").Select(x =>
