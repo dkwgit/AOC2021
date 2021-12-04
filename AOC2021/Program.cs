@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using System.Text.RegularExpressions;
 
 
@@ -23,24 +23,24 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
 
             int result_01_01 = Day_01_01();
             int result_01_01_actual = 1167;
-            Assert.IsTrue(result_01_01 == result_01_01_actual, "Day_01_01 has a wrong result");
+            result_01_01.Should().Be(result_01_01_actual, "Day_01_01 has a wrong result");
             int result_01_02 = Day_01_02();
             int result_01_02_actual = 1130;
-            Assert.IsTrue(result_01_02 == result_01_02_actual, "Day_01_02 has a wrong result");
+            result_01_02.Should().Be(result_01_02_actual, "Day_01_02 has a wrong result");
             int result_01_02_Variant = Day_01_02_Variant();
-            Assert.IsTrue(result_01_02_Variant == result_01_02_actual, "Day_01_02_Variant has a wrong result");
+            result_01_02_Variant.Should().Be(result_01_02_actual, "Day_01_02_Variant has a wrong result");
             int result_02_01 = Day_02_01();
             int result_02_01_actual = 1947824;
-            Assert.IsTrue(result_02_01 == result_02_01_actual, "Day_02_01 has a wrong result");
+            result_02_01.Should().Be(result_02_01_actual, "Day_02_01 has a wrong result");
             int result_02_02 = Day_02_02();
             int result_02_02_actual = 1813062561;
-            Assert.IsTrue(result_02_02 == result_02_02_actual, "Day_02_02 has a wrong result");
+            result_02_02.Should().Be(result_02_02_actual, "Day_02_02 has a wrong result");
             int result_03_01 = Day_03_01();
             int result_03_01_actual = 2967914;
-            Assert.IsTrue(result_03_01 == result_03_01_actual, "Day_03_01 has a wrong result");
+            result_03_01.Should().Be(result_03_01_actual, "Day_03_01 has a wrong result");
             int result_03_02 = Day_03_02();
             int result_03_02_actual = 7041258;
-            Assert.IsTrue(result_03_02 == result_03_02_actual, "Day_03_02 has a wrong result");
+            result_03_02.Should().Be(result_03_02_actual, "Day_03_02 has a wrong result");
             //int result_04_01 = Day_04_01();
             //int result_04_01_actual = 7041258;
             //Assert.IsTrue(result_04_01 == result_04_01_actual, "Day_04_01 has a wrong result");
@@ -133,7 +133,7 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                 }
                 else
                 {
-                    Assert.IsTrue(s.Length == columnCount);
+                    s.Length.Should().Be(columnCount);
                 }
                 BitVector32 bits = new(0);
                 int mask = BitVector32.CreateMask();
