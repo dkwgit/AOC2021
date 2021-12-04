@@ -343,16 +343,16 @@ namespace AOC2021
         private static int Day_03_01()
         {
             (List<BitVector32> diagRows, int diagColumnCount) = Day_03_01_Input;
+            int diagRowCount = diagRows.Count;
 
-            int rowCount = diagRows.Count;
-
-            BitArray epsilon = new(diagColumnCount);
+            BitVector32 epsilon = new(0);
             int[] columnSums = new int[diagColumnCount];
 
+            int mask;
             for (int r = 0; r < diagRows.Count; r++)
             {
                 var row = diagRows[r];
-                int mask = BitVector32.CreateMask();
+                mask = BitVector32.CreateMask();
                 for (int c = 0; c < diagColumnCount; c++)
                 {
                     columnSums[c] += row[mask] ? 1 : 0;
@@ -360,23 +360,30 @@ namespace AOC2021
                 }
             }
 
+            mask = BitVector32.CreateMask();
             for (int c = 0; c < diagColumnCount; c++)
             {
-                epsilon[c] = columnSums[c] > (rowCount / 2);
+                epsilon[mask] = columnSums[c] > (diagRowCount / 2);
+                mask = BitVector32.CreateMask(mask);
             }
 
             int epsilonAsInt = 0;
             int gammaAsInt = 0;
-
+            mask = BitVector32.CreateMask();
             for (int c = 0; c < diagColumnCount; c++)
             {
-                epsilonAsInt |= epsilon[c] ? 1 : 0;
-                gammaAsInt |= epsilon[c] ? 0 : 1;
+                int bit = epsilon[mask] ? 1 : 0;
+
+                epsilonAsInt |= bit;
+                gammaAsInt |= bit == 1 ? 0 : 1;
+
                 if (c + 1 < diagColumnCount)
                 {
                     epsilonAsInt <<= 1;
                     gammaAsInt <<= 1;
                 }
+
+                mask = BitVector32.CreateMask(mask);
             }
 
             int result = epsilonAsInt * gammaAsInt;
