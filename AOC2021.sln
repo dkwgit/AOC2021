@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AOC2021", "AOC2021\AOC2021.csproj", "{EFCB1D37-91D4-41CB-8857-E60A527DCFEE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{342B5FA3-EA84-4655-983F-07F74DD11DBF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StyleCopConfiguration", "StyleCopConfiguration", "{C1EF3C9B-9CEA-44ED-AA2F-6A7EC46087E3}"
 	ProjectSection(SolutionItems) = preProject

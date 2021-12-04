@@ -6,7 +6,7 @@
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.",
       "headerDecoration": "-----------------------------------------------------------------------",
       "documentExposedElements": true,
-      "documentInternalElements":  false
+      "documentInternalElements":  true
     }
   }
 }

@@ -13,13 +13,13 @@ namespace AOC2021.Bingo
     /// <summary>
     /// Domain model object for Day 4 of AOC 2021. A bingo board tracks announced numbers, wins, etc.
     /// </summary>
-    public class BingoBoard
+    internal class BingoBoard
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BingoBoard"/> class.
         /// </summary>
         /// <param name="board">Initialization data for the board, holding the numbers that this board has.</param>
-        public BingoBoard(int[,] board)
+        internal BingoBoard(int[,] board)
         {
             int rows = board.GetUpperBound(0) + 1;
             int columns = board.GetUpperBound(1) + 1;
@@ -54,7 +54,7 @@ namespace AOC2021.Bingo
         /// get a number that is one higher, etc.
         ///
         /// Thus, VisitNumber helps us calculate the result that AOC2021 wants for problem 2 of Day 4, because it helps us find the very last board that had a win.
-        /// </summary
+        /// </summary>
         public int VisitNumber { get; set; } = 0;
 
         private BoardPosition[,] Board { get; init; }
@@ -62,8 +62,6 @@ namespace AOC2021.Bingo
         private BoardIndex Index { get; init; }
 
         private int BoardLength { get; init; }
-
-        private int LastAnnounced { get; set; } = -1;
 
         /// <summary>
         /// Announced a new bingo number to a board and check for a win.
@@ -79,7 +77,6 @@ namespace AOC2021.Bingo
             }
 
             this.VisitNumber = visitNumber;
-            this.LastAnnounced = number;
             bool win = false;
             (int, int)? coordinate = this.Index.Find(number);
             if (coordinate.HasValue)
@@ -127,7 +124,7 @@ namespace AOC2021.Bingo
             return win;
         }
 
-        internal class BoardIndex
+        private class BoardIndex
         {
             internal Dictionary<int, (int Row, int Column)> Index { get; init; } = new Dictionary<int, (int, int)>();
 
@@ -148,7 +145,7 @@ namespace AOC2021.Bingo
             }
         }
 
-        internal class BoardPosition
+        private class BoardPosition
         {
             internal BoardPosition(int row, int column, int number, bool announced) => (this.Row, this.Column, this.Number, this.Announced) = (row, column, number, announced);
 

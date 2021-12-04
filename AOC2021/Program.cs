@@ -34,8 +34,8 @@ namespace AOC2021
         /// <summary>
         /// Standard console entry function.
         /// </summary>
-        /// <param name="args">Command line args.</param>
-        public static void Main(string[] args)
+        /// <!-- param name="args">Command line args.</param-->
+        public static void Main(/* string[] args*/)
         {
             Stopwatch sw = new();
             sw.Start();
@@ -73,7 +73,12 @@ namespace AOC2021
         {
             return File.ReadAllLines("./Day_01_01.txt").Select(x =>
             {
-                int.TryParse(x, out int result);
+                bool tryResult = int.TryParse(x, out int result);
+                if (!tryResult)
+                {
+                    throw new InvalidDataException($"String x {x} was expected to be parsable into an int, but was not.");
+                }
+
                 return result;
             }).ToArray();
         }
@@ -88,20 +93,33 @@ namespace AOC2021
                 if (s.Contains("forward"))
                 {
                     s = s.Replace("forward ", string.Empty);
-                    int.TryParse(s, out forward);
+                    bool tryResult = int.TryParse(s, out forward);
+                    if (!tryResult)
+                    {
+                        throw new InvalidDataException($"String bingoNumber {s} was expected to be parsable into an int, but was not.");
+                    }
                 }
 
                 if (s.Contains("up"))
                 {
                     s = s.Replace("up ", string.Empty);
-                    int.TryParse(s, out vertical);
+                    bool tryResult = int.TryParse(s, out vertical);
+                    if (!tryResult)
+                    {
+                        throw new InvalidDataException($"String bingoNumber {s} was expected to be parsable into an int, but was not.");
+                    }
+
                     vertical *= -1;
                 }
 
                 if (s.Contains("down"))
                 {
                     s = s.Replace("down ", string.Empty);
-                    int.TryParse(s, out vertical);
+                    bool tryResult = int.TryParse(s, out vertical);
+                    if (!tryResult)
+                    {
+                        throw new InvalidDataException($"String bingoNumber {s} was expected to be parsable into an int, but was not.");
+                    }
                 }
 
                 return (forward, vertical);
@@ -121,21 +139,36 @@ namespace AOC2021
                 if (s.Contains("forward"))
                 {
                     s = s.Replace("forward ", string.Empty);
-                    int.TryParse(s, out forward);
+                    bool tryResult = int.TryParse(s, out forward);
+                    if (!tryResult)
+                    {
+                        throw new InvalidDataException($"String s {s} was expected to be parsable into an int, but was not.");
+                    }
+
                     vertical = aim * forward;
                 }
 
                 if (s.Contains("up"))
                 {
                     s = s.Replace("up ", string.Empty);
-                    int.TryParse(s, out aimChange);
+                    bool tryResult = int.TryParse(s, out aimChange);
+                    if (!tryResult)
+                    {
+                        throw new InvalidDataException($"String bingoNumber {s} was expected to be parsable into an int, but was not.");
+                    }
+
                     aim -= aimChange;
                 }
 
                 if (s.Contains("down"))
                 {
                     s = s.Replace("down ", string.Empty);
-                    int.TryParse(s, out aimChange);
+                    bool tryResult = int.TryParse(s, out aimChange);
+                    if (!tryResult)
+                    {
+                        throw new InvalidDataException($"String bingoNumber {s} was expected to be parsable into an int, but was not.");
+                    }
+
                     aim += aimChange;
                 }
 
@@ -182,7 +215,12 @@ namespace AOC2021
 
             List<int> numbers = lines[0].Split(",").Select(x =>
             {
-                int.TryParse(x, out int number);
+                bool tryResult = int.TryParse(x, out int number);
+                if (!tryResult)
+                {
+                    throw new InvalidDataException($"String {x} was expected to be parsable into an int, but was not.");
+                }
+
                 return number;
             }).ToList();
 
@@ -204,7 +242,13 @@ namespace AOC2021
 
                     for (int column = 0; column < 5; column++)
                     {
-                        int.TryParse(matches[column].Value, out int number);
+                        string bingoNumber = matches[column].Value;
+                        bool tryResult = int.TryParse(bingoNumber, out int number);
+                        if (!tryResult)
+                        {
+                            throw new InvalidDataException($"String bingoNumber {bingoNumber} was expected to be parsable into an int, but was not.");
+                        }
+
                         boardData[row, column] = number;
                     }
                 }
@@ -266,7 +310,7 @@ namespace AOC2021
 
             int? priorValue = null;
 
-            int result = depths.WindowTraverse(3, (int accumulate, int source) => accumulate + source).Where(item =>
+            int result = depths.WindowedTraverse(3, (int accumulate, int source) => accumulate + source).Where(item =>
             {
                 bool ret = priorValue.HasValue && priorValue.Value < item;
                 priorValue = item;
