@@ -1,8 +1,14 @@
-﻿namespace AOC2021
+﻿// -----------------------------------------------------------------------
+// <copyright file="UtilityFunctions.cs" company="David Wright">
+// Copyright (c) David Wright. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace AOC2021
 {
-    public static class Utility
+    internal static class UtilityFunctions
     {
-        static public IEnumerable<T> WindowTraverse<T>(this IEnumerable<T> toBeProcessed, int windowSize, Func<T, T, T> aggregateFunction)
+        internal static IEnumerable<T> WindowTraverse<T>(this IEnumerable<T> toBeProcessed, int windowSize, Func<T, T, T> aggregateFunction)
         {
             IEnumerator<T> enumerator = toBeProcessed.GetEnumerator();
             List<T> windowValues = new();
@@ -10,6 +16,7 @@
             {
                 yield break;
             }
+
             for (int i = 0; i < windowSize - 1; i++)
             {
                 windowValues.Add(enumerator.Current);
@@ -28,6 +35,7 @@
                 {
                     yield break;
                 }
+
                 windowValues.RemoveAt(0);
             }
         }

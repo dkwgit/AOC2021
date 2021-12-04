@@ -1,26 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using FluentAssertions;
-using System.Text.RegularExpressions;
+﻿// -----------------------------------------------------------------------
+// <copyright file="Program.cs" company="David Wright">
+// Copyright (c) David Wright. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 
-
-namespace AOC2021 // Note: actual namespace depends on the project name.
+namespace AOC2021
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using AOC2021.Bingo;
+    using FluentAssertions;
+
+    /// <summary>
+    /// Entry class.
+    /// </summary>
     public class Program
     {
+        private static int[] Day_01_01_Input { get; set; } = Process_Day_01_01_Input();
+
+        private static List<(int Forward, int Vertical)> Day_02_01_Input { get; set; } = Process_Day_02_01_Input();
+
+        private static List<(int Forward, int Vertical)> Day_02_02_Input { get; set; } = Process_Day_02_02_Input();
+
+        private static (List<BitVector32> DiagCodes, int DiagColumns) Day_03_01_Input { get; set; } = Process_Day_03_01_Input();
+
+        private static (List<int> Numbers, List<BingoBoard> Boards) Day_04_01_Input { get; set; } = Process_Day_04_01_Input();
+
+        /// <summary>
+        /// Standard console entry function.
+        /// </summary>
+        /// <param name="args">Command line args.</param>
         public static void Main(string[] args)
         {
-
-            Trace.Listeners.RemoveAt(0);
-            // Create and add a new default trace listener.
-            DefaultTraceListener defaultListener;
-            defaultListener = new DefaultTraceListener();
-            Trace.Listeners.Add(defaultListener);
-
             int result_01_01 = Day_01_01();
             int result_01_01_actual = 1167;
             result_01_01.Should().Be(result_01_01_actual, "Day_01_01 has a wrong result");
@@ -47,11 +62,9 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             int result_04_02 = Day_04_02();
             int result_04_02_actual = 8468;
             result_04_02.Should().Be(result_04_02_actual, "Day_04_01 has a wrong result");
-
         }
 
-        public static int[] Day_01_01_Input { get; set; } =  Process_Day_01_01_Input();
-        public static int[] Process_Day_01_01_Input()
+        private static int[] Process_Day_01_01_Input()
         {
             return File.ReadAllLines("../../../Day_01_01.txt").Select(x =>
             {
@@ -60,8 +73,7 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             }).ToArray();
         }
 
-        public static List<(int, int)> Day_02_01_Input { get; set; } = Process_Day_02_01_Input();
-        public static List<(int, int)> Process_Day_02_01_Input()
+        private static List<(int Forward, int Vertical)> Process_Day_02_01_Input()
         {
             return File.ReadAllLines("../../../Day_02_01.txt").Select(s =>
             {
@@ -70,27 +82,28 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
 
                 if (s.Contains("forward"))
                 {
-                    s = s.Replace("forward ", "");
+                    s = s.Replace("forward ", string.Empty);
                     int.TryParse(s, out forward);
                 }
+
                 if (s.Contains("up"))
                 {
-                    s = s.Replace("up ", "");
+                    s = s.Replace("up ", string.Empty);
                     int.TryParse(s, out vertical);
                     vertical *= -1;
                 }
+
                 if (s.Contains("down"))
                 {
-                    s = s.Replace("down ", "");
+                    s = s.Replace("down ", string.Empty);
                     int.TryParse(s, out vertical);
                 }
+
                 return (forward, vertical);
             }).ToList();
         }
 
-        public static List<(int, int)> Day_02_02_Input { get; set; } = Process_Day_02_02_Input();
-
-        public static List<(int, int)> Process_Day_02_02_Input()
+        private static List<(int Forward, int Vertical)> Process_Day_02_02_Input()
         {
             int aim = 0;
 
@@ -102,31 +115,30 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
 
                 if (s.Contains("forward"))
                 {
-                    s = s.Replace("forward ", "");
+                    s = s.Replace("forward ", string.Empty);
                     int.TryParse(s, out forward);
                     vertical = aim * forward;
                 }
 
                 if (s.Contains("up"))
                 {
-                    s = s.Replace("up ", "");
+                    s = s.Replace("up ", string.Empty);
                     int.TryParse(s, out aimChange);
                     aim -= aimChange;
-
                 }
+
                 if (s.Contains("down"))
                 {
-                    s = s.Replace("down ", "");
+                    s = s.Replace("down ", string.Empty);
                     int.TryParse(s, out aimChange);
                     aim += aimChange;
                 }
+
                 return (forward, vertical);
             }).ToList();
         }
 
-        public static (List<BitVector32>, int) Day_03_01_Input { get; set; } = Process_Day_03_01_Input();
-
-        public static (List<BitVector32>, int) Process_Day_03_01_Input()
+        private static (List<BitVector32> DiagRows, int DiagColumns) Process_Day_03_01_Input()
         {
             int columnCount = -1;
             var list = File.ReadAllLines("../../../Day_03_01.txt").Select(s =>
@@ -139,29 +151,26 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                 {
                     s.Length.Should().Be(columnCount);
                 }
+
                 BitVector32 bits = new(0);
                 int mask = BitVector32.CreateMask();
                 for (int i = 0; i < s.Length; i++)
                 {
-                    /*if (s[^(i + 1)] == '1')
-                    {
-                        bits[mask] = s[^(i + 1)] == '1';
-                    }*/
-                    if(s[i] == '1')
+                    if (s[i] == '1')
                     {
                         bits[mask] = s[i] == '1';
                     }
+
                     mask = BitVector32.CreateMask(mask);
                 }
+
                 return bits;
             }).ToList();
 
             return (list, columnCount);
         }
 
-        public static (List<int>, List<BingoBoard>) Day_04_01_Input { get; set; } = Process_Day_04_01_Input();
-
-        public static (List<int>, List<BingoBoard>) Process_Day_04_01_Input()
+        private static (List<int> Numbers, List<BingoBoard> Boards) Process_Day_04_01_Input()
         {
             List<string> lines = File.ReadAllLines("../../../Day_04_01.txt").ToList();
             List<BingoBoard> boards = new();
@@ -173,9 +182,9 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             }).ToList();
 
             int lineNumber = 1;
-            int[,] board = new int[5,5];
+            int[,] boardData = new int[5, 5];
             string pattern = @"((?: \d)|\d{2}) ?";
-            while(lineNumber < lines.Count)
+            while (lineNumber < lines.Count)
             {
                 if (string.IsNullOrEmpty(lines[lineNumber++]))
                 {
@@ -186,39 +195,42 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                 {
                     string line = lines[lineNumber++];
                     var matches = Regex.Matches(line, pattern);
+                    matches.Count.Should().Be(5);
 
                     for (int column = 0; column < 5; column++)
                     {
                         int.TryParse(matches[column].Value, out int number);
-                        board[row, column] = number;
+                        boardData[row, column] = number;
                     }
                 }
-                boards.Add(new BingoBoard(boards.Count,board));
 
-                board = new int[5,5];
+                boards.Add(new BingoBoard(boardData));
+
+                boardData = new int[5, 5];
             }
+
             return (numbers, boards);
         }
 
-        public static int Day_01_01()
+        private static int Day_01_01()
         {
             int[] depths = Day_01_01_Input;
-            
+
             int result = depths.Where((item, index) =>
             {
                 if (index > 0 && (depths[index - 1] < depths[index]))
                 {
                     return true;
                 }
+
                 return false;
             }).Count();
-
 
             Console.WriteLine($"Day_01_01 result: {result}");
             return result;
         }
 
-        public static int Day_01_02()
+        private static int Day_01_02()
         {
             int[] depths = Day_01_01_Input;
 
@@ -235,6 +247,7 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                 {
                     return true;
                 }
+
                 return false;
             }).Count();
 
@@ -242,19 +255,24 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             return result;
         }
 
-        public static int Day_01_02_Variant()
+        private static int Day_01_02_Variant()
         {
             int[] depths = Day_01_01_Input;
 
             int? priorValue = null;
 
-            int result = depths.WindowTraverse(3, (int accumulate, int source) => accumulate + source).Where(item => { bool ret = priorValue.HasValue && priorValue.Value < item; priorValue = item; return ret; }).Count();
- 
+            int result = depths.WindowTraverse(3, (int accumulate, int source) => accumulate + source).Where(item =>
+            {
+                bool ret = priorValue.HasValue && priorValue.Value < item;
+                priorValue = item;
+                return ret;
+            }).Count();
+
             Console.WriteLine($"Day_01_02 result: {result}");
             return result;
         }
 
-        public static int Day_02_01()
+        private static int Day_02_01()
         {
             List<(int, int)> coords = Day_02_01_Input;
 
@@ -264,15 +282,14 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                     (int forward, int vertical) = element;
                     (int f, int v) = accumulate;
                     return (forward + f, vertical + v);
-                }
-            );
+                });
 
             int product = result.Item1 * result.Item2;
             Console.WriteLine($"Day_02_01 result: {product}");
             return product;
         }
 
-        public static int Day_02_02()
+        private static int Day_02_02()
         {
             List<(int, int)> coords = Day_02_02_Input;
 
@@ -282,15 +299,14 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                     (int forward, int vertical) = element;
                     (int f, int v) = accumulate;
                     return (forward + f, vertical + v);
-                }
-            );
+                });
 
             int product = result.Item1 * result.Item2;
             Console.WriteLine($"Day_02_02 result: {product}");
             return product;
         }
 
-        public static int Day_03_01()
+        private static int Day_03_01()
         {
             (List<BitVector32> diags, int columnCount) = Day_03_01_Input;
 
@@ -334,10 +350,10 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             return product;
         }
 
-        public static int Day_03_02()
+        private static int Day_03_02()
         {
             (List<BitVector32> diags, int columnCount) = Day_03_01_Input;
-           
+
             List<BitVector32> oxygenItems = new(diags);
             List<BitVector32> scrubberItems = new(diags);
 
@@ -361,7 +377,7 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                 mask = BitVector32.CreateMask(mask);
             }
 
-            mask = BitVector32.CreateMask(); 
+            mask = BitVector32.CreateMask();
             for (int c = 0; c < columnCount; c++)
             {
                 var groupings = scrubberItems.
@@ -377,8 +393,10 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                 {
                     break;
                 }
+
                 mask = BitVector32.CreateMask(mask);
             }
+
             int oxygenNumber = 0;
             int scrubberNumber = 0;
             mask = BitVector32.CreateMask();
@@ -391,41 +409,18 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                     oxygenNumber <<= 1;
                     scrubberNumber <<= 1;
                 }
+
                 mask = BitVector32.CreateMask(mask);
             }
+
             int product = oxygenNumber * scrubberNumber;
             Console.WriteLine($"Day_03_02 result: {product}");
             return product;
         }
 
-        public static int Day_04_01()
+        private static int Day_04_01()
         {
             int result = -1;
-            (List<int> numbers, List<BingoBoard> boards) = Day_04_01_Input;
-
-            int visitRound = 0;
-            int visitNumber = 0;
-            
-            foreach(int number in numbers)
-            {
-                foreach(var board in boards)
-                {
-                    if (board.AnnounceNumberAndCheck(number, visitRound, visitNumber++))
-                    {
-                        result = board.CalculateWinResult();
-                        Console.WriteLine($"Day_04_01 result: {result}");
-                        return result;
-                    }
-                }
-                visitRound++;
-            }
-
-            Console.WriteLine($"Day_04_01: No win found!");
-            return result;
-        }
-
-        public static int Day_04_02()
-        {
             (List<int> numbers, List<BingoBoard> boards) = Day_04_01_Input;
 
             int visitRound = 0;
@@ -435,11 +430,37 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             {
                 foreach (var board in boards)
                 {
-                    board.AnnounceNumberAndCheck(number, visitRound, visitNumber++);
+                    if (board.AnnounceNumberAndCheck(number, visitNumber++))
+                    {
+                        result = board.CalculateWinResult();
+                        Console.WriteLine($"Day_04_01 result: {result}");
+                        return result;
+                    }
                 }
+
                 visitRound++;
             }
 
+            Console.WriteLine($"Day_04_01: No win found!");
+            return result;
+        }
+
+        private static int Day_04_02()
+        {
+            (List<int> numbers, List<BingoBoard> boards) = Program.Day_04_01_Input;
+
+            int visitRound = 0;
+            int visitNumber = 0;
+
+            foreach (int number in numbers)
+            {
+                foreach (var board in boards)
+                {
+                    board.AnnounceNumberAndCheck(number, visitNumber++);
+                }
+
+                visitRound++;
+            }
 
             var lastWinningBoard = boards.Where(b => b.WinningNumber != -1).Select(b => b).OrderByDescending(b => b.VisitNumber).First();
             int result = lastWinningBoard.CalculateWinResult();
