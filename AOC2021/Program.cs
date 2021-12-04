@@ -41,9 +41,9 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             int result_03_02 = Day_03_02();
             int result_03_02_actual = 7041258;
             result_03_02.Should().Be(result_03_02_actual, "Day_03_02 has a wrong result");
-            //int result_04_01 = Day_04_01();
-            //int result_04_01_actual = 7041258;
-            //Assert.IsTrue(result_04_01 == result_04_01_actual, "Day_04_01 has a wrong result");
+            int result_04_01 = Day_04_01();
+            int result_04_01_actual = 39984;
+            result_04_01.Should().Be(result_04_01_actual, "Day_04_01 has a wrong result");
         }
 
         public static int[] Day_01_01_Input { get; set; } =  Process_Day_01_01_Input();
@@ -155,12 +155,12 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             return (list, columnCount);
         }
 
-        public static (List<int>, List<int[,]>) Day_04_01_Input { get; set; } = Process_Day_04_01_Input();
+        public static (List<int>, List<BingoBoard>) Day_04_01_Input { get; set; } = Process_Day_04_01_Input();
 
-        public static (List<int>, List<int[,]>) Process_Day_04_01_Input()
+        public static (List<int>, List<BingoBoard>) Process_Day_04_01_Input()
         {
             List<string> lines = File.ReadAllLines("../../../Day_04_01.txt").ToList();
-            List<int[,]> boards = new();
+            List<BingoBoard> boards = new();
 
             List<int> numbers = lines[0].Split(",").Select(x =>
             {
@@ -189,7 +189,7 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
                         board[row, column] = number;
                     }
                 }
-                boards.Add(board);
+                boards.Add(new BingoBoard(boards.Count,board));
 
                 board = new int[5,5];
             }
@@ -392,6 +392,32 @@ namespace AOC2021 // Note: actual namespace depends on the project name.
             int product = oxygenNumber * scrubberNumber;
             Console.WriteLine($"Day_03_02 result: {product}");
             return product;
+        }
+
+        public static int Day_04_01()
+        {
+            int result = -1;
+            (List<int> numbers, List<BingoBoard> boards) = Day_04_01_Input;
+
+            int visitRound = 0;
+            int visitNumber = 0;
+            
+            foreach(int number in numbers)
+            {
+                foreach(var board in boards)
+                {
+                    if (board.AnnounceNumberAndCheck(number, visitRound, visitNumber++))
+                    {
+                        result = board.CalculateWinResult();
+                        Console.WriteLine($"Day_04_01 result: {result}");
+                        return result;
+                    }
+                }
+                visitRound++;
+            }
+
+            Console.WriteLine($"Day_04_01: No win found!");
+            return result;
         }
     }
 }
