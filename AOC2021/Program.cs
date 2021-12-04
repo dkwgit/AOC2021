@@ -265,15 +265,9 @@ namespace AOC2021
         {
             int[] depths = Day_01_01_Input;
 
-            int result = depths.Where((item, index) =>
-            {
-                if (index > 0 && (depths[index - 1] < depths[index]))
-                {
-                    return true;
-                }
-
-                return false;
-            }).Count();
+            int result = depths.Where(
+                (item, index) => (index > 0 && (depths[index - 1] < depths[index]))
+            ).Count();
 
             Console.WriteLine($"Day_01_01 result: {result}");
             return result;
@@ -290,15 +284,9 @@ namespace AOC2021
                 sums.Add(depths[i - 2] + depths[i - 1] + depths[i]);
             }
 
-            int result = sums.Where((item, index) =>
-            {
-                if (index > 0 && (sums[index - 1] < sums[index]))
-                {
-                    return true;
-                }
-
-                return false;
-            }).Count();
+            int result = sums.Where(
+                (item, index) => (index > 0 && (sums[index - 1] < sums[index]))
+            ).Count();
 
             Console.WriteLine($"Day_01_02 result: {result}");
             return result;
@@ -308,14 +296,11 @@ namespace AOC2021
         {
             int[] depths = Day_01_01_Input;
 
-            int? priorValue = null;
+            List<int> windowedSums = depths.WindowedTraverse(3, (int accumulate, int source) => accumulate + source).ToList();
 
-            int result = depths.WindowedTraverse(3, (int accumulate, int source) => accumulate + source).Where(item =>
-            {
-                bool ret = priorValue.HasValue && priorValue.Value < item;
-                priorValue = item;
-                return ret;
-            }).Count();
+            int result = windowedSums.Where(
+                (item, index) => (index > 0 && (windowedSums[index - 1] < windowedSums[index]))
+            ).Count();
 
             Console.WriteLine($"Day_01_02 result: {result}");
             return result;
@@ -325,7 +310,7 @@ namespace AOC2021
         {
             List<(int, int)> coords = Day_02_01_Input;
 
-            (int, int) result = coords.Aggregate<(int, int)>(
+            (int Forward, int Vertical) aggregate = coords.Aggregate<(int, int)>(
                 ((int, int) element, (int, int) accumulate) =>
                 {
                     (int forward, int vertical) = element;
@@ -333,16 +318,16 @@ namespace AOC2021
                     return (forward + f, vertical + v);
                 });
 
-            int product = result.Item1 * result.Item2;
-            Console.WriteLine($"Day_02_01 result: {product}");
-            return product;
+            int result = aggregate.Forward * aggregate.Vertical;
+            Console.WriteLine($"Day_02_01 result: {result}");
+            return result;
         }
 
         private static int Day_02_02()
         {
             List<(int, int)> coords = Day_02_02_Input;
 
-            (int, int) result = coords.Aggregate<(int, int)>(
+            (int Forward, int Vertical) aggregate = coords.Aggregate<(int, int)>(
                 ((int, int) element, (int, int) accumulate) =>
                 {
                     (int forward, int vertical) = element;
@@ -350,32 +335,32 @@ namespace AOC2021
                     return (forward + f, vertical + v);
                 });
 
-            int product = result.Item1 * result.Item2;
-            Console.WriteLine($"Day_02_02 result: {product}");
-            return product;
+            int result = aggregate.Forward * aggregate.Vertical;
+            Console.WriteLine($"Day_02_02 result: {result}");
+            return result;
         }
 
         private static int Day_03_01()
         {
-            (List<BitVector32> diags, int columnCount) = Day_03_01_Input;
+            (List<BitVector32> diagRows, int diagColumnCount) = Day_03_01_Input;
 
-            int rowCount = diags.Count;
+            int rowCount = diagRows.Count;
 
-            BitArray epsilon = new(columnCount);
-            int[] columnSums = new int[columnCount];
+            BitArray epsilon = new(diagColumnCount);
+            int[] columnSums = new int[diagColumnCount];
 
-            for (int r = 0; r < diags.Count; r++)
+            for (int r = 0; r < diagRows.Count; r++)
             {
-                var row = diags[r];
+                var row = diagRows[r];
                 int mask = BitVector32.CreateMask();
-                for (int c = 0; c < columnCount; c++)
+                for (int c = 0; c < diagColumnCount; c++)
                 {
                     columnSums[c] += row[mask] ? 1 : 0;
                     mask = BitVector32.CreateMask(mask);
                 }
             }
 
-            for (int c = 0; c < columnCount; c++)
+            for (int c = 0; c < diagColumnCount; c++)
             {
                 epsilon[c] = columnSums[c] > (rowCount / 2);
             }
@@ -383,20 +368,20 @@ namespace AOC2021
             int epsilonAsInt = 0;
             int gammaAsInt = 0;
 
-            for (int c = 0; c < columnCount; c++)
+            for (int c = 0; c < diagColumnCount; c++)
             {
                 epsilonAsInt |= epsilon[c] ? 1 : 0;
                 gammaAsInt |= epsilon[c] ? 0 : 1;
-                if (c + 1 < columnCount)
+                if (c + 1 < diagColumnCount)
                 {
                     epsilonAsInt <<= 1;
                     gammaAsInt <<= 1;
                 }
             }
 
-            int product = epsilonAsInt * gammaAsInt;
-            Console.WriteLine($"Day_03_01 result: {product}");
-            return product;
+            int result = epsilonAsInt * gammaAsInt;
+            Console.WriteLine($"Day_03_01 result: {result}");
+            return result;
         }
 
         private static int Day_03_02()
@@ -462,9 +447,9 @@ namespace AOC2021
                 mask = BitVector32.CreateMask(mask);
             }
 
-            int product = oxygenNumber * scrubberNumber;
-            Console.WriteLine($"Day_03_02 result: {product}");
-            return product;
+            int result = oxygenNumber * scrubberNumber;
+            Console.WriteLine($"Day_03_02 result: {result}");
+            return result;
         }
 
         private static int Day_04_01()
