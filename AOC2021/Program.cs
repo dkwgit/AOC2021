@@ -46,6 +46,10 @@ namespace AOC2021
             day04.Result1().Should().Be(39984, "Day_04 has a wrong result 1");
             day04.Result2().Should().Be(8468, "Day_04 has a wrong result 2");
 
+            Day05 day05 = serviceProvider.GetRequiredService<Day05>();
+            day05.Result1().Should().Be(8111, "Day_05 has a wrong result 1");
+            day05.Result2().Should().Be(22088, "Day_05 has a wrong result 2");
+
             sw.Stop();
             Console.WriteLine($"Total run time in ms: {sw.ElapsedMilliseconds}");
         }
