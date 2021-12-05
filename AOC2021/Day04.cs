@@ -69,7 +69,7 @@ namespace AOC2021
 
         private (int[] Numbers, BingoBoard[] Boards) PrepData()
         {
-            string[] lines = this.datastore.GetRawData("04_01");
+            string[] lines = this.datastore.GetRawData("04");
             List<BingoBoard> boards = new();
 
             int[] numbers = lines[0].Split(",").Select(x =>

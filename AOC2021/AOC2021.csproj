@@ -25,16 +25,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\InputData\Day_01_01.txt">
+    <None Update="Data\InputData\Day_01.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_02_01.txt">
+    <None Update="Data\InputData\Day_02.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_03_01.txt">
+    <None Update="Data\InputData\Day_03.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_04_01.txt">
+    <None Update="Data\InputData\Day_04.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\InputData\Day_05.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -140,7 +140,7 @@ namespace AOC2021
 
         private (BitVector32[] DiagRows, int DiagColumns) PrepData()
         {
-            string[] data = this.datastore.GetRawData("03_01");
+            string[] data = this.datastore.GetRawData("03");
             int columnCount = -1;
             var diagRows = data.Select(s =>
             {

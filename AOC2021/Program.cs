@@ -57,7 +57,8 @@ namespace AOC2021
                 .AddTransient<Day01>()
                 .AddTransient<Day02>()
                 .AddTransient<Day03>()
-                .AddTransient<Day04>();
+                .AddTransient<Day04>()
+                .AddTransient<Day05>();
         }
     }
 }

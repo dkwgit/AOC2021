@@ -53,7 +53,7 @@ namespace AOC2021
 
         private (int Forward, int Vertical)[] PrepData1()
         {
-            string[] data = this.datastore.GetRawData("02_01");
+            string[] data = this.datastore.GetRawData("02");
             return data.Select(s =>
             {
                 int forward = 0;
@@ -97,7 +97,7 @@ namespace AOC2021
 
         private (int Forward, int Vertical)[] PrepData2()
         {
-            string[] data = this.datastore.GetRawData("02_01");
+            string[] data = this.datastore.GetRawData("02");
             int aim = 0;
 
             return data.Select(s =>
