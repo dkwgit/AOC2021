@@ -8,6 +8,9 @@ namespace AOC2021
 {
     using AOC2021.Data;
 
+    /// <summary>
+    /// Day 2: Submarine depth calculation, etc.
+    /// </summary>
     public class Day02 : IDay
     {
         private readonly DataStore datastore;

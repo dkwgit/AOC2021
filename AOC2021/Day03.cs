@@ -10,6 +10,9 @@ namespace AOC2021
     using AOC2021.Data;
     using FluentAssertions;
 
+    /// <summary>
+    /// Day 3: Reading the diagnostic computer.
+    /// </summary>
     public class Day03 : IDay
     {
         private readonly DataStore datastore;

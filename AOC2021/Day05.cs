@@ -11,6 +11,9 @@ namespace AOC2021
     using AOC2021.Data;
     using FluentAssertions;
 
+    /// <summary>
+    /// Day 5: Mapping thermal vents on the ocean floor.
+    /// </summary>
     public class Day05 : IDay
     {
         private readonly DataStore datastore;
@@ -20,7 +23,7 @@ namespace AOC2021
             this.datastore = datastore;
         }
 
-        private AOC2021.Map.Map TheMap { get; set; }
+        private AOC2021.Map.Map TheMap { get; set; } = default!;
 
         public int Result1()
         {

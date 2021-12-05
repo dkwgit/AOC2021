@@ -8,6 +8,9 @@ namespace AOC2021
 {
     using AOC2021.Data;
 
+    /// <summary>
+    /// Day 1: summarizing trends in a series.
+    /// </summary>
     public class Day01 : IDay
     {
         private readonly DataStore datastore;
@@ -48,6 +51,10 @@ namespace AOC2021
             return result;
         }
 
+        /// <summary>
+        /// This variant does the calculation via a windowed Linq function.
+        /// </summary>
+        /// <returns>Result 2 for Day 1.</returns>
         public int Result2Variant()
         {
             int[] depths = this.PrepData();

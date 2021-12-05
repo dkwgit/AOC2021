@@ -9,8 +9,16 @@ namespace AOC2021.Map
     using System;
     using System.Drawing;
 
+    /// <summary>
+    /// Represents a two dimensional map.
+    /// </summary>
     internal class Map
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Map"/> class.
+        /// </summary>
+        /// <param name="xSide">X side length of the map.</param>
+        /// <param name="ySide">Y side length of the map.</param>
         internal Map(int xSide, int ySide)
         {
             (this.XSide, this.YSide) = (xSide, ySide);
@@ -46,6 +54,10 @@ namespace AOC2021.Map
             }
         }*/
 
+        /// <summary>
+        /// Trace a line on the map, marking each point on the line as having hit (increments hit count).
+        /// </summary>
+        /// <param name="line">A line defined by 2 points.</param>
         internal void TraceLine((Point Point1, Point Point2) line)
         {
             LineHelper helper = new(line.Point1, line.Point2);
@@ -63,6 +75,10 @@ namespace AOC2021.Map
             }
         }
 
+        /// <summary>
+        /// Finding all points on the map with 2 hits or greater.
+        /// </summary>
+        /// <returns>Number of points that have 2 hits or greater.</returns>
         internal int CountHighOverlap()
         {
             int count = 0;
@@ -81,16 +97,19 @@ namespace AOC2021.Map
             return count;
         }
 
+        /// <summary>
+        /// A single point on the map.
+        /// </summary>
         internal struct MapPoint
         {
-            internal MapPoint(Point p, int ventCount) => (this.P, this.HitCount) = (p, ventCount);
+            internal MapPoint(Point p, int hitCount) => (this.P, this.HitCount) = (p, hitCount);
 
             internal Point P { get; init; }
 
             internal int HitCount { get; set; }
         }
 
-        internal class LineHelperOld
+        /* internal class LineHelperOld
         {
             internal LineHelperOld(Point p1, Point p2)
             {
@@ -115,10 +134,19 @@ namespace AOC2021.Map
             internal Func<int, Point> PointCreator { get; init; }
 
             internal Func<Point, Point, (Point Lower, Point Higher)> PointOrderSelector { get; init; }
-        }
+        }*/
 
+        /// <summary>
+        /// Helper class to generate points between end points on a line segment, inclusive.
+        /// </summary>
         internal class LineHelper
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="LineHelper"/> class.
+            /// Construct with the 2 end points.
+            /// </summary>
+            /// <param name="p1">Endpoint 1.</param>
+            /// <param name="p2">Endpoint 2.</param>
             internal LineHelper(Point p1, Point p2)
             {
                 int x = Math.Sign(p2.X - p1.X);
@@ -127,8 +155,16 @@ namespace AOC2021.Map
                 this.OffSetPoint = new Point(x, y);
             }
 
+            /// <summary>
+            /// Gets or sets a point representing the offset between each succesive point. So, given a point, this offset point will generate the next one.
+            /// </summary>
             internal Point OffSetPoint { get; set; }
 
+            /// <summary>
+            /// Given a point currently on the line, generate the next one in the offset direction.
+            /// </summary>
+            /// <param name="p">A point currently on the line.</param>
+            /// <returns>The new point.</returns>
             internal Point GetNext(Point p)
             {
                 p.Offset(this.OffSetPoint);

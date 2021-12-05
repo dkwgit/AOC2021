@@ -11,6 +11,9 @@ namespace AOC2021
     using AOC2021.Data;
     using FluentAssertions;
 
+    /// <summary>
+    /// Day 4: playing bingo with a Giant Squid.
+    /// </summary>
     public class Day04 : IDay
     {
         private readonly DataStore datastore;
