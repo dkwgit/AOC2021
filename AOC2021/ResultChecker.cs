@@ -52,7 +52,7 @@ namespace AOC2021
                 Console.WriteLine($"\nDay: {runResult.Day}:");
                 Console.WriteLine($"\tResult1: {runResult.Result1}. Status: {result1Status}");
                 Console.WriteLine($"\tResult2: {runResult.Result2}. Status: {result2Status}");
-                Console.WriteLine($"\tExecution time:{runResult.ExecutionTime}.");
+                Console.WriteLine($"\tExecution time: {runResult.ExecutionTime}.");
             }
         }
     }
