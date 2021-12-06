@@ -23,26 +23,17 @@ namespace AOC2021
         /// <!-- param name="args">Command line args.</param-->
         public static void Main(/* string[] args*/)
         {
+            ServiceProvider serviceProvider = SetupDependencyInjection();
+
             Stopwatch sw = new();
             sw.Start();
 
-            var serviceCollection = new ServiceCollection();
-            ConfigureServices(serviceCollection);
-            using var serviceProvider = serviceCollection.BuildServiceProvider();
-
             var days = serviceProvider.GetServices<IDay>();
-            DayRunner runner = new();
-            List<RunResult> results = new();
-
-            foreach (var day in days)
-            {
-                RunResult result = runner.RunDay(day);
-                results.Add(result);
-            }
+            var results = serviceProvider.GetRequiredService<DayRunner>().RunDays(days);
 
             sw.Stop();
-            ResultChecker checker = serviceProvider.GetRequiredService<ResultChecker>();
-            checker.CheckResults(results);
+
+            serviceProvider.GetRequiredService<ResultChecker>().CheckResults(results);
 
             Console.WriteLine($"\nTotal run time in ms: {sw.ElapsedMilliseconds}");
         }
@@ -56,7 +47,17 @@ namespace AOC2021
                 .AddTransient<IDay, Day03>()
                 .AddTransient<IDay, Day04>()
                 .AddTransient<IDay, Day05>()
-                .AddTransient<ResultChecker>();
+                .AddTransient<ResultChecker>()
+                .AddTransient<DayRunner>();
+        }
+
+        private static ServiceProvider SetupDependencyInjection()
+        {
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            return serviceProvider;
         }
     }
 }

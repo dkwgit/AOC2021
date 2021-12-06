@@ -32,6 +32,7 @@ namespace AOC2021
             foreach (RunResult runResult in runResults)
             {
                 var verifiedResult = verifiedResults.Where(x => x.Day == runResult.Day).Select(x => x).FirstOrDefault();
+
                 string result1Status = verifiedResult switch
                 {
                     null => "Unverfied.",
@@ -39,6 +40,7 @@ namespace AOC2021
                     { Result1: var r } when r != runResult.Result1 => "False.",
                     _ => throw new InvalidDataException("Unexpected data condition."),
                 };
+
                 string result2Status = verifiedResult switch
                 {
                     null => "Unverfied.",
@@ -46,6 +48,7 @@ namespace AOC2021
                     { Result2: var r } when r != runResult.Result2 => "False.",
                     _ => throw new InvalidDataException("Unexpected data condition."),
                 };
+
                 Console.WriteLine($"\nDay: {runResult.Day}:");
                 Console.WriteLine($"\tResult1: {runResult.Result1}. Status: {result1Status}");
                 Console.WriteLine($"\tResult2: {runResult.Result2}. Status: {result2Status}");

@@ -13,6 +13,17 @@ namespace AOC2021
     /// </summary>
     public class DayRunner
     {
+        internal List<RunResult> RunDays(IEnumerable<IDay> days)
+        {
+            List<RunResult> results = new();
+            foreach (var day in days)
+            {
+                results.Add(this.RunDay(day));
+            }
+
+            return results;
+        }
+
         internal RunResult RunDay(IDay day)
         {
             Stopwatch sw = new();
