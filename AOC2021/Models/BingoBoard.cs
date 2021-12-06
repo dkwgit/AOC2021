@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021.Bingo
+namespace AOC2021.Models.Bingo
 {
     using System.Collections.Generic;
     using System.Linq;

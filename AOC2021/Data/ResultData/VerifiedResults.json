@@ -1,0 +1,32 @@
+[
+  {
+    "Day": "Day01",
+    "Result1": 1167,
+    "Result2": 1130,
+    "ExecutionTime":  -1
+  },
+  {
+    "Day": "Day02",
+    "Result1": 1947824,
+    "Result2": 1813062561,
+    "ExecutionTime": -1
+  },
+  {
+    "Day": "Day03",
+    "Result1": 2967914,
+    "Result2": 7041258,
+    "ExecutionTime": -1
+  },
+  {
+    "Day": "Day04",
+    "Result1": 39984,
+    "Result2": 8468,
+    "ExecutionTime": -1
+  },
+  {
+    "Day": "Day05",
+    "Result1": 8111,
+    "Result2": 22088,
+    "ExecutionTime": -1
+  }
+]

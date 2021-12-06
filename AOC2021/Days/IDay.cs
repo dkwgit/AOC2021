@@ -14,6 +14,8 @@ namespace AOC2021
 
     internal interface IDay
     {
+        internal string Name { get; init; }
+
         internal int Result1();
 
         internal int Result2();

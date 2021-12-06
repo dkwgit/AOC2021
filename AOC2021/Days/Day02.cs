@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021
+namespace AOC2021.Days
 {
     using AOC2021.Data;
 
@@ -19,6 +19,8 @@ namespace AOC2021
         {
             this.datastore = datastore;
         }
+
+        public string Name { get; init; } = "Day02";
 
         public int Result1()
         {

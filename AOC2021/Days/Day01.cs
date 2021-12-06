@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021
+namespace AOC2021.Days
 {
     using AOC2021.Data;
 
@@ -19,6 +19,8 @@ namespace AOC2021
         {
             this.datastore = datastore;
         }
+
+        public string Name { get; init; } = "Day01";
 
         public int Result1()
         {
@@ -65,7 +67,7 @@ namespace AOC2021
                 (item, index) => (index > 0 && (windowedSums[index - 1] < windowedSums[index]))
             ).Count();
 
-            Console.WriteLine($"Day_01_02 result: {result}");
+            Console.WriteLine($"Day_01_02 result variant: {result}");
             return result;
         }
 

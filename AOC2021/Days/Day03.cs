@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021
+namespace AOC2021.Days
 {
     using System.Collections.Specialized;
     using AOC2021.Data;
@@ -21,6 +21,8 @@ namespace AOC2021
         {
             this.datastore = datastore;
         }
+
+        public string Name { get; init; } = "Day03";
 
         public int Result1()
         {

@@ -4,12 +4,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021
+namespace AOC2021.Days
 {
     using System.Drawing;
     using System.Text.RegularExpressions;
     using AOC2021.Data;
+    using AOC2021.Models.Map;
     using FluentAssertions;
+    using Map = AOC2021.Models.Map.Map;
 
     /// <summary>
     /// Day 5: Mapping thermal vents on the ocean floor.
@@ -23,12 +25,13 @@ namespace AOC2021
             this.datastore = datastore;
         }
 
-        private AOC2021.Map.Map TheMap { get; set; } = default!;
+        public string Name { get; init; } = "Day05";
+
+        private Map TheMap { get; set; } = default!;
 
         public int Result1()
         {
-            (Point Point1, Point Point2)[] allLines =
-                this.PrepData();
+            (Point Point1, Point Point2)[] allLines = this.PrepData();
 
             // Filter down to only lines that where either x or y are the same (vertical or horizontal)
             (Point Point1, Point Point2)[] lines = this.PrepData().Where(line => line.Item1.X == line.Item2.X || line.Item1.Y == line.Item2.Y).ToArray();
@@ -38,7 +41,7 @@ namespace AOC2021
 
             int side = xSide >= ySide ? xSide : ySide;
 
-            this.TheMap = new AOC2021.Map.Map(side, side);
+            this.TheMap = new Map(side, side);
 
             foreach (var line in lines)
             {
@@ -60,7 +63,7 @@ namespace AOC2021
 
             int side = xSide >= ySide ? xSide : ySide;
 
-            this.TheMap = new AOC2021.Map.Map(side, side);
+            this.TheMap = new Map(side, side);
 
             foreach (var line in allLines)
             {

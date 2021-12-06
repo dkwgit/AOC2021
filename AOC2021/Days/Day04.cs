@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021
+namespace AOC2021.Days
 {
     using System.Text.RegularExpressions;
-    using AOC2021.Bingo;
     using AOC2021.Data;
+    using AOC2021.Models.Bingo;
     using FluentAssertions;
 
     /// <summary>
@@ -22,6 +22,8 @@ namespace AOC2021
         {
             this.datastore = datastore;
         }
+
+        public string Name { get; init; } = "Day04";
 
         public int Result1()
         {

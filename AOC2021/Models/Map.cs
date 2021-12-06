@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021.Map
+namespace AOC2021.Models.Map
 {
     using System;
     using System.Drawing;
