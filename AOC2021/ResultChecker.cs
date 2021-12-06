@@ -35,7 +35,7 @@ namespace AOC2021
 
                 string result1Status = verifiedResult switch
                 {
-                    null => "Unverfied.",
+                    null => "Unverified.",
                     { Result1: var r } when r == runResult.Result1 => "Correct.",
                     { Result1: var r } when r != runResult.Result1 => "False.",
                     _ => throw new InvalidDataException("Unexpected data condition."),
@@ -43,7 +43,7 @@ namespace AOC2021
 
                 string result2Status = verifiedResult switch
                 {
-                    null => "Unverfied.",
+                    null => "Unverified.",
                     { Result2: var r } when r == runResult.Result2 => "Correct.",
                     { Result2: var r } when r != runResult.Result2 => "False.",
                     _ => throw new InvalidDataException("Unexpected data condition."),
