@@ -49,7 +49,6 @@ namespace AOC2021.Days
             }
 
             int result = this.TheMap.CountHighOverlap();
-            Console.WriteLine($"Day_05_01 result: {result}");
             return result;
         }
 
@@ -71,7 +70,6 @@ namespace AOC2021.Days
             }
 
             int result = this.TheMap.CountHighOverlap();
-            Console.WriteLine($"Day_05_02 result: {result}");
             return result;
         }
 

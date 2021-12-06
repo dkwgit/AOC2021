@@ -71,7 +71,6 @@ namespace AOC2021.Days
             }
 
             int result = epsilonAsInt * gammaAsInt;
-            Console.WriteLine($"Day_03_01 result: {result}");
             return result;
         }
 
@@ -139,7 +138,6 @@ namespace AOC2021.Days
             }
 
             int result = oxygenNumber * scrubberNumber;
-            Console.WriteLine($"Day_03_02 result: {result}");
             return result;
         }
 

@@ -35,7 +35,6 @@ namespace AOC2021.Days
                 });
 
             int result = aggregate.Forward * aggregate.Vertical;
-            Console.WriteLine($"Day_02_01 result: {result}");
             return result;
         }
 
@@ -52,7 +51,6 @@ namespace AOC2021.Days
                 });
 
             int result = aggregate.Forward * aggregate.Vertical;
-            Console.WriteLine($"Day_02_02 result: {result}");
             return result;
         }
 

@@ -40,7 +40,6 @@ namespace AOC2021.Days
                     if (board.AnnounceNumberAndCheck(number, visitNumber++))
                     {
                         result = board.CalculateWinResult();
-                        Console.WriteLine($"Day_04_01 result: {result}");
                         return result;
                     }
                 }
@@ -48,7 +47,6 @@ namespace AOC2021.Days
                 visitRound++;
             }
 
-            Console.WriteLine($"Day_04_01: No win found!");
             return result;
         }
 
@@ -66,9 +64,8 @@ namespace AOC2021.Days
             }
 
             var lastWinningBoard = boards.Where(b => b.WinningNumber != -1).Select(b => b).OrderByDescending(b => b.VisitNumber).First();
-            int result = lastWinningBoard.CalculateWinResult();
 
-            Console.WriteLine($"Day_04_02 result: {result}");
+            int result = lastWinningBoard.CalculateWinResult();
             return result;
         }
 

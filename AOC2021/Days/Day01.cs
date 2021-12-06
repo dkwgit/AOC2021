@@ -30,7 +30,6 @@ namespace AOC2021.Days
                 (item, index) => (index > 0 && (depths[index - 1] < depths[index]))
             ).Count();
 
-            Console.WriteLine($"Day_01_01 result: {result}");
             return result;
         }
 
@@ -49,7 +48,6 @@ namespace AOC2021.Days
                 (item, index) => (index > 0 && (sums[index - 1] < sums[index]))
             ).Count();
 
-            Console.WriteLine($"Day_01_02 result: {result}");
             return result;
         }
 
@@ -67,7 +65,6 @@ namespace AOC2021.Days
                 (item, index) => (index > 0 && (windowedSums[index - 1] < windowedSums[index]))
             ).Count();
 
-            Console.WriteLine($"Day_01_02 result variant: {result}");
             return result;
         }
 

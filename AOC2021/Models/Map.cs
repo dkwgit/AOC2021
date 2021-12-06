@@ -109,33 +109,6 @@ namespace AOC2021.Models.Map
             internal int HitCount { get; set; }
         }
 
-        /* internal class LineHelperOld
-        {
-            internal LineHelperOld(Point p1, Point p2)
-            {
-                if (p1.X == p2.X)
-                {
-                    int constant = p1.X;
-                    this.ChangingValueSelector = (Point p) => p.Y;
-                    this.PointCreator = (int value) => new Point(constant, value);
-                }
-                else
-                {
-                    int constant = p1.Y;
-                    this.ChangingValueSelector = (Point p) => p.X;
-                    this.PointCreator = (int value) => new Point(value, constant);
-                }
-
-                this.PointOrderSelector = (Point p1, Point p2) => this.ChangingValueSelector(p1) < this.ChangingValueSelector(p2) ? (p1, p2) : (p2, p1);
-            }
-
-            internal Func<Point, int> ChangingValueSelector { get; init; }
-
-            internal Func<int, Point> PointCreator { get; init; }
-
-            internal Func<Point, Point, (Point Lower, Point Higher)> PointOrderSelector { get; init; }
-        }*/
-
         /// <summary>
         /// Helper class to generate points between end points on a line segment, inclusive.
         /// </summary>

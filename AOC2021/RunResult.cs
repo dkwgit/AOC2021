@@ -6,5 +6,5 @@
 
 namespace AOC2021
 {
-    internal record RunResult(string Day, int Result1, int Result, long ExecutionTime);
+    public record RunResult(string Day, int Result1, int Result2, long ExecutionTime);
 }

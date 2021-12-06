@@ -45,3 +45,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "Just not gonna document every public or internal.", Scope = "member", Target = "~P:AOC2021.Days.Day04.Name")]
 [assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "So Noted.", Scope = "member", Target = "~M:AOC2021.DayRunner.RunDay(AOC2021.IDay)~AOC2021.RunResult")]
 [assembly: SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "So Noted.", Scope = "member", Target = "~M:AOC2021.Data.DataStore.GetVerifiedResultData~System.Collections.Generic.List{AOC2021.RunResult}")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "Just not gonna document every public or internal.", Scope = "member", Target = "~M:AOC2021.ResultChecker.#ctor(AOC2021.Data.DataStore)")]

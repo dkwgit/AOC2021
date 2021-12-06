@@ -41,10 +41,10 @@ namespace AOC2021
             }
 
             sw.Stop();
-            Console.WriteLine($"Total run time in ms: {sw.ElapsedMilliseconds}");
+            ResultChecker checker = serviceProvider.GetRequiredService<ResultChecker>();
+            checker.CheckResults(results);
 
-            DataStore dataStore = serviceProvider.GetService<DataStore>()!;
-            var resultData = dataStore.GetVerifiedResultData();
+            Console.WriteLine($"\nTotal run time in ms: {sw.ElapsedMilliseconds}");
         }
 
         private static void ConfigureServices(IServiceCollection collection)
@@ -55,7 +55,8 @@ namespace AOC2021
                 .AddTransient<IDay, Day02>()
                 .AddTransient<IDay, Day03>()
                 .AddTransient<IDay, Day04>()
-                .AddTransient<IDay, Day05>();
+                .AddTransient<IDay, Day05>()
+                .AddTransient<ResultChecker>();
         }
     }
 }
