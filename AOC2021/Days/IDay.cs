@@ -16,8 +16,8 @@ namespace AOC2021
     {
         internal string Name { get; init; }
 
-        internal int Result1();
+        internal long Result1();
 
-        internal int Result2();
+        internal long Result2();
     }
 }

@@ -22,18 +22,18 @@ namespace AOC2021.Days
 
         public string Name { get; init; } = "Day01";
 
-        public int Result1()
+        public long Result1()
         {
             int[] depths = this.PrepData();
 
-            int result = depths.Where(
+            long result = depths.Where(
                 (item, index) => (index > 0 && (depths[index - 1] < depths[index]))
             ).Count();
 
             return result;
         }
 
-        public int Result2()
+        public long Result2()
         {
             int[] depths = this.PrepData();
 
@@ -44,7 +44,7 @@ namespace AOC2021.Days
                 sums.Add(depths[i - 2] + depths[i - 1] + depths[i]);
             }
 
-            int result = sums.Where(
+            long result = sums.Where(
                 (item, index) => (index > 0 && (sums[index - 1] < sums[index]))
             ).Count();
 
@@ -55,13 +55,13 @@ namespace AOC2021.Days
         /// This variant does the calculation via a windowed Linq function.
         /// </summary>
         /// <returns>Result 2 for Day 1.</returns>
-        public int Result2Variant()
+        public long Result2Variant()
         {
             int[] depths = this.PrepData();
 
             List<int> windowedSums = depths.WindowedTraverse(3, (int accumulate, int source) => accumulate + source).ToList();
 
-            int result = windowedSums.Where(
+            long result = windowedSums.Where(
                 (item, index) => (index > 0 && (windowedSums[index - 1] < windowedSums[index]))
             ).Count();
 

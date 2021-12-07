@@ -5,8 +5,9 @@
       "companyName": "David Wright",
       "copyrightText": "Copyright (c) {companyName}. All rights reserved.",
       "headerDecoration": "-----------------------------------------------------------------------",
-      "documentExposedElements": true,
-      "documentInternalElements":  true
+      "documentExposedElements": false,
+      "documentInternalElements": false,
+      "documentInterfaces":  false
     }
   }
 }

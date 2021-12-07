@@ -25,9 +25,9 @@ namespace AOC2021.Days
 
         public string Name { get; init; } = "Day04";
 
-        public int Result1()
+        public long Result1()
         {
-            int result = -1;
+            long result = -1;
             (int[] numbers, BingoBoard[] boards) = this.PrepData();
 
             int visitRound = 0;
@@ -50,7 +50,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public int Result2()
+        public long Result2()
         {
             (int[] numbers, BingoBoard[] boards) = this.PrepData();
             int visitNumber = 0;
@@ -65,7 +65,7 @@ namespace AOC2021.Days
 
             var lastWinningBoard = boards.Where(b => b.WinningNumber != -1).Select(b => b).OrderByDescending(b => b.VisitNumber).First();
 
-            int result = lastWinningBoard.CalculateWinResult();
+            long result = lastWinningBoard.CalculateWinResult();
             return result;
         }
 

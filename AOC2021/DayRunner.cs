@@ -29,8 +29,8 @@ namespace AOC2021
             Stopwatch sw = new();
             sw.Start();
 
-            int result1 = day.Result1();
-            int result2 = day.Result2();
+            long result1 = day.Result1();
+            long result2 = day.Result2();
 
             sw.Stop();
 

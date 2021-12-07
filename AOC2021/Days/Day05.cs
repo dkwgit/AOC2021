@@ -29,7 +29,7 @@ namespace AOC2021.Days
 
         private Map TheMap { get; set; } = default!;
 
-        public int Result1()
+        public long Result1()
         {
             (Point Point1, Point Point2)[] allLines = this.PrepData();
 
@@ -48,11 +48,11 @@ namespace AOC2021.Days
                 this.TheMap.TraceLine(line);
             }
 
-            int result = this.TheMap.CountHighOverlap();
+            long result = this.TheMap.CountHighOverlap();
             return result;
         }
 
-        public int Result2()
+        public long Result2()
         {
             (Point Point1, Point Point2)[] allLines =
                this.PrepData();
@@ -69,7 +69,7 @@ namespace AOC2021.Days
                 this.TheMap.TraceLine(line);
             }
 
-            int result = this.TheMap.CountHighOverlap();
+            long result = this.TheMap.CountHighOverlap();
             return result;
         }
 

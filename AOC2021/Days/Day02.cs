@@ -22,7 +22,7 @@ namespace AOC2021.Days
 
         public string Name { get; init; } = "Day02";
 
-        public int Result1()
+        public long Result1()
         {
             (int, int)[] coords = this.PrepData1();
 
@@ -34,11 +34,11 @@ namespace AOC2021.Days
                     return (forward + f, vertical + v);
                 });
 
-            int result = aggregate.Forward * aggregate.Vertical;
+            long result = aggregate.Forward * aggregate.Vertical;
             return result;
         }
 
-        public int Result2()
+        public long Result2()
         {
             (int, int)[] coords = this.PrepData2();
 
@@ -50,7 +50,7 @@ namespace AOC2021.Days
                     return (forward + f, vertical + v);
                 });
 
-            int result = aggregate.Forward * aggregate.Vertical;
+            long result = aggregate.Forward * aggregate.Vertical;
             return result;
         }
 

@@ -24,7 +24,7 @@ namespace AOC2021.Days
 
         public string Name { get; init; } = "Day03";
 
-        public int Result1()
+        public long Result1()
         {
             (BitVector32[] diagRows, int diagColumnCount) = this.PrepData();
             int diagRowCount = diagRows.Length;
@@ -70,11 +70,11 @@ namespace AOC2021.Days
                 mask = BitVector32.CreateMask(mask);
             }
 
-            int result = epsilonAsInt * gammaAsInt;
+            long result = epsilonAsInt * gammaAsInt;
             return result;
         }
 
-        public int Result2()
+        public long Result2()
         {
             (BitVector32[] diags, int columnCount) = this.PrepData();
 
@@ -137,7 +137,7 @@ namespace AOC2021.Days
                 mask = BitVector32.CreateMask(mask);
             }
 
-            int result = oxygenNumber * scrubberNumber;
+            long result = oxygenNumber * scrubberNumber;
             return result;
         }
 
