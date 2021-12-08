@@ -56,17 +56,7 @@ namespace AOC2021.Days
 
             for (long position = crabs.Min(); position < crabs.Max(); position++)
             {
-                long sum = groupedCrabs.Select(group =>
-                {
-                    int fuelFactor = 1;
-                    long fuelConsumed = 0;
-                    for (long steps = Math.Abs(group.Position - position); steps > 0; steps--)
-                    {
-                        fuelConsumed += fuelFactor++ * group.Count;
-                    }
-
-                    return fuelConsumed;
-                }).Sum();
+                long sum = groupedCrabs.Select(group => this.SumSequence(Math.Abs(group.Position - position)) * group.Count).Sum();
 
                 fuelConsumptions.Add(sum);
             }
@@ -76,9 +66,9 @@ namespace AOC2021.Days
         }
 
         // Compute the sum of 1 + 2 + . . . + n
-        private long SumSequence(long n)
+        private long SumSequence(double n)
         {
-            return (n / 2) * (2 + (n - 1));
+            return (long)((n / 2) * (2 + (n - 1)));
         }
 
         private int[] PrepData()
