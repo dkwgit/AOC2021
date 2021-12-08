@@ -24,52 +24,51 @@ namespace AOC2021.Days
 
         public long Result1()
         {
-            int[] crabs = this.PrepData().OrderBy(c => c).ToArray();
+            int[] crabs = this.PrepData();
 
             // Group the crabs by position, with count at that position. Use a sort along the way to get min max.
             CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).OrderBy(x => x.Position).ToArray();
             int minPosition = groupedCrabs[0].Position;
             int maxPosition = groupedCrabs[^1].Position;
 
-            List<long> fuelConsumptions = new(groupedCrabs.Length);
-
             // compute fuel consumption for all positions against all groups
+            long minConsumption = long.MaxValue;
             for (long position = minPosition; position < maxPosition; position++)
             {
                 long sum = groupedCrabs.Select(group => Math.Abs(group.Position - position) * group.Count).Sum();
-                fuelConsumptions.Add(sum);
+
+                minConsumption = sum < minConsumption ? sum : minConsumption;
             }
 
-            long result = fuelConsumptions.Min();
+            long result = minConsumption;
             return result;
         }
 
         public long Result2()
         {
-            int[] crabs = this.PrepData().ToArray();
+            int[] crabs = this.PrepData();
 
             // Group the crabs by position, with count at that position. Use a sort to get min max.
             CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).OrderBy(x => x.Position).ToArray();
             int minPosition = groupedCrabs[0].Position;
             int maxPosition = groupedCrabs[^1].Position;
 
-            List<long> fuelConsumptions = new(groupedCrabs.Length);
-
+            long minConsumption = long.MaxValue;
             for (long position = minPosition; position < maxPosition; position++)
             {
                 long sum = groupedCrabs.Select(group => this.SumSequence(Math.Abs(group.Position - position)) * group.Count).Sum();
 
-                fuelConsumptions.Add(sum);
+                minConsumption = sum < minConsumption ? sum : minConsumption;
             }
 
-            long result = fuelConsumptions.Min();
+            long result = minConsumption;
             return result;
         }
 
         // Compute the sum of 1 + 2 + . . . + n
-        private long SumSequence(double n)
+        private long SumSequence(long n)
         {
-            return (long)((n / 2) * (2 + (n - 1)));
+            return (n * (1 + n)) / 2;
         }
 
         private int[] PrepData()
