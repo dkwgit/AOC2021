@@ -24,17 +24,16 @@ namespace AOC2021.Days
 
         public long Result1()
         {
-            // Get sorted crabs
-            int[] crabs = this.PrepData().OrderBy(x => x).ToArray();
-
-            // Record fuel consumptions we calculated
-            List<long> fuelConsumptions = new();
+            int[] crabs = this.PrepData().OrderBy(c => c).ToArray();
+            int minPosition = crabs[0];
+            int maxPosition = crabs[^1];
 
             // Group the crabs by position, with count at that position.
             CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).ToArray();
+            List<long> fuelConsumptions = new(groupedCrabs.Length);
 
-            // compute fuel consumption for all positions
-            for (long position = 0; position < crabs.Max(); position++)
+            // compute fuel consumption for all positions against all groups
+            for (long position = minPosition; position < maxPosition; position++)
             {
                 long sum = groupedCrabs.Select(group => Math.Abs(group.Position - position) * group.Count).Sum();
                 fuelConsumptions.Add(sum);
@@ -47,16 +46,24 @@ namespace AOC2021.Days
         public long Result2()
         {
             // Get sorted crabs
-            int[] crabs = this.PrepData().OrderBy(x => x).ToArray();
-            List<long> fuelConsumptions = new();
+            int[] crabs = this.PrepData().OrderBy(c => c).ToArray();
+            int minPosition = crabs[0];
+            int maxPosition = crabs[^1];
 
+            // Group the crabs by position, with count at that position.
             CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).ToArray();
+            List<long> fuelConsumptions = new(groupedCrabs.Length);
 
-            for (long position = 0; position < crabs.Max(); position++)
+            for (long position = crabs.Min(); position < crabs.Max(); position++)
             {
                 long sum = groupedCrabs.Select(group =>
                 {
-                    long fuelConsumed = this.SumSequence(Math.Abs(group.Position - position)) * group.Count;
+                    int fuelFactor = 1;
+                    long fuelConsumed = 0;
+                    for (long steps = Math.Abs(group.Position - position); steps > 0; steps--)
+                    {
+                        fuelConsumed += fuelFactor++ * group.Count;
+                    }
 
                     return fuelConsumed;
                 }).Sum();
@@ -71,7 +78,7 @@ namespace AOC2021.Days
         // Compute the sum of 1 + 2 + . . . + n
         private long SumSequence(long n)
         {
-            return (n / 2) * (1 + n);
+            return (n / 2) * (2 + (n - 1));
         }
 
         private int[] PrepData()
