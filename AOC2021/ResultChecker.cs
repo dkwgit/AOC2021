@@ -29,6 +29,7 @@ namespace AOC2021
         {
             List<RunResult> verifiedResults = this.dataStore.GetVerifiedResultData();
 
+            bool badResults = false;
             foreach (RunResult runResult in runResults)
             {
                 var verifiedResult = verifiedResults.Where(x => x.Day == runResult.Day).Select(x => x).FirstOrDefault();
@@ -40,6 +41,10 @@ namespace AOC2021
                     { Result1: var r } when r != runResult.Result1 => "False.",
                     _ => throw new InvalidDataException("Unexpected data condition."),
                 };
+                if (result1Status.ToLower() == "False.".ToLower())
+                {
+                    badResults = true;
+                }
 
                 string result2Status = verifiedResult switch
                 {
@@ -48,11 +53,20 @@ namespace AOC2021
                     { Result2: var r } when r != runResult.Result2 => "False.",
                     _ => throw new InvalidDataException("Unexpected data condition."),
                 };
+                if (result2Status.ToLower() == "False.".ToLower())
+                {
+                    badResults = true;
+                }
 
                 Console.WriteLine($"\nDay: {runResult.Day}:");
                 Console.WriteLine($"\tResult1: {runResult.Result1}. Status: {result1Status}");
                 Console.WriteLine($"\tResult2: {runResult.Result2}. Status: {result2Status}");
                 Console.WriteLine($"\tExecution time: {runResult.ExecutionTime}.");
+            }
+
+            if (badResults)
+            {
+                throw new Exception("At least one result is bad.");
             }
         }
     }

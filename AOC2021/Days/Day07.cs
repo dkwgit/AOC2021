@@ -25,11 +25,12 @@ namespace AOC2021.Days
         public long Result1()
         {
             int[] crabs = this.PrepData().OrderBy(c => c).ToArray();
-            int minPosition = crabs[0];
-            int maxPosition = crabs[^1];
 
-            // Group the crabs by position, with count at that position.
-            CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).ToArray();
+            // Group the crabs by position, with count at that position. Use a sort along the way to get min max.
+            CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).OrderBy(x => x.Position).ToArray();
+            int minPosition = groupedCrabs[0].Position;
+            int maxPosition = groupedCrabs[^1].Position;
+
             List<long> fuelConsumptions = new(groupedCrabs.Length);
 
             // compute fuel consumption for all positions against all groups
@@ -45,16 +46,16 @@ namespace AOC2021.Days
 
         public long Result2()
         {
-            // Get sorted crabs
-            int[] crabs = this.PrepData().OrderBy(c => c).ToArray();
-            int minPosition = crabs[0];
-            int maxPosition = crabs[^1];
+            int[] crabs = this.PrepData().ToArray();
 
-            // Group the crabs by position, with count at that position.
-            CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).ToArray();
+            // Group the crabs by position, with count at that position. Use a sort to get min max.
+            CrabGroup[] groupedCrabs = crabs.GroupBy(c => c).Select(g => new CrabGroup(g.Key, g.Count())).OrderBy(x => x.Position).ToArray();
+            int minPosition = groupedCrabs[0].Position;
+            int maxPosition = groupedCrabs[^1].Position;
+
             List<long> fuelConsumptions = new(groupedCrabs.Length);
 
-            for (long position = crabs.Min(); position < crabs.Max(); position++)
+            for (long position = minPosition; position < maxPosition; position++)
             {
                 long sum = groupedCrabs.Select(group => this.SumSequence(Math.Abs(group.Position - position)) * group.Count).Sum();
 
