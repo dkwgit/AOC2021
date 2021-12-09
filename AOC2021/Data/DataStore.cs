@@ -28,7 +28,7 @@ namespace AOC2021.Data
         /// <returns>All the lines of the input file in a list.</returns>
         internal string[] GetRawData(string key)
         {
-            string filePath = $"./Data/InputData/Day_{key}.txt";
+            string filePath = $"./Data/InputData/Day{key}.txt";
             if (!this.cache.ContainsKey(filePath))
             {
                 this.cache.Add(filePath, File.ReadAllLines(filePath));

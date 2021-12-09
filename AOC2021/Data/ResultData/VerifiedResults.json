@@ -46,5 +46,11 @@
     "Result1": 274,
     "Result2": 1012089,
     "ExecutionTime": -1
+  },
+  {
+    "Day": "Day09",
+    "Result1": -1,
+    "Result2": -1,
+    "ExecutionTime": -1
   }
 ]

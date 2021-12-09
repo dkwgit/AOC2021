@@ -25,28 +25,31 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\InputData\Day_01.txt">
+    <None Update="Data\InputData\Day01.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_02.txt">
+    <None Update="Data\InputData\Day02.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_03.txt">
+    <None Update="Data\InputData\Day03.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_04.txt">
+    <None Update="Data\InputData\Day04.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_05.txt">
+    <None Update="Data\InputData\Day05.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_06.txt">
+    <None Update="Data\InputData\Day06.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_07.txt">
+    <None Update="Data\InputData\Day07.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Data\InputData\Day_08.txt">
+    <None Update="Data\InputData\Day08.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\InputData\Day09.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Data\ResultData\VerifiedResults.json">
