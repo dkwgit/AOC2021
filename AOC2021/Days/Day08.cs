@@ -7,6 +7,7 @@
 namespace AOC2021.Days
 {
     using AOC2021.Data;
+    using AOC2021.Models;
 
     /// <summary>
     /// Day 8:Crossed Wires.
@@ -34,24 +35,15 @@ namespace AOC2021.Days
         public long Result2()
         {
             Observation[] observations = this.PrepData();
-            Dictionary<int, List<char>> digitsToSegments = new();
-
-            Dictionary<int, List<int>> lengthsToDigits = new();
-            lengthsToDigits.Add(2, new List<int> { 1 });
-            lengthsToDigits.Add(3, new List<int> { 7 });
-            lengthsToDigits.Add(4, new List<int> { 4 });
-            lengthsToDigits.Add(5, new List<int> { 2, 3, 5 });
-            lengthsToDigits.Add(6, new List<int> { 0, 6, 9 });
-            lengthsToDigits.Add(7, new List<int> { 8 });
-
-            foreach (var observation in observations)
+            foreach (Observation o in observations)
             {
-                digitsToSegments.Add(1, observation.Signals.Where(x => x.Length == 2).SelectMany(x => x.ToCharArray()).Select(x => x).ToList());
-                digitsToSegments.Add(7, observation.Signals.Where(x => x.Length == 3).SelectMany(x => x.ToCharArray()).Select(x => x).ToList());
-                digitsToSegments.Add(4, observation.Signals.Where(x => x.Length == 4).SelectMany(x => x.ToCharArray()).Select(x => x).ToList());
-                digitsToSegments.Add(8, observation.Signals.Where(x => x.Length == 7).SelectMany(x => x.ToCharArray()).Select(x => x).ToList());
+                Display display = new Display();
+                foreach (var signal in o.Signals)
+                {
+                    display.AddPattern(signal);
+                }
 
-
+                display.Solve();
             }
 
             long result = 0;
