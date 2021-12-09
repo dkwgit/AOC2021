@@ -6,14 +6,19 @@
 
 namespace AOC2021.Days
 {
+    using System.Drawing;
+    using System.Text;
     using AOC2021.Data;
     using FluentAssertions;
+    using Pastel;
 
     /// <summary>
     /// Day 9: Minima.
     /// </summary>
     public class Day09 : IDay
     {
+        public Dictionary<(int Row, int Column), (int Low, int Risk)> Minima { get; set; } = new();
+
         private readonly DataStore datastore;
 
         public Day09(DataStore datastore)
@@ -33,6 +38,9 @@ namespace AOC2021.Days
 
         public long Result2()
         {
+            int[,] map = this.PrepData();
+            this.PlotRidges(map);
+
             long result = 0;
             return result;
         }
@@ -42,7 +50,6 @@ namespace AOC2021.Days
             int rows = map.GetUpperBound(0) + 1;
             int columns = map.GetUpperBound(1) + 1;
             int riskSum = 0;
-            List<(int Row, int Column, int Value, int Risk)> minima = new();
 
             for (int r = 0; r < rows; r++)
             {
@@ -51,14 +58,45 @@ namespace AOC2021.Days
                     int value = map[r, c];
                     if (this.IsMinimum(map, r, c, rows, columns))
                     {
-                        minima.Add((r, c, value, value + 1));
+                        this.Minima[(r, c)] = (Low: value, Risk: value + 1);
                     }
                 }
             }
 
-            riskSum = minima.Sum(x => x.Risk);
+            riskSum = this.Minima.Sum(m => m.Value.Risk);
 
             return riskSum;
+        }
+
+        private void PlotRidges(int[,] map)
+        {
+            int rows = map.GetUpperBound(0) + 1;
+            int columns = map.GetUpperBound(1) + 1;
+
+            for (int r = 0; r < rows; r++)
+            {
+                StringBuilder sb = new();
+                for (int c = 0; c < columns; c++)
+                {
+                    string s = map[r, c].ToString();
+                    if (s == "9")
+                    {
+                        s = " ".Pastel(Color.Black).PastelBg("FFD000");
+                    }
+                    else if (this.Minima.ContainsKey((r,c)))
+                    {
+                        s = s.Pastel(Color.Black).PastelBg("00D0FF");
+                    }
+
+                    sb.Append(s);
+                    if (c + 1 == columns)
+                    {
+                        sb.Append(" ".Pastel(Color.Black));
+                    }
+                }
+
+                Console.WriteLine(sb);
+            }
         }
 
         private bool IsMinimum(int[,] map, int r, int c, int rows, int columns)
