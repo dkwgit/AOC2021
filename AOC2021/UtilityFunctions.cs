@@ -57,5 +57,12 @@ namespace AOC2021
                 windowValues.RemoveAt(0);
             }
         }
+
+        internal static string SortString(this string source)
+        {
+            char[] outputChars = source.ToCharArray();
+            Array.Sort(outputChars);
+            return new string(outputChars);
+        }
     }
 }

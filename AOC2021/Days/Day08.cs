@@ -7,7 +7,7 @@
 namespace AOC2021.Days
 {
     using AOC2021.Data;
-    using AOC2021.Models;
+    using AOC2021.Models.Display;
 
     /// <summary>
     /// Day 8:Crossed Wires.
@@ -28,25 +28,26 @@ namespace AOC2021.Days
             Observation[] observations = this.PrepData();
             var outcome = observations.SelectMany(o => o.Outputs).Where(x => x.Length == 7 || x.Length == 4 || x.Length == 3 || x.Length == 2).Select(x => x).ToArray();
 
-            long result = outcome.Count();
+            long result = outcome.Length;
             return result;
         }
 
         public long Result2()
         {
+            long result = 0;
             Observation[] observations = this.PrepData();
             foreach (Observation o in observations)
             {
-                Display display = new Display();
+                Display display = new();
                 foreach (var signal in o.Signals)
                 {
-                    display.AddPattern(signal);
+                    display.AddSignal(signal);
                 }
 
-                display.Solve();
+                int number = display.Solve(o.Outputs);
+                result += number;
             }
 
-            long result = 0;
             return result;
         }
 
