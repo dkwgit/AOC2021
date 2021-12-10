@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "AOC2021": {
+      "commandName": "Project"
+    },
+    "Help": {
+      "commandName": "Project",
+      "commandLineArgs": "--help"
+    },
+    "Day": {
+      "commandName": "Project",
+      "commandLineArgs": "--days 05 10"
+    },
+    "Profile 1": {
+      "commandName": "Project",
+      "commandLineArgs": "--days 05 13"
+    }
+  }
+}
