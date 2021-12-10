@@ -18,43 +18,67 @@ namespace AOC2021
     /// </summary>
     public class Program
     {
+        private static ServiceProvider DIContainer { get;  } = SetupDependencyInjection();
+
         public static int Main(string[] args)
         {
-            ServiceProvider serviceProvider = SetupDependencyInjection();
-            IEnumerable<IDay> daysToRun = serviceProvider.GetServices<IDay>();
-            daysToRun = FilterDaysByCommandLineArgs(args, daysToRun);
+            IEnumerable<IDay> daysToRun = ProcessArgs(args);
+            Run(daysToRun);
+
+            return 0;
+        }
+
+        private static void Run(IEnumerable<IDay> daysToRun)
+        {
+            DayRunner runner = DIContainer.GetRequiredService<DayRunner>();
+            ResultChecker checker = DIContainer.GetRequiredService<ResultChecker>();
 
             Stopwatch sw = new();
             sw.Start();
 
-            var results = serviceProvider.GetRequiredService<DayRunner>().RunDays(daysToRun);
+            var results = runner.RunDays(daysToRun);
 
             sw.Stop();
 
-            serviceProvider.GetRequiredService<ResultChecker>().CheckResults(results);
+            checker.CheckResults(results);
 
             Console.WriteLine($"\nTotal run time in ms: {sw.ElapsedMilliseconds}");
-            return 0;
         }
 
-        public class Options
+        private class Options
         {
             [Option(
                 'd',
                 "days",
                 Required = false,
-                HelpText = "Run only particular days. Input as as null padded, space separated two digit strings, such as '--days 05' for day 5, or '--days 05 13' for days 5 and 13.")]
-            public IEnumerable<string>? Days { get; set; }
+                HelpText = "Run only particular days. Input as as optionally zero padded, space separated two digit strings, such as '--days 05' for day 5, or '--days 5 13' for days 5 and 13.")]
+            public IEnumerable<string> Days { get; set; } = new List<string>();
         }
 
-        private static IEnumerable<IDay> FilterDaysByCommandLineArgs(string[] args, IEnumerable<IDay> daysToRun)
+        /// <summary>
+        /// If no switches passed in, return *all* days so that they can be run. Otherwise if "--days x [y] [z]" passed in, return only those days.
+        /// If error in command line, will print help and exit.
+        /// </summary>
+        /// <param name="args">Command line arguments.</param>
+        /// <returns>All the days that should be run.</returns>
+        private static IEnumerable<IDay> ProcessArgs(string[] args)
         {
+            IEnumerable<IDay> daysToRun = DIContainer.GetServices<IDay>();
+
             ParserResult<Options> options = Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o =>
                 {
-                    if (o.Days != null && o.Days.Count() > 0)
+                    if (o.Days.Any())
                     {
-                        daysToRun = daysToRun.Where(d => o.Days.Any(dayString => d.GetType().Name == $"Day{dayString}"));
+                        daysToRun = daysToRun.Where(d => o.Days.Any(dayString =>
+                        {
+                            if (dayString.Length == 1)
+                            {
+                                dayString = $"0{dayString}";
+                            }
+
+                            return d.GetType().Name == $"Day{dayString}";
+                        }));
                     }
                 });
 
