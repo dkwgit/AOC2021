@@ -9,6 +9,7 @@ namespace AOC2021.Days
     using System.Drawing;
     using System.Text;
     using AOC2021.Data;
+    using AOC2021.Models;
     using FluentAssertions;
     using Pastel;
 
@@ -17,14 +18,14 @@ namespace AOC2021.Days
     /// </summary>
     public class Day09 : IDay
     {
-        public Dictionary<(int Row, int Column), (int Low, int Risk)> Minima { get; set; } = new();
-
         private readonly DataStore datastore;
 
         public Day09(DataStore datastore)
         {
             this.datastore = datastore;
         }
+
+        public Dictionary<Point, (int Low, int Risk)> Minima { get; set; } = new();
 
         public string Name { get; init; } = "Day09";
 
@@ -38,10 +39,53 @@ namespace AOC2021.Days
 
         public long Result2()
         {
-            int[,] map = this.PrepData();
-            this.PlotRidges(map);
+            bool showPlot = false;
 
-            long result = 0;
+            int[,] originalMap = this.PrepData();
+
+            // We're goign to add a border of 9s to help the algorithm
+            int[,] paddedMap = new int[originalMap.GetUpperBound(0) + 3, originalMap.GetUpperBound(1) + 3];
+
+            for (int r = 0; r < paddedMap.GetUpperBound(0) + 1; r++)
+            {
+                for (int c = 0; c < paddedMap.GetUpperBound(1) + 1; c++)
+                {
+                    if (r == 0 || r == paddedMap.GetUpperBound(0) || c == 0 || c == paddedMap.GetUpperBound(1))
+                    {
+                        paddedMap[r, c] = 9;
+                    }
+                    else
+                    {
+                        paddedMap[r, c] = originalMap[r - 1, c - 1];
+                    }
+                }
+            }
+
+            // Because of added border adjust the coordinates of the minima
+            Dictionary<Point, (int Low, int Risk)> adjustedMinima = new();
+            foreach (Point point in this.Minima.Keys)
+            {
+                adjustedMinima[new Point(point.X + 1, point.Y + 1)] = this.Minima[point];
+            }
+
+            this.Minima = adjustedMinima;
+
+            if (showPlot)
+            {
+                this.PlotRidges(paddedMap);
+            }
+
+            Basin[] basins = new Basin[this.Minima.Count];
+            int i = 0;
+            foreach (Point p in this.Minima.Keys)
+            {
+                Basin b = new(paddedMap, p);
+                basins[i++] = b;
+                b.MapBasin();
+            }
+
+            Basin[] topBasins = basins.OrderByDescending(b => b.BasinPoints.Count).Take(3).ToArray();
+            long result = topBasins.Aggregate(1L, (a, b) => a * b.BasinPoints.Count);
             return result;
         }
 
@@ -58,7 +102,7 @@ namespace AOC2021.Days
                     int value = map[r, c];
                     if (this.IsMinimum(map, r, c, rows, columns))
                     {
-                        this.Minima[(r, c)] = (Low: value, Risk: value + 1);
+                        this.Minima[new Point(c, r)] = (Low: value, Risk: value + 1);
                     }
                 }
             }
@@ -81,11 +125,11 @@ namespace AOC2021.Days
                     string s = map[r, c].ToString();
                     if (s == "9")
                     {
-                        s = " ".Pastel(Color.Black).PastelBg("FFD000");
+                        s = s.Pastel(Color.Black).PastelBg("E34234");
                     }
-                    else if (this.Minima.ContainsKey((r,c)))
+                    else if (this.Minima.ContainsKey(new Point(c, r)))
                     {
-                        s = s.Pastel(Color.Black).PastelBg("00D0FF");
+                        s = s.Pastel(Color.Black).PastelBg("FEFF60");
                     }
 
                     sb.Append(s);
