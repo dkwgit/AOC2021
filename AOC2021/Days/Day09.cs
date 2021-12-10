@@ -14,7 +14,7 @@ namespace AOC2021.Days
     using Pastel;
 
     /// <summary>
-    /// Day 9: Minima.
+    /// Day 9: Minima and basins.
     /// </summary>
     public class Day09 : IDay
     {
