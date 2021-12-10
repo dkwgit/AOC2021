@@ -19,16 +19,8 @@ namespace AOC2021.Models.Display
         {
             Display display = source.Digit.Display;
             IDigit current = display.Digits[source.Index];
-            display.Digits[source.Index] = number switch
-            {
-                3 => new Three(display, current.Signal),
-                9 => new Nine(display, current.Signal),
-                0 => new Zero(display, current.Signal),
-                6 => new Six(display, current.Signal),
-                5 => new Five(display, current.Signal),
-                2 => new Two(display, current.Signal),
-                _ => throw new InvalidDataException(),
-            };
+            display.Digits[source.Index] = new Digit(display, current.Signal, number);
+
             return display;
         }
 

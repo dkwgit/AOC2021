@@ -56,12 +56,12 @@ namespace AOC2021.Models.Display
         {
             IDigit digit = signal.Length switch
             {
-                2 => new One(this, signal),
-                3 => new Seven(this, signal),
-                4 => new Four(this, signal),
+                2 => new Digit(this, signal, 1),
+                3 => new Digit(this, signal, 7),
+                4 => new Digit(this, signal, 4),
                 5 => new Unknown(this, signal),
                 6 => new Unknown(this, signal),
-                7 => new Eight(this, signal),
+                7 => new Digit(this, signal, 8),
                 _ => throw new InvalidDataException(),
             };
 

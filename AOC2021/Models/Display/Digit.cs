@@ -8,7 +8,7 @@ namespace AOC2021.Models.Display
 {
     using System.Linq;
 
-    internal abstract class Digit : IDigit
+    internal class Digit : IDigit
     {
         private readonly Display display;
 
