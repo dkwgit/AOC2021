@@ -55,7 +55,7 @@ namespace AOC2021.Days
 
         private int[] PrepData()
         {
-            string[] data = this.datastore.GetRawData("06")[0].Split(",");
+            string[] data = this.datastore.GetRawData(this.Name)[0].Split(",");
 
             return data.Select(s =>
             {

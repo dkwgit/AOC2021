@@ -53,7 +53,7 @@ namespace AOC2021.Days
 
         private Observation[] PrepData()
         {
-            string[] lines = this.datastore.GetRawData("08");
+            string[] lines = this.datastore.GetRawData(this.Name);
             Observation[] observations = new Observation[lines.Length];
 
             int i = 0;

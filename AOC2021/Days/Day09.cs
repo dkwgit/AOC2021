@@ -134,7 +134,7 @@ namespace AOC2021.Days
 
         private int[,] PrepData()
         {
-            string[] lines = this.datastore.GetRawData("09");
+            string[] lines = this.datastore.GetRawData(this.Name);
             int rows = lines.Length;
             int columns = lines[0].Length;
             int[,] data = new int[rows, columns];

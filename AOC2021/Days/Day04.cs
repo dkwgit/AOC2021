@@ -71,7 +71,7 @@ namespace AOC2021.Days
 
         private (int[] Numbers, BingoBoard[] Boards) PrepData()
         {
-            string[] lines = this.datastore.GetRawData("04");
+            string[] lines = this.datastore.GetRawData(this.Name);
             List<BingoBoard> boards = new();
 
             int[] numbers = lines[0].Split(",").Select(x =>

@@ -143,7 +143,7 @@ namespace AOC2021.Days
 
         private (BitVector32[] DiagRows, int DiagColumns) PrepData()
         {
-            string[] data = this.datastore.GetRawData("03");
+            string[] data = this.datastore.GetRawData(this.Name);
             int columnCount = -1;
             var diagRows = data.Select(s =>
             {

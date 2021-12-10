@@ -75,7 +75,7 @@ namespace AOC2021.Days
 
         private (Point, Point)[] PrepData()
         {
-            string[] data = this.datastore.GetRawData("05");
+            string[] data = this.datastore.GetRawData(this.Name);
 
             string pattern = @"^(\d+),(\d+)\s?->\s?(\d+),(\d+)$";
             return data.Select(s =>

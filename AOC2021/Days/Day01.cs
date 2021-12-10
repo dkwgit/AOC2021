@@ -70,7 +70,7 @@ namespace AOC2021.Days
 
         private int[] PrepData()
         {
-            return this.datastore.GetRawData("01").Select(x =>
+            return this.datastore.GetRawData(this.Name).Select(x =>
             {
                 bool tryResult = int.TryParse(x, out int result);
                 if (!tryResult)
