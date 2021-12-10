@@ -24,11 +24,12 @@ namespace AOC2021.Days
 
         public string Name { get; init; } = "Day10";
 
-        private List<string> ValidLines { get; } = new();
+        // For a non corrupt line, the stack of opening elements that did not get resolved
+        private List<Stack<char>> UnresolvedOpens { get; } = new();
 
-        private Dictionary<char, char> ClosePairs { get; } = new() { { ')', '(' }, { ']', '[' }, { '}', '{' }, { '>', '<' } };
+        private Dictionary<char, char> CloseToOpen { get; } = new() { { ')', '(' }, { ']', '[' }, { '}', '{' }, { '>', '<' } };
 
-        private Dictionary<char, char> OpenPairs { get; } = new() { { '(', ')' }, { '[', ']' }, { '{', '}' }, { '<', '>' } };
+        private Dictionary<char, char> OpenToClose { get; } = new() { { '(', ')' }, { '[', ']' }, { '{', '}' }, { '<', '>' } };
 
         public long Result1()
         {
@@ -39,33 +40,29 @@ namespace AOC2021.Days
             {
                 bool badLine = false;
                 char[] tokens = line.ToCharArray();
-
                 Stack<char> stack = new();
+
                 foreach (char current in tokens)
                 {
-                    if (!this.ClosePairs.ContainsKey(current))
+                    if (!this.CloseToOpen.ContainsKey(current))
                     {
                         stack.Push(current);
                     }
                     else
                     {
-                        char stackTop = stack.Peek();
-                        if (this.ClosePairs[current] != stackTop)
+                        char stackTop = stack.Pop();
+                        if (this.CloseToOpen[current] != stackTop)
                         {
                             corrupted.Add(current);
                             badLine = true;
                             break;
-                        }
-                        else
-                        {
-                            stack.Pop();
                         }
                     }
                 }
 
                 if (!badLine)
                 {
-                    this.ValidLines.Add(line);
+                    this.UnresolvedOpens.Add(stack);
                 }
             }
 
@@ -78,7 +75,7 @@ namespace AOC2021.Days
                     ']' => 57,
                     '}' => 1197,
                     '>' => 25137,
-                    _ => throw new InvalidDataException("Unexpected character in illegal list."),
+                    _ => throw new InvalidDataException("Unexpected character in corrupt list."),
                 };
             }
 
@@ -87,39 +84,32 @@ namespace AOC2021.Days
 
         public long Result2()
         {
-            var lines = this.ValidLines;
-            List<List<char>> allLineFixes = new();
+            List<List<char>> allLineFixes = new(this.UnresolvedOpens.Count);
 
-            foreach (string line in lines)
+            foreach (Stack<char> stack in this.UnresolvedOpens)
             {
-                char[] tokens = line.ToCharArray();
-                Stack<char> unresolvedOpens = new();
-
-                foreach (char current in tokens)
+                List<char> lineFixes = new(stack.Count);
+                while (stack.Count > 0)
                 {
-                    if (this.OpenPairs.ContainsKey(current))
-                    {
-                        unresolvedOpens.Push(current);
-                    }
-
-                    if (this.ClosePairs.ContainsKey(current))
-                    {
-                        char stackTop = unresolvedOpens.Pop();
-                        stackTop.Should().Be(this.ClosePairs[current]);
-                    }
-                }
-
-                List<char> lineFixes = new();
-                while (unresolvedOpens.Count > 0)
-                {
-                    char last = unresolvedOpens.Pop();
-                    lineFixes.Add(this.OpenPairs[last]);
+                    char top = stack.Pop();
+                    lineFixes.Add(this.OpenToClose[top]);
                 }
 
                 allLineFixes.Add(lineFixes);
             }
 
-            List<long> scores = new();
+            long[] scores = this.GetSortedScores(allLineFixes);
+            int remainder = scores.Length % 2;
+            remainder.Should().Be(1);
+
+            // integer division rounds down, but that works with 0 based array index to find middle
+            long result = scores[scores.Length / 2];
+            return result;
+        }
+
+        private long[] GetSortedScores(List<List<char>> allLineFixes)
+        {
+            List<long> scores = new(allLineFixes.Count);
             foreach (var oneLineFix in allLineFixes)
             {
                 long score = 0;
@@ -132,20 +122,14 @@ namespace AOC2021.Days
                         ']' => 2,
                         '}' => 3,
                         '>' => 4,
-                        _ => throw new InvalidDataException("Unexpected character in illegal list."),
+                        _ => throw new InvalidDataException("Unexpected character in fix list."),
                     };
                 }
 
                 scores.Add(score);
             }
 
-            scores = scores.OrderBy(x => x).ToList();
-            int remainder = scores.Count % 2;
-            remainder.Should().Be(1);
-
-            // integer division rounds down, but that works with 0 based array index to find middle
-            long result = scores[scores.Count / 2];
-            return result;
+            return scores.OrderBy(x => x).ToArray();
         }
 
         private string[] PrepData()

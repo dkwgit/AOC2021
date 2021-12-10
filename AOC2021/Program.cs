@@ -17,10 +17,6 @@ namespace AOC2021
     /// </summary>
     public class Program
     {
-        /// <summary>
-        /// Standard console entry function.
-        /// </summary>
-        /// <!-- param name="args">Command line args.</param-->
         public static void Main(/* string[] args*/)
         {
             ServiceProvider serviceProvider = SetupDependencyInjection();
