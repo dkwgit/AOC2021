@@ -16,7 +16,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 5: Mapping thermal vents on the ocean floor.
     /// </summary>
-    public class Day05 : IDay
+    public class Day05 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -25,11 +25,9 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day05";
-
         private Map TheMap { get; set; } = default!;
 
-        public long Result1()
+        public override long Result1()
         {
             (Point Point1, Point Point2)[] allLines = this.PrepData();
 
@@ -52,7 +50,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             (Point Point1, Point Point2)[] allLines =
                this.PrepData();
@@ -75,7 +73,7 @@ namespace AOC2021.Days
 
         private (Point, Point)[] PrepData()
         {
-            string[] data = this.datastore.GetRawData(this.Name);
+            string[] data = this.datastore.GetRawData(this.GetName());
 
             string pattern = @"^(\d+),(\d+)\s?->\s?(\d+),(\d+)$";
             return data.Select(s =>

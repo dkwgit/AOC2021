@@ -34,7 +34,7 @@ namespace AOC2021
 
             sw.Stop();
 
-            return new RunResult(day.Name, result1, result2, sw.ElapsedMilliseconds);
+            return new RunResult(day.GetName(), result1, result2, sw.ElapsedMilliseconds);
         }
     }
 }

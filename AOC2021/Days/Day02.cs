@@ -11,7 +11,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 2: Submarine depth calculation, etc.
     /// </summary>
-    public class Day02 : IDay
+    public class Day02 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -20,9 +20,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day02";
-
-        public long Result1()
+        public override long Result1()
         {
             (int, int)[] coords = this.PrepData1();
 
@@ -38,7 +36,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             (int, int)[] coords = this.PrepData2();
 
@@ -56,7 +54,7 @@ namespace AOC2021.Days
 
         private (int Forward, int Vertical)[] PrepData1()
         {
-            string[] data = this.datastore.GetRawData(this.Name);
+            string[] data = this.datastore.GetRawData(this.GetName());
             return data.Select(s =>
             {
                 int forward = 0;
@@ -100,7 +98,7 @@ namespace AOC2021.Days
 
         private (int Forward, int Vertical)[] PrepData2()
         {
-            string[] data = this.datastore.GetRawData(this.Name);
+            string[] data = this.datastore.GetRawData(this.GetName());
             int aim = 0;
 
             return data.Select(s =>

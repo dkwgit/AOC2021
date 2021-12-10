@@ -11,7 +11,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 7: Whales and crabs and fuel, oh my.
     /// </summary>
-    public class Day07 : IDay
+    public class Day07 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -20,9 +20,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day07";
-
-        public long Result1()
+        public override long Result1()
         {
             int[] crabs = this.PrepData();
 
@@ -44,7 +42,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             int[] crabs = this.PrepData();
 
@@ -73,7 +71,7 @@ namespace AOC2021.Days
 
         private int[] PrepData()
         {
-            string[] data = this.datastore.GetRawData(this.Name)[0].Split(",");
+            string[] data = this.datastore.GetRawData(this.GetName())[0].Split(",");
 
             return data.Select(s =>
             {

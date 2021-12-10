@@ -13,7 +13,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 3: Reading the diagnostic computer.
     /// </summary>
-    public class Day03 : IDay
+    public class Day03 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -22,9 +22,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day03";
-
-        public long Result1()
+        public override long Result1()
         {
             (BitVector32[] diagRows, int diagColumnCount) = this.PrepData();
             int diagRowCount = diagRows.Length;
@@ -74,7 +72,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             (BitVector32[] diags, int columnCount) = this.PrepData();
 
@@ -143,7 +141,7 @@ namespace AOC2021.Days
 
         private (BitVector32[] DiagRows, int DiagColumns) PrepData()
         {
-            string[] data = this.datastore.GetRawData(this.Name);
+            string[] data = this.datastore.GetRawData(this.GetName());
             int columnCount = -1;
             var diagRows = data.Select(s =>
             {

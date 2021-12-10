@@ -14,7 +14,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 4: playing bingo with a Giant Squid.
     /// </summary>
-    public class Day04 : IDay
+    public class Day04 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -23,9 +23,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day04";
-
-        public long Result1()
+        public override long Result1()
         {
             long result = -1;
             (int[] numbers, BingoBoard[] boards) = this.PrepData();
@@ -50,7 +48,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             (int[] numbers, BingoBoard[] boards) = this.PrepData();
             int visitNumber = 0;
@@ -71,7 +69,7 @@ namespace AOC2021.Days
 
         private (int[] Numbers, BingoBoard[] Boards) PrepData()
         {
-            string[] lines = this.datastore.GetRawData(this.Name);
+            string[] lines = this.datastore.GetRawData(this.GetName());
             List<BingoBoard> boards = new();
 
             int[] numbers = lines[0].Split(",").Select(x =>

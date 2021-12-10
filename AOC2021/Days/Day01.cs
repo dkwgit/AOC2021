@@ -11,7 +11,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 1: summarizing trends in a series.
     /// </summary>
-    public class Day01 : IDay
+    public class Day01 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -20,9 +20,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day01";
-
-        public long Result1()
+        public override long Result1()
         {
             int[] depths = this.PrepData();
 
@@ -33,7 +31,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             int[] depths = this.PrepData();
 
@@ -70,7 +68,7 @@ namespace AOC2021.Days
 
         private int[] PrepData()
         {
-            return this.datastore.GetRawData(this.Name).Select(x =>
+            return this.datastore.GetRawData(this.GetName()).Select(x =>
             {
                 bool tryResult = int.TryParse(x, out int result);
                 if (!tryResult)

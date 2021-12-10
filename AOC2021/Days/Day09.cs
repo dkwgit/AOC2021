@@ -16,7 +16,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 9: Minima and basins.
     /// </summary>
-    public class Day09 : IDay
+    public class Day09 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -27,9 +27,7 @@ namespace AOC2021.Days
 
         public Dictionary<Point, (int Low, int Risk)> Minima { get; set; } = new();
 
-        public string Name { get; init; } = "Day09";
-
-        public long Result1()
+        public override long Result1()
         {
             int[,] map = this.PrepData();
 
@@ -37,7 +35,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             bool showPlot = false;
 
@@ -178,7 +176,7 @@ namespace AOC2021.Days
 
         private int[,] PrepData()
         {
-            string[] lines = this.datastore.GetRawData(this.Name);
+            string[] lines = this.datastore.GetRawData(this.GetName());
             int rows = lines.Length;
             int columns = lines[0].Length;
             int[,] data = new int[rows, columns];

@@ -12,7 +12,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 8:Crossed Wires.
     /// </summary>
-    public class Day08 : IDay
+    public class Day08 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -21,9 +21,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day08";
-
-        public long Result1()
+        public override long Result1()
         {
             Observation[] observations = this.PrepData();
             var outcome = observations.SelectMany(o => o.Outputs).Where(x => x.Length == 7 || x.Length == 4 || x.Length == 3 || x.Length == 2).Select(x => x).ToArray();
@@ -32,7 +30,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             long result = 0;
             Observation[] observations = this.PrepData();
@@ -53,7 +51,7 @@ namespace AOC2021.Days
 
         private Observation[] PrepData()
         {
-            string[] lines = this.datastore.GetRawData(this.Name);
+            string[] lines = this.datastore.GetRawData(this.GetName());
             Observation[] observations = new Observation[lines.Length];
 
             int i = 0;

@@ -12,7 +12,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 6: Fish population projections.
     /// </summary>
-    public class Day06 : IDay
+    public class Day06 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -21,9 +21,7 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day06";
-
-        public long Result1()
+        public override long Result1()
         {
             int[] starterFish = this.PrepData();
 
@@ -38,7 +36,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             int[] starterFish = this.PrepData();
 
@@ -55,7 +53,7 @@ namespace AOC2021.Days
 
         private int[] PrepData()
         {
-            string[] data = this.datastore.GetRawData(this.Name)[0].Split(",");
+            string[] data = this.datastore.GetRawData(this.GetName())[0].Split(",");
 
             return data.Select(s =>
             {

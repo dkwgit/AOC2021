@@ -13,7 +13,7 @@ namespace AOC2021.Days
     /// <summary>
     /// Day 10: Can we get some closure in here.
     /// </summary>
-    public class Day10 : IDay
+    public class Day10 : BaseDay, IDay
     {
         private readonly DataStore datastore;
 
@@ -22,8 +22,6 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public string Name { get; init; } = "Day10";
-
         // For a non corrupt line, the stack of opening elements that did not get resolved
         private List<Stack<char>> UnresolvedOpens { get; } = new();
 
@@ -31,7 +29,7 @@ namespace AOC2021.Days
 
         private Dictionary<char, char> OpenToClose { get; } = new() { { '(', ')' }, { '[', ']' }, { '{', '}' }, { '<', '>' } };
 
-        public long Result1()
+        public override long Result1()
         {
             string[] lines = this.PrepData();
             List<char> corrupted = new();
@@ -82,7 +80,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        public long Result2()
+        public override long Result2()
         {
             List<List<char>> allLineFixes = new(this.UnresolvedOpens.Count);
 
@@ -134,7 +132,7 @@ namespace AOC2021.Days
 
         private string[] PrepData()
         {
-            string[] lines = this.datastore.GetRawData(this.Name);
+            string[] lines = this.datastore.GetRawData(this.GetName());
 
             return lines;
         }
