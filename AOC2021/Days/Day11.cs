@@ -41,7 +41,13 @@ namespace AOC2021.Days
             {
                 foreach (var cell in this.Cells)
                 {
-                    cell.ProcessTurn();
+                    if (cell.Value >= 10)
+                    {
+                        cell.Value = 0;
+                    }
+
+                    cell.FlashedThisTurn = false;
+                    cell.Value++;
                 }
 
                 foreach (var cell in this.Cells)
@@ -69,7 +75,13 @@ namespace AOC2021.Days
             {
                 foreach (var cell in this.Cells)
                 {
-                    cell.ProcessTurn();
+                    if (cell.Value >= 10)
+                    {
+                        cell.Value = 0;
+                    }
+
+                    cell.FlashedThisTurn = false;
+                    cell.Value++;
                 }
 
                 foreach (var cell in this.Cells)

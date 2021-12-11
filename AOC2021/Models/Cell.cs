@@ -10,7 +10,6 @@ namespace AOC2021.Models
 
     internal enum UpdateType
     {
-        Turn,
         FlashProcessing,
         FlashFromNeighbor,
     }
@@ -28,11 +27,6 @@ namespace AOC2021.Models
         public bool FlashedThisTurn { get; set; } = false;
 
         public List<IObserver<UpdateType>> Observers { get; } = new List<IObserver<UpdateType>>();
-
-        public void ProcessTurn()
-        {
-            this.OnNext(UpdateType.Turn);
-        }
 
         public void ProcessForFlashes()
         {
@@ -57,17 +51,6 @@ namespace AOC2021.Models
 
         public void OnNext(UpdateType update)
         {
-            if (update == UpdateType.Turn)
-            {
-                this.FlashedThisTurn = false;
-                if (this.Value >= 10)
-                {
-                    this.Value = 0;
-                }
-
-                this.Value++;
-            }
-
             if (update == UpdateType.FlashFromNeighbor)
             {
                 this.Value++;
