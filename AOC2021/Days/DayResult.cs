@@ -1,12 +1,10 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="RunResult.cs" company="David Wright">
+// <copyright file="DayResult.cs" company="David Wright">
 // Copyright (c) David Wright. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace AOC2021
+namespace AOC2021.Days
 {
-    using AOC2021.Days;
-
-    public record RunResult(string DayName, IDayResult[] DayResults, long ExecutionTime);
+    public record DayResult(string DayName, int ResultNumber, string ResultDescription, long Result, string Type = "Standard") : IDayResult;
 }

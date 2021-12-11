@@ -7,6 +7,7 @@
 namespace AOC2021
 {
     using System.Diagnostics;
+    using AOC2021.Days;
 
     /// <summary>
     /// Runs a day an returns its results.
@@ -29,12 +30,11 @@ namespace AOC2021
             Stopwatch sw = new();
             sw.Start();
 
-            long result1 = day.Result1();
-            long result2 = day.Result2();
+            IDayResult[] results = day.GetResults();
 
             sw.Stop();
 
-            return new RunResult(day.GetName(), result1, result2, sw.ElapsedMilliseconds);
+            return new RunResult(day.GetName(), results, sw.ElapsedMilliseconds);
         }
     }
 }

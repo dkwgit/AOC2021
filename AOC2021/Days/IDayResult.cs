@@ -1,19 +1,21 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IDay.cs" company="David Wright">
+// <copyright file="IDayResult.cs" company="David Wright">
 // Copyright (c) David Wright. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
 namespace AOC2021.Days
 {
-    internal interface IDay
+    public interface IDayResult
     {
-        internal string GetName();
+        string DayName { get; }
 
-        internal long Result1();
+        int ResultNumber { get; }
 
-        internal long Result2();
+        string ResultDescription { get; }
 
-        internal IDayResult[] GetResults();
+        long Result { get; }
+
+        string Type { get; }
     }
 }

@@ -41,11 +41,11 @@ namespace AOC2021.Data
         /// Retrieves data with known correct results.
         /// </summary>
         /// <returns>List of RunResult records.</returns>
-        internal List<RunResult> GetVerifiedResultData()
+        internal List<VerifiedResult> GetVerifiedResultData()
         {
             string jsonString = File.ReadAllText($"./Data/ResultData/VerifiedResults.json");
 
-            List<RunResult> results = JsonSerializer.Deserialize<List<RunResult>>(jsonString)!;
+            List<VerifiedResult> results = JsonSerializer.Deserialize<List<VerifiedResult>>(jsonString)!;
             return results;
         }
     }

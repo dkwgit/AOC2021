@@ -2,61 +2,51 @@
   {
     "Day": "Day01",
     "Result1": 1167,
-    "Result2": 1130,
-    "ExecutionTime":  -1
+    "Result2": 1130
   },
   {
     "Day": "Day02",
     "Result1": 1947824,
-    "Result2": 1813062561,
-    "ExecutionTime": -1
+    "Result2": 1813062561
   },
   {
     "Day": "Day03",
     "Result1": 2967914,
-    "Result2": 7041258,
-    "ExecutionTime": -1
+    "Result2": 7041258
   },
   {
     "Day": "Day04",
     "Result1": 39984,
-    "Result2": 8468,
-    "ExecutionTime": -1
+    "Result2": 8468
   },
   {
     "Day": "Day05",
     "Result1": 8111,
-    "Result2": 22088,
-    "ExecutionTime": -1
+    "Result2": 22088
   },
   {
     "Day": "Day06",
     "Result1": 350917,
-    "Result2": 1592918715629,
-    "ExecutionTime": -1
+    "Result2": 1592918715629
   },
   {
     "Day": "Day07",
     "Result1": 323647,
-    "Result2": 87640209,
-    "ExecutionTime": -1
+    "Result2": 87640209
   },
   {
     "Day": "Day08",
     "Result1": 274,
-    "Result2": 1012089,
-    "ExecutionTime": -1
+    "Result2": 1012089
   },
   {
     "Day": "Day09",
     "Result1": 548,
-    "Result2": 786048,
-    "ExecutionTime": -1
+    "Result2": 786048
   },
   {
     "Day": "Day10",
     "Result1": 358737,
-    "Result2": 4329504793,
-    "ExecutionTime": -1
+    "Result2": 4329504793
   }
 ]

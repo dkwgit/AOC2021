@@ -8,6 +8,7 @@ namespace AOC2021
 {
     using System.Collections.Generic;
     using AOC2021.Data;
+    using AOC2021.Days;
 
     /// <summary>
     /// Checks results of runs of days against known verified results. Also prints out exexution time for a day's run.
@@ -27,40 +28,33 @@ namespace AOC2021
         /// <param name="runResults">The results of running a day(s).</param>
         public void CheckResults(List<RunResult> runResults)
         {
-            List<RunResult> verifiedResults = this.dataStore.GetVerifiedResultData();
+            List<VerifiedResult> verifiedResults = this.dataStore.GetVerifiedResultData();
 
             bool badResults = false;
             foreach (RunResult runResult in runResults)
             {
-                var verifiedResult = verifiedResults.Where(x => x.Day == runResult.Day).Select(x => x).FirstOrDefault();
+                Console.WriteLine($"\nDay: {runResult.DayResults[0].DayName}:");
 
-                string result1Status = verifiedResult switch
+                foreach (DayResult dayResult in runResult.DayResults)
                 {
-                    null => "Unverified.",
-                    { Result1: var r } when r == runResult.Result1 => "Correct.",
-                    { Result1: var r } when r != runResult.Result1 => "False.",
-                    _ => throw new InvalidDataException("Unexpected data condition."),
-                };
-                if (result1Status.ToLower() == "False.".ToLower())
-                {
-                    badResults = true;
+                    var verifiedValue = verifiedResults.Where(x => x.Day == runResult.DayName).Select(x => dayResult.ResultNumber == 1 ? x.Result1 : x.Result2).FirstOrDefault();
+
+                    string resultStatus = verifiedValue switch
+                    {
+                        default(long) => "Unverified",
+                        long x when x == dayResult.Result => "Correct",
+                        long x when x != dayResult.Result => "False",
+                        _ => throw new InvalidDataException("Unexpected data condition."),
+                    };
+
+                    if (resultStatus.ToLower() == "False".ToLower())
+                    {
+                        badResults = true;
+                    }
+
+                    Console.WriteLine($"\tResult {dayResult.ResultNumber}: {dayResult.Result}. Status: {resultStatus}. Type: {dayResult.Type}." + (dayResult.ResultDescription.Length > 0 ? dayResult.ResultDescription : string.Empty));
                 }
 
-                string result2Status = verifiedResult switch
-                {
-                    null => "Unverified.",
-                    { Result2: var r } when r == runResult.Result2 => "Correct.",
-                    { Result2: var r } when r != runResult.Result2 => "False.",
-                    _ => throw new InvalidDataException("Unexpected data condition."),
-                };
-                if (result2Status.ToLower() == "False.".ToLower())
-                {
-                    badResults = true;
-                }
-
-                Console.WriteLine($"\nDay: {runResult.Day}:");
-                Console.WriteLine($"\tResult1: {runResult.Result1}. Status: {result1Status}");
-                Console.WriteLine($"\tResult2: {runResult.Result2}. Status: {result2Status}");
                 Console.WriteLine($"\tExecution time: {runResult.ExecutionTime}.");
             }
 

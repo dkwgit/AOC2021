@@ -66,6 +66,17 @@ namespace AOC2021.Days
             return result;
         }
 
+        public override IDayResult[] GetResults()
+        {
+            return new IDayResult[]
+            {
+                new DayResult(this.GetName(), 1, string.Empty, this.Result1()),
+                new DayResult(this.GetName(), 2, string.Empty, this.Result2()),
+
+                // new DayResult(this.GetName(), 2, string.Empty, this.Result2Variant(), "Variant"),
+            };
+        }
+
         private int[] PrepData()
         {
             return this.datastore.GetRawData(this.GetName()).Select(x =>
