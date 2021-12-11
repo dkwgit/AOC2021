@@ -21,8 +21,8 @@ namespace AOC2021.Models.Bingo
         /// <param name="board">Initialization data for the board, holding the numbers that this board has.</param>
         internal BingoBoard(int[,] board)
         {
-            int rows = board.GetUpperBound(0) + 1;
-            int columns = board.GetUpperBound(1) + 1;
+            int rows = board.GetLength(0);
+            int columns = board.GetLength(1);
             rows.Should().Be(columns);
             this.BoardLength = rows;
 

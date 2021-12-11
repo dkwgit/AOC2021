@@ -23,8 +23,8 @@ namespace AOC2021.Days
         {
             this.datastore = datastore;
             this.Cells = this.PrepData();
-            this.Size = this.Cells.GetUpperBound(0) + 1;
-            (this.Cells.GetUpperBound(1) + 1).Should().Be(this.Size);
+            this.Size = this.Cells.GetLength(0);
+            this.Cells.GetLength(1).Should().Be(this.Size);
         }
 
         private Cell[,] Cells { get; set;  }

@@ -42,11 +42,11 @@ namespace AOC2021.Days
             int[,] originalMap = this.PrepData();
 
             // We're goign to add a border of 9s to help the algorithm
-            int[,] paddedMap = new int[originalMap.GetUpperBound(0) + 3, originalMap.GetUpperBound(1) + 3];
+            int[,] paddedMap = new int[originalMap.GetLength(0) + 2, originalMap.GetLength(1) + 2];
 
-            for (int r = 0; r < paddedMap.GetUpperBound(0) + 1; r++)
+            for (int r = 0; r < paddedMap.GetLength(0); r++)
             {
-                for (int c = 0; c < paddedMap.GetUpperBound(1) + 1; c++)
+                for (int c = 0; c < paddedMap.GetLength(1); c++)
                 {
                     if (r == 0 || r == paddedMap.GetUpperBound(0) || c == 0 || c == paddedMap.GetUpperBound(1))
                     {
@@ -89,8 +89,8 @@ namespace AOC2021.Days
 
         private int FindRiskSum(int[,] map)
         {
-            int rows = map.GetUpperBound(0) + 1;
-            int columns = map.GetUpperBound(1) + 1;
+            int rows = map.GetLength(0);
+            int columns = map.GetLength(1);
             int riskSum = 0;
 
             for (int r = 0; r < rows; r++)
@@ -112,8 +112,8 @@ namespace AOC2021.Days
 
         private void PlotRidges(int[,] map)
         {
-            int rows = map.GetUpperBound(0) + 1;
-            int columns = map.GetUpperBound(1) + 1;
+            int rows = map.GetLength(0);
+            int columns = map.GetLength(1);
 
             for (int r = 0; r < rows; r++)
             {
