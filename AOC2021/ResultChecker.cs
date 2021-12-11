@@ -33,7 +33,7 @@ namespace AOC2021
             bool badResults = false;
             foreach (RunResult runResult in runResults)
             {
-                Console.WriteLine($"\nDay: {runResult.DayResults[0].DayName}:");
+                Console.WriteLine($"\nDay: {runResult.DayResults[0].DayName}.");
 
                 foreach (DayResult dayResult in runResult.DayResults)
                 {

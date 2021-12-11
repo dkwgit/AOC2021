@@ -64,5 +64,16 @@ namespace AOC2021
             Array.Sort(outputChars);
             return new string(outputChars);
         }
+
+        internal static IEnumerable<T> Flatten<T>(this T[,] source)
+        {
+            for (int row = 0; row < source.GetLength(0); row++)
+            {
+                for (int col = 0; col < source.GetLength(1); col++)
+                {
+                    yield return source[row, col];
+                }
+            }
+        }
     }
 }
