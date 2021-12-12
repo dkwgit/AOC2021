@@ -42,7 +42,7 @@ namespace AOC2021
 
             checker.CheckResults(results);
 
-            Console.WriteLine($"\nTotal run time in ms: {sw.ElapsedMilliseconds}");
+            Console.WriteLine($"\nTotal run time: {sw.ElapsedMilliseconds}ms.");
         }
 
         private class Options

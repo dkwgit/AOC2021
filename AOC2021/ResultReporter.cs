@@ -35,7 +35,7 @@ namespace AOC2021
             bool badResults = false;
             foreach (RunResult runResult in runResults)
             {
-                Console.WriteLine($"\nDay: {runResult.DayResults[0].DayName}: {runResult.DayDescription}");
+                Console.WriteLine($"\n{runResult.DayResults[0].DayName}: {runResult.DayDescription}");
 
                 foreach (DayResult dayResult in runResult.DayResults)
                 {
@@ -54,10 +54,10 @@ namespace AOC2021
                         badResults = true;
                     }
 
-                    Console.WriteLine($"\tResult {dayResult.ResultNumber}: {dayResult.Result}. Status: {resultStatus}. ExecutionTime: {dayResult.ExecutionTime}. Type: {dayResult.Type}." + (dayResult.ResultDescription.Length > 0 ? dayResult.ResultDescription : string.Empty));
+                    Console.WriteLine($"\tResult {dayResult.ResultNumber}: {dayResult.Result}. Status: {resultStatus}. ExecutionTime: {dayResult.ExecutionTime}ms. Type: {dayResult.Type}." + (dayResult.ResultDescription.Length > 0 ? dayResult.ResultDescription : string.Empty));
                 }
 
-                Console.WriteLine($"\tExecution time: {runResult.ExecutionTime}.");
+                Console.WriteLine($"\tExecution time: {runResult.ExecutionTime}ms.");
             }
 
             if (badResults)
