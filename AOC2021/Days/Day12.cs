@@ -13,7 +13,7 @@ namespace AOC2021.Days
     {
         private readonly DataStore datastore;
 
-        private readonly Dictionary<string, List<string>> productions = new();
+        private readonly Dictionary<string, List<string>> connectedCaves = new();
 
         public Day12(DataStore datastore)
         {
@@ -33,8 +33,8 @@ namespace AOC2021.Days
         {
             this.PrepData();
 
-            GraphNode<string> graphNode = new(null, "start");
-            graphNode.BuildGraph(new List<string>(), this.productions, this.AllPaths, "end", (string s) => char.IsLower(s[0]), string.Empty);
+            GraphNode<string> caveStart = new(null, "start");
+            caveStart.BuildGraph(new List<string>(), this.connectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), string.Empty);
 
             long result = this.AllPaths.Count;
             return result;
@@ -47,8 +47,8 @@ namespace AOC2021.Days
 
             foreach (var smallCaveWithTwoVisits in this.SmallCaves.Keys)
             {
-                GraphNode<string> graphNode = new(null, "start");
-                graphNode.BuildGraph(new List<string>(), this.productions, this.AllPaths, "end", (string s) => char.IsLower(s[0]), smallCaveWithTwoVisits);
+                GraphNode<string> caveStart = new(null, "start");
+                caveStart.BuildGraph(new List<string>(), this.connectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), smallCaveWithTwoVisits);
             }
 
             // Dedupe the paths before counting
@@ -82,26 +82,26 @@ namespace AOC2021.Days
                     caves = temp;
                 }
 
-                if (!this.productions.ContainsKey(caves[0]))
+                if (!this.connectedCaves.ContainsKey(caves[0]))
                 {
-                    this.productions[caves[0]] = new List<string>();
+                    this.connectedCaves[caves[0]] = new List<string>();
                 }
 
-                if (!this.productions[caves[0]].Contains(caves[1]))
+                if (!this.connectedCaves[caves[0]].Contains(caves[1]))
                 {
-                    this.productions[caves[0]].Add(caves[1]);
+                    this.connectedCaves[caves[0]].Add(caves[1]);
                 }
 
                 if (produceBothDirections)
                 {
-                    if (!this.productions.ContainsKey(caves[1]))
+                    if (!this.connectedCaves.ContainsKey(caves[1]))
                     {
-                        this.productions[caves[1]] = new List<string>();
+                        this.connectedCaves[caves[1]] = new List<string>();
                     }
 
-                    if (!this.productions[caves[1]].Contains(caves[0]))
+                    if (!this.connectedCaves[caves[1]].Contains(caves[0]))
                     {
-                        this.productions[caves[1]].Add(caves[0]);
+                        this.connectedCaves[caves[1]].Add(caves[0]);
                     }
                 }
 
