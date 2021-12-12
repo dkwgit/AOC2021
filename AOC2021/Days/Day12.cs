@@ -33,7 +33,7 @@ namespace AOC2021.Days
         {
             this.PrepData();
 
-            GraphNode<string> graphNode = new(null, "start", true);
+            GraphNode<string> graphNode = new(null, "start");
             graphNode.BuildGraph(new List<string>(), this.productions, this.AllPaths, "end", (string s) => char.IsLower(s[0]), string.Empty);
 
             long result = this.AllPaths.Count;
@@ -47,7 +47,7 @@ namespace AOC2021.Days
 
             foreach (var smallCaveWithTwoVisits in this.SmallCaves.Keys)
             {
-                GraphNode<string> graphNode = new(null, "start", true);
+                GraphNode<string> graphNode = new(null, "start");
                 graphNode.BuildGraph(new List<string>(), this.productions, this.AllPaths, "end", (string s) => char.IsLower(s[0]), smallCaveWithTwoVisits);
             }
 
