@@ -75,9 +75,10 @@ namespace AOC2021.Days
 
             /*Stopwatch sw = new();
             sw.Start();
-            long result = this.Result1();
+            long result = this.Result2Variant();
             sw.Stop();
             long timing = sw.ElapsedMilliseconds;
+
             dayResults.Add(new DayResult(this.GetName(), 2, string.Empty, result, timing, "Variant"));*/
 
             return dayResults.ToArray();

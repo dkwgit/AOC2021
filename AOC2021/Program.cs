@@ -10,6 +10,7 @@ namespace AOC2021
     using System.Diagnostics;
     using AOC2021.Data;
     using AOC2021.Days;
+    using AOC2021.Run;
     using CommandLine;
     using Microsoft.Extensions.DependencyInjection;
 
