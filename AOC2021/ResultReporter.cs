@@ -7,8 +7,10 @@
 namespace AOC2021
 {
     using System.Collections.Generic;
+    using System.Drawing;
     using AOC2021.Data;
     using AOC2021.Days;
+    using Pastel;
 
     /// <summary>
     /// Checks results of runs of days against known verified results. Also prints out exexution time for a day's run.
@@ -41,9 +43,9 @@ namespace AOC2021
 
                     string resultStatus = verifiedValue switch
                     {
-                        default(long) => "Unverified",
-                        long x when x == dayResult.Result => "Correct",
-                        long x when x != dayResult.Result => "False",
+                        default(long) => "Unverified".Pastel(Color.Black).PastelBg("FFFFFF"),
+                        long x when x == dayResult.Result => "Correct".Pastel(Color.Black).PastelBg("00FF00"),
+                        long x when x != dayResult.Result => "False".Pastel(Color.Black).PastelBg("FF0000"),
                         _ => throw new InvalidDataException("Unexpected data condition."),
                     };
 
