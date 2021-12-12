@@ -13,9 +13,6 @@ namespace AOC2021.Days
     using FluentAssertions;
     using Map = AOC2021.Models.Map.Map;
 
-    /// <summary>
-    /// Day 5: Mapping thermal vents on the ocean floor.
-    /// </summary>
     public class Day05 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -26,6 +23,11 @@ namespace AOC2021.Days
         }
 
         private Map TheMap { get; set; } = default!;
+
+        public override string GetDescription()
+        {
+            return "Thermal vent mapping.";
+        }
 
         public override long Result1()
         {

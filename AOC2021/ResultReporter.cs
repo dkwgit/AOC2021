@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ResultChecker.cs" company="David Wright">
+// <copyright file="ResultReporter.cs" company="David Wright">
 // Copyright (c) David Wright. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -13,11 +13,11 @@ namespace AOC2021
     /// <summary>
     /// Checks results of runs of days against known verified results. Also prints out exexution time for a day's run.
     /// </summary>
-    public class ResultChecker
+    public class ResultReporter
     {
         private readonly DataStore dataStore;
 
-        public ResultChecker(DataStore datastore)
+        public ResultReporter(DataStore datastore)
         {
             this.dataStore = datastore;
         }
@@ -33,7 +33,7 @@ namespace AOC2021
             bool badResults = false;
             foreach (RunResult runResult in runResults)
             {
-                Console.WriteLine($"\nDay: {runResult.DayResults[0].DayName}.");
+                Console.WriteLine($"\nDay: {runResult.DayResults[0].DayName}: {runResult.DayDescription}");
 
                 foreach (DayResult dayResult in runResult.DayResults)
                 {
@@ -52,7 +52,7 @@ namespace AOC2021
                         badResults = true;
                     }
 
-                    Console.WriteLine($"\tResult {dayResult.ResultNumber}: {dayResult.Result}. Status: {resultStatus}. Type: {dayResult.Type}." + (dayResult.ResultDescription.Length > 0 ? dayResult.ResultDescription : string.Empty));
+                    Console.WriteLine($"\tResult {dayResult.ResultNumber}: {dayResult.Result}. Status: {resultStatus}. ExecutionTime: {dayResult.ExecutionTime}. Type: {dayResult.Type}." + (dayResult.ResultDescription.Length > 0 ? dayResult.ResultDescription : string.Empty));
                 }
 
                 Console.WriteLine($"\tExecution time: {runResult.ExecutionTime}.");

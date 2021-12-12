@@ -23,6 +23,11 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
+        public override string GetDescription()
+        {
+            return "Playing bingo with a giant squid.";
+        }
+
         public override long Result1()
         {
             long result = -1;

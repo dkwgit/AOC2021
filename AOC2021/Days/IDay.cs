@@ -15,5 +15,7 @@ namespace AOC2021.Days
         internal long Result2();
 
         internal IDayResult[] GetResults();
+
+        internal string GetDescription();
     }
 }

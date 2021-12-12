@@ -10,9 +10,6 @@ namespace AOC2021.Days
     using AOC2021.Data;
     using FluentAssertions;
 
-    /// <summary>
-    /// Day 10: Can we get some closure in here.
-    /// </summary>
     public class Day10 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -28,6 +25,11 @@ namespace AOC2021.Days
         private Dictionary<char, char> CloseToOpen { get; } = new() { { ')', '(' }, { ']', '[' }, { '}', '{' }, { '>', '<' } };
 
         private Dictionary<char, char> OpenToClose { get; } = new() { { '(', ')' }, { '[', ']' }, { '{', '}' }, { '<', '>' } };
+
+        public override string GetDescription()
+        {
+            return "Closing brackets.";
+        }
 
         public override long Result1()
         {
@@ -96,7 +98,7 @@ namespace AOC2021.Days
                 allLineFixes.Add(lineFixes);
             }
 
-            long[] scores = this.GetSortedScores(allLineFixes);
+            long[] scores = GetSortedScores(allLineFixes);
             int remainder = scores.Length % 2;
             remainder.Should().Be(1);
 
@@ -105,7 +107,7 @@ namespace AOC2021.Days
             return result;
         }
 
-        private long[] GetSortedScores(List<List<char>> allLineFixes)
+        private static long[] GetSortedScores(List<List<char>> allLineFixes)
         {
             List<long> scores = new(allLineFixes.Count);
             foreach (var oneLineFix in allLineFixes)

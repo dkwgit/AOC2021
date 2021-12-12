@@ -6,5 +6,5 @@
 
 namespace AOC2021.Days
 {
-    public record DayResult(string DayName, int ResultNumber, string ResultDescription, long Result, string Type = "Standard") : IDayResult;
+    public record DayResult(string DayName, int ResultNumber, string ResultDescription, long Result, long ExecutionTime, string Type = "Standard") : IDayResult;
 }

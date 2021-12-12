@@ -13,9 +13,6 @@ namespace AOC2021.Days
     using FluentAssertions;
     using Pastel;
 
-    /// <summary>
-    /// Day 9: Minima and basins.
-    /// </summary>
     public class Day09 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -26,6 +23,11 @@ namespace AOC2021.Days
         }
 
         public Dictionary<Point, (int Low, int Risk)> Minima { get; set; } = new();
+
+        public override string GetDescription()
+        {
+            return "Cave basins.";
+        }
 
         public override long Result1()
         {

@@ -8,9 +8,6 @@ namespace AOC2021.Days
 {
     using AOC2021.Data;
 
-    /// <summary>
-    /// Day 7: Whales and crabs and fuel, oh my.
-    /// </summary>
     public class Day07 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -18,6 +15,11 @@ namespace AOC2021.Days
         public Day07(DataStore datastore)
         {
             this.datastore = datastore;
+        }
+
+        public override string GetDescription()
+        {
+            return "Whales, crabs, fuel.";
         }
 
         public override long Result1()

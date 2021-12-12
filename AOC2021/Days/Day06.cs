@@ -9,9 +9,6 @@ namespace AOC2021.Days
     using AOC2021.Data;
     using AOC2021.Models;
 
-    /// <summary>
-    /// Day 6: Fish population projections.
-    /// </summary>
     public class Day06 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -19,6 +16,11 @@ namespace AOC2021.Days
         public Day06(DataStore datastore)
         {
             this.datastore = datastore;
+        }
+
+        public override string GetDescription()
+        {
+            return "Lanternfish populations.";
         }
 
         public override long Result1()

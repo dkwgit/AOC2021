@@ -6,11 +6,9 @@
 
 namespace AOC2021.Days
 {
+    using System.Diagnostics;
     using AOC2021.Data;
 
-    /// <summary>
-    /// Day 1: summarizing trends in a series.
-    /// </summary>
     public class Day01 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -18,6 +16,11 @@ namespace AOC2021.Days
         public Day01(DataStore datastore)
         {
             this.datastore = datastore;
+        }
+
+        public override string GetDescription()
+        {
+            return "Series trends.";
         }
 
         public override long Result1()
@@ -68,13 +71,16 @@ namespace AOC2021.Days
 
         public override IDayResult[] GetResults()
         {
-            return new IDayResult[]
-            {
-                new DayResult(this.GetName(), 1, string.Empty, this.Result1()),
-                new DayResult(this.GetName(), 2, string.Empty, this.Result2()),
+            List<IDayResult> dayResults = new(base.GetResults());
 
-                // new DayResult(this.GetName(), 2, string.Empty, this.Result2Variant(), "Variant"),
-            };
+            /*Stopwatch sw = new();
+            sw.Start();
+            long result = this.Result1();
+            sw.Stop();
+            long timing = sw.ElapsedMilliseconds;
+            dayResults.Add(new DayResult(this.GetName(), 2, string.Empty, result, timing, "Variant"));*/
+
+            return dayResults.ToArray();
         }
 
         private int[] PrepData()

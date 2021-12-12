@@ -8,9 +8,6 @@ namespace AOC2021.Days
 {
     using AOC2021.Data;
 
-    /// <summary>
-    /// Day 2: Submarine depth calculation, etc.
-    /// </summary>
     public class Day02 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -18,6 +15,11 @@ namespace AOC2021.Days
         public Day02(DataStore datastore)
         {
             this.datastore = datastore;
+        }
+
+        public override string GetDescription()
+        {
+            return "Depth calculation.";
         }
 
         public override long Result1()

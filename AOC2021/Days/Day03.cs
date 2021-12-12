@@ -22,6 +22,11 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
+        public override string GetDescription()
+        {
+            return "Diagnostic bits.";
+        }
+
         public override long Result1()
         {
             (BitVector32[] diagRows, int diagColumnCount) = this.PrepData();

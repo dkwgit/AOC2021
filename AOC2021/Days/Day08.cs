@@ -9,9 +9,6 @@ namespace AOC2021.Days
     using AOC2021.Data;
     using AOC2021.Models.Display;
 
-    /// <summary>
-    /// Day 8:Crossed Wires.
-    /// </summary>
     public class Day08 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -19,6 +16,11 @@ namespace AOC2021.Days
         public Day08(DataStore datastore)
         {
             this.datastore = datastore;
+        }
+
+        public override string GetDescription()
+        {
+            return "Scrambled LED Displays.";
         }
 
         public override long Result1()

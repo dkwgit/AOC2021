@@ -31,7 +31,7 @@ namespace AOC2021
         private static void Run(IEnumerable<IDay> daysToRun)
         {
             DayRunner runner = DIContainer.GetRequiredService<DayRunner>();
-            ResultChecker checker = DIContainer.GetRequiredService<ResultChecker>();
+            ResultReporter checker = DIContainer.GetRequiredService<ResultReporter>();
 
             Stopwatch sw = new();
             sw.Start();
@@ -115,7 +115,7 @@ namespace AOC2021
                 .AddTransient<IDay, Day09>()
                 .AddTransient<IDay, Day10>()
                 .AddTransient<IDay, Day11>()
-                .AddTransient<ResultChecker>()
+                .AddTransient<ResultReporter>()
                 .AddTransient<DayRunner>();
         }
     }

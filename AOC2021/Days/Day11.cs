@@ -12,9 +12,6 @@ namespace AOC2021.Days
     using AOC2021.Models;
     using FluentAssertions;
 
-    /// <summary>
-    /// Day 2: Submarine depth calculation, etc.
-    /// </summary>
     public class Day11 : BaseDay, IDay
     {
         private readonly DataStore datastore;
@@ -34,6 +31,11 @@ namespace AOC2021.Days
         private bool PrintCells { get; } = false;
 
         private FlashCounter Counter { get; set; } = new();
+
+        public override string GetDescription()
+        {
+            return "Bioluminscent octopi.";
+        }
 
         public override long Result1()
         {

@@ -8,5 +8,5 @@ namespace AOC2021
 {
     using AOC2021.Days;
 
-    public record RunResult(string DayName, IDayResult[] DayResults, long ExecutionTime);
+    public record RunResult(string DayName, string DayDescription, IDayResult[] DayResults, long ExecutionTime);
 }
