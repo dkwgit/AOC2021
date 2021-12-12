@@ -28,7 +28,7 @@ namespace AOC2021.Run
         /// Checks passed in run results and tries to verify them against known results.
         /// </summary>
         /// <param name="runResults">The results of running a day(s).</param>
-        public void CheckResults(List<RunResult> runResults)
+        public void CheckResults(List<IRunResult> runResults)
         {
             List<VerifiedResult> verifiedResults = this.dataStore.GetVerifiedResultData();
 

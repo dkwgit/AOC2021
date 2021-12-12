@@ -32,6 +32,7 @@ namespace AOC2021
         private static void Run(IEnumerable<IDay> daysToRun)
         {
             DayRunner runner = DIContainer.GetRequiredService<DayRunner>();
+            runner.ExecutionCount = 1;
             ResultReporter checker = DIContainer.GetRequiredService<ResultReporter>();
 
             Stopwatch sw = new();
