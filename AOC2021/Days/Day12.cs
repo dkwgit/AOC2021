@@ -49,6 +49,11 @@ namespace AOC2021.Days
             {
                 GraphNode<string> caveStart = new(null, "start");
                 caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), smallCaveWithTwoVisits);
+
+                /*
+                 * int countOfNodes = 0;
+                 * caveStart.CountNodes("end", ref countOfNodes);
+                 */
             }
 
             // Dedupe the paths before counting

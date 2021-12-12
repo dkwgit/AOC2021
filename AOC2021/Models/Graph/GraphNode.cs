@@ -77,8 +77,24 @@ namespace AOC2021.Models.Graph
                 newChild.BuildGraph(currentPath, connectedCaves, completePathList, endCave, isSmallCave, smallCaveAllowingTwoVisits);
             }
 
-            // If we get here, the child caves may not have been visitable
             currentPath.RemoveAt(currentPath.Count - 1);
+            return;
+        }
+
+        internal void CountNodes(T endCave, ref int visitCount)
+        {
+            visitCount++;
+
+            if (this.Value.Equals(endCave))
+            {
+                return;
+            }
+
+            foreach (var child in this.Children)
+            {
+                child.CountNodes(endCave, ref visitCount);
+            }
+
             return;
         }
     }
