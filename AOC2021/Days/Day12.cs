@@ -6,6 +6,7 @@
 
 namespace AOC2021.Days
 {
+    using System.Text;
     using AOC2021.Data;
     using AOC2021.Models.Graph;
 
@@ -20,9 +21,9 @@ namespace AOC2021.Days
 
         private Dictionary<string, List<string>> ConnectedCaves { get; } = new();
 
-        private List<List<string>> AllPaths { get; } = new();
+        private HashSet<string> AllPaths { get; } = new();
 
-        private Dictionary<string, bool> SmallCaves { get; } = new();
+        private HashSet<string> SmallCaves { get; } = new();
 
         public override string GetDescription()
         {
@@ -33,7 +34,7 @@ namespace AOC2021.Days
         {
             this.PrepData();
 
-            GraphNode<string> caveStart = new(null, "start");
+            GraphNode caveStart = new(null, "start");
             caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), string.Empty);
 
             long result = this.AllPaths.Count;
@@ -45,9 +46,9 @@ namespace AOC2021.Days
             this.AllPaths.Clear();
             this.PrepData();
 
-            foreach (var smallCaveWithTwoVisits in this.SmallCaves.Keys)
+            foreach (var smallCaveWithTwoVisits in this.SmallCaves)
             {
-                GraphNode<string> caveStart = new(null, "start");
+                GraphNode caveStart = new(null, "start");
                 caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), smallCaveWithTwoVisits);
 
                 /*
@@ -57,7 +58,7 @@ namespace AOC2021.Days
             }
 
             // Dedupe the paths before counting
-            long result = this.AllPaths.Select(x => string.Join(string.Empty, x)).GroupBy(x => x).Count();
+            long result = this.AllPaths.Count;
             return result;
         }
 
@@ -112,12 +113,12 @@ namespace AOC2021.Days
 
                 if (caves[0] != "start" && char.IsLower(caves[0][0]))
                 {
-                    this.SmallCaves[caves[0]] = true;
+                    this.SmallCaves.Add(caves[0]);
                 }
 
                 if (caves[1] != "end" && char.IsLower(caves[1][0]))
                 {
-                    this.SmallCaves[caves[1]] = true;
+                    this.SmallCaves.Add(caves[1]);
                 }
             }
         }

@@ -14,14 +14,14 @@ namespace AOC2021.Models
         {
             this.LowPoint = lowPoint;
 
-            this.PointsToExplore.Add(lowPoint, true);
+            this.PointsToExplore.Add(lowPoint);
 
             this.Map = map;
         }
 
-        internal Dictionary<Point, bool> BasinPoints { get; } = new();
+        internal HashSet<Point> BasinPoints { get; } = new();
 
-        private Dictionary<Point, bool> PointsToExplore { get; } = new();
+        private HashSet<Point> PointsToExplore { get; } = new();
 
         private int[,] Map { get; init; }
 
@@ -33,15 +33,15 @@ namespace AOC2021.Models
         {
             while (this.PointsToExplore.Count > 0)
             {
-                this.CatalogSurroundingPoints(this.PointsToExplore.Keys.First());
+                this.CatalogSurroundingPoints(this.PointsToExplore.First());
             }
         }
 
         private void CatalogSurroundingPoints(Point p)
         {
-            if (!this.BasinPoints.ContainsKey(p))
+            if (!this.BasinPoints.Contains(p))
             {
-                this.BasinPoints.Add(p, true);
+                this.BasinPoints.Add(p);
             }
 
             this.PointsToExplore.Remove(p);
@@ -51,9 +51,9 @@ namespace AOC2021.Models
                 Point otherPoint = Point.Add(p, s);
                 if (this.Map![otherPoint.Y, otherPoint.X] != 9)
                 {
-                    if (!this.BasinPoints.ContainsKey(otherPoint) && !this.PointsToExplore.ContainsKey(otherPoint))
+                    if (!this.BasinPoints.Contains(otherPoint) && !this.PointsToExplore.Contains(otherPoint))
                     {
-                        this.PointsToExplore[otherPoint] = true;
+                        this.PointsToExplore.Add(otherPoint);
                     }
                 }
             }

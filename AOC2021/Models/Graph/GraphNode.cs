@@ -6,27 +6,28 @@
 
 namespace AOC2021.Models.Graph
 {
-    internal class GraphNode<T>
-        where T : notnull
+    using System.Text;
+
+    internal class GraphNode
     {
-        internal GraphNode(GraphNode<T>? parent, T value)
+        internal GraphNode(GraphNode? parent, string value)
         {
             this.Parent = parent;
             this.Value = value;
         }
 
-        internal List<GraphNode<T>> Children { get; } = new();
+        internal List<GraphNode> Children { get; } = new();
 
-        internal GraphNode<T>? Parent { get; }
+        internal GraphNode? Parent { get; }
 
-        internal T Value { get; }
+        internal string Value { get; }
 
         // determine, based on visit history in path, whether a single visit value has already been visited
-        internal static bool CanVisitSmallCave(List<T> visitPath, T value, T smallCaveAllowingTwoVisits)
+        internal static bool CanVisitSmallCave(List<string> currentPath, string value, string smallCaveAllowingTwoVisits)
         {
-            if (!value.Equals(smallCaveAllowingTwoVisits))
+            if (value != smallCaveAllowingTwoVisits)
             {
-                if (visitPath.Contains(value))
+                if (currentPath.Contains(value))
                 {
                     return false;
                 }
@@ -37,7 +38,7 @@ namespace AOC2021.Models.Graph
             }
             else
             {
-                if (visitPath.Where(x => x.Equals(smallCaveAllowingTwoVisits)).Count() < 2)
+                if (currentPath.Where(x => x == smallCaveAllowingTwoVisits).Count() < 2)
                 {
                     return true;
                 }
@@ -48,23 +49,23 @@ namespace AOC2021.Models.Graph
             }
         }
 
-        internal void AddChild(GraphNode<T> child)
+        internal void AddChild(GraphNode child)
         {
             this.Children.Add(child);
         }
 
-        internal void BuildGraph(List<T> currentPath, Dictionary<T, List<T>> connectedCaves, List<List<T>> completePathList, T endCave, Func<T, bool> isSmallCave, T smallCaveAllowingTwoVisits)
+        internal void BuildGraph(List<string> currentPath, Dictionary<string, List<string>> connectedCaves, HashSet<string> allPaths, string endCave, Func<string, bool> isSmallCave, string smallCaveAllowingTwoVisits)
         {
             currentPath.Add(this.Value);
-            if (this.Value.Equals(endCave))
+            if (this.Value == endCave)
             {
                 // We got to end cave, add this to the list of paths
-                completePathList.Add(new List<T>(currentPath));
+                allPaths.Add(string.Join(string.Empty, currentPath.ToArray()));
                 currentPath.RemoveAt(currentPath.Count - 1);
                 return;
             }
 
-            List<T> childValues = connectedCaves[this.Value];
+            List<string> childValues = connectedCaves[this.Value];
             foreach (var childValue in childValues)
             {
                 if (isSmallCave(childValue) && !CanVisitSmallCave(currentPath, childValue, smallCaveAllowingTwoVisits))
@@ -72,20 +73,20 @@ namespace AOC2021.Models.Graph
                     continue;
                 }
 
-                GraphNode<T> newChild = new(this, childValue);
+                GraphNode newChild = new(this, childValue);
                 this.AddChild(newChild);
-                newChild.BuildGraph(currentPath, connectedCaves, completePathList, endCave, isSmallCave, smallCaveAllowingTwoVisits);
+                newChild.BuildGraph(currentPath, connectedCaves, allPaths, endCave, isSmallCave, smallCaveAllowingTwoVisits);
             }
 
             currentPath.RemoveAt(currentPath.Count - 1);
             return;
         }
 
-        internal void CountNodes(T endCave, ref int visitCount)
+        internal void CountNodes(string endCave, ref int visitCount)
         {
             visitCount++;
 
-            if (this.Value.Equals(endCave))
+            if (this.Value == endCave)
             {
                 return;
             }
