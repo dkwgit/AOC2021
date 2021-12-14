@@ -43,9 +43,9 @@ namespace AOC2021.Run
 
                     string resultStatus = verifiedValue switch
                     {
-                        default(long) => "Unverified".Pastel(Color.Black).PastelBg("FFFFFF"),
-                        long x when x == dayResult.Result => "Correct".Pastel(Color.Black).PastelBg("00FF00"),
-                        long x when x != dayResult.Result => "False".Pastel(Color.Black).PastelBg("FF0000"),
+                        default(string) => "Unverified".Pastel(Color.Black).PastelBg("FFFFFF"),
+                        string x when x == dayResult.Result => "Correct".Pastel(Color.Black).PastelBg("00FF00"),
+                        string x when x != dayResult.Result => "False".Pastel(Color.Black).PastelBg("FF0000"),
                         _ => throw new InvalidDataException("Unexpected data condition."),
                     };
 

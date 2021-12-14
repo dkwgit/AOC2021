@@ -14,7 +14,7 @@ namespace AOC2021.Days
 
         string ResultDescription { get; }
 
-        long Result { get; }
+        string Result { get; }
 
         string Type { get; }
     }

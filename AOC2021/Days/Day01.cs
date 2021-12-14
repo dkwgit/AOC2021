@@ -23,7 +23,7 @@ namespace AOC2021.Days
             return "Series trends.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             int[] depths = this.PrepData();
 
@@ -31,10 +31,10 @@ namespace AOC2021.Days
                 (item, index) => (index > 0 && (depths[index - 1] < depths[index]))
             ).Count();
 
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             int[] depths = this.PrepData();
 
@@ -49,7 +49,7 @@ namespace AOC2021.Days
                 (item, index) => (index > 0 && (sums[index - 1] < sums[index]))
             ).Count();
 
-            return result;
+            return result.ToString();
         }
 
         /// <summary>

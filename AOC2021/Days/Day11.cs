@@ -37,7 +37,7 @@ namespace AOC2021.Days
             return "Bioluminscent octopi.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             for (int turn = 0; turn < 100; turn++)
             {
@@ -64,10 +64,10 @@ namespace AOC2021.Days
             }
 
             long result = this.Counter.Flashes;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             // Reset the data
             this.Cells = this.PrepData();
@@ -100,7 +100,7 @@ namespace AOC2021.Days
             }
 
             long result = i;
-            return result;
+            return result.ToString();
         }
 
         private static void PrintCellState(string description, Cell[,] cells, int size, int runningFlashCount)

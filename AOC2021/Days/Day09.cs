@@ -29,15 +29,15 @@ namespace AOC2021.Days
             return "Cave basins.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             int[,] map = this.PrepData();
 
             long result = this.FindRiskSum(map);
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             bool showPlot = false;
 
@@ -86,7 +86,7 @@ namespace AOC2021.Days
 
             Basin[] topBasins = basins.OrderByDescending(b => b.BasinPoints.Count).Take(3).ToArray();
             long result = topBasins.Aggregate(1L, (a, b) => a * b.BasinPoints.Count);
-            return result;
+            return result.ToString();
         }
 
         private int FindRiskSum(int[,] map)

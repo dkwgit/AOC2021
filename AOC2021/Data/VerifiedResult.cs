@@ -6,5 +6,5 @@
 
 namespace AOC2021.Data
 {
-    internal record VerifiedResult(string Day, long Result1, long Result2);
+    internal record VerifiedResult(string Day, string Result1, string Result2);
 }

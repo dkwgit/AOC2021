@@ -10,9 +10,9 @@ namespace AOC2021.Days
     {
         internal string GetName();
 
-        internal long Result1();
+        internal string Result1();
 
-        internal long Result2();
+        internal string Result2();
 
         internal IDayResult[] GetResults();
 

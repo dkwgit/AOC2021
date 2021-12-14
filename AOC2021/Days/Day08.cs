@@ -23,16 +23,16 @@ namespace AOC2021.Days
             return "Scrambled LED Displays.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             Observation[] observations = this.PrepData();
             var outcome = observations.SelectMany(o => o.Outputs).Where(x => x.Length == 7 || x.Length == 4 || x.Length == 3 || x.Length == 2).Select(x => x).ToArray();
 
             long result = outcome.Length;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             long result = 0;
             Observation[] observations = this.PrepData();
@@ -48,7 +48,7 @@ namespace AOC2021.Days
                 result += number;
             }
 
-            return result;
+            return result.ToString();
         }
 
         private Observation[] PrepData()

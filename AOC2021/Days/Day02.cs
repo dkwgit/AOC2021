@@ -22,7 +22,7 @@ namespace AOC2021.Days
             return "Depth calculation.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             (int, int)[] coords = this.PrepData1();
 
@@ -35,10 +35,10 @@ namespace AOC2021.Days
                 });
 
             long result = aggregate.Forward * aggregate.Vertical;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             (int, int)[] coords = this.PrepData2();
 
@@ -51,7 +51,7 @@ namespace AOC2021.Days
                 });
 
             long result = aggregate.Forward * aggregate.Vertical;
-            return result;
+            return result.ToString();
         }
 
         private (int Forward, int Vertical)[] PrepData1()

@@ -27,7 +27,7 @@ namespace AOC2021.Days
             return "Diagnostic bits.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             (BitVector32[] diagRows, int diagColumnCount) = this.PrepData();
             int diagRowCount = diagRows.Length;
@@ -74,10 +74,10 @@ namespace AOC2021.Days
             }
 
             long result = epsilonAsInt * gammaAsInt;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             (BitVector32[] diags, int columnCount) = this.PrepData();
 
@@ -141,7 +141,7 @@ namespace AOC2021.Days
             }
 
             long result = oxygenNumber * scrubberNumber;
-            return result;
+            return result.ToString();
         }
 
         private (BitVector32[] DiagRows, int DiagColumns) PrepData()

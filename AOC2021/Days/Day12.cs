@@ -30,7 +30,7 @@ namespace AOC2021.Days
             return "Cave traversal";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             this.PrepData();
 
@@ -38,10 +38,10 @@ namespace AOC2021.Days
             caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), string.Empty);
 
             long result = this.AllPaths.Count;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             this.AllPaths.Clear();
             this.PrepData();
@@ -59,7 +59,7 @@ namespace AOC2021.Days
 
             // Dedupe the paths before counting
             long result = this.AllPaths.Count;
-            return result;
+            return result.ToString();
         }
 
         private void PrepData()

@@ -23,7 +23,7 @@ namespace AOC2021.Days
             return "Lanternfish populations.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             int[] starterFish = this.PrepData();
 
@@ -35,10 +35,10 @@ namespace AOC2021.Days
             }
 
             long result = sea.TotalFish;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             int[] starterFish = this.PrepData();
 
@@ -50,7 +50,7 @@ namespace AOC2021.Days
             }
 
             long result = sea.TotalFish;
-            return result;
+            return result.ToString();
         }
 
         private int[] PrepData()

@@ -28,7 +28,7 @@ namespace AOC2021.Days
             return "Playing bingo with a giant squid.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             long result = -1;
             (int[] numbers, BingoBoard[] boards) = this.PrepData();
@@ -43,17 +43,17 @@ namespace AOC2021.Days
                     if (board.AnnounceNumberAndCheck(number, visitNumber++))
                     {
                         result = board.CalculateWinResult();
-                        return result;
+                        return result.ToString();
                     }
                 }
 
                 visitRound++;
             }
 
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             (int[] numbers, BingoBoard[] boards) = this.PrepData();
             int visitNumber = 0;
@@ -69,7 +69,7 @@ namespace AOC2021.Days
             var lastWinningBoard = boards.Where(b => b.WinningNumber != -1).Select(b => b).OrderByDescending(b => b.VisitNumber).First();
 
             long result = lastWinningBoard.CalculateWinResult();
-            return result;
+            return result.ToString();
         }
 
         private (int[] Numbers, BingoBoard[] Boards) PrepData()

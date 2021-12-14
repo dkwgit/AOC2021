@@ -31,7 +31,7 @@ namespace AOC2021.Days
             return "Closing brackets.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             string[] lines = this.PrepData();
             List<char> corrupted = new();
@@ -79,10 +79,10 @@ namespace AOC2021.Days
                 };
             }
 
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             List<List<char>> allLineFixes = new(this.UnresolvedOpens.Count);
 
@@ -104,7 +104,7 @@ namespace AOC2021.Days
 
             // integer division rounds down, but that works with 0 based array index to find middle
             long result = scores[scores.Length / 2];
-            return result;
+            return result.ToString();
         }
 
         private static long[] GetSortedScores(List<List<char>> allLineFixes)

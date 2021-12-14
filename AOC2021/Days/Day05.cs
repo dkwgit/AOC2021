@@ -29,7 +29,7 @@ namespace AOC2021.Days
             return "Thermal vent mapping.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             (Point Point1, Point Point2)[] allLines = this.PrepData();
 
@@ -49,10 +49,10 @@ namespace AOC2021.Days
             }
 
             long result = this.TheMap.CountHighOverlap();
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             (Point Point1, Point Point2)[] allLines =
                this.PrepData();
@@ -70,7 +70,7 @@ namespace AOC2021.Days
             }
 
             long result = this.TheMap.CountHighOverlap();
-            return result;
+            return result.ToString();
         }
 
         private (Point, Point)[] PrepData()

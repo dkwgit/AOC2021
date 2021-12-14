@@ -17,20 +17,20 @@ namespace AOC2021.Days
 
         public abstract string GetDescription();
 
-        public abstract long Result1();
+        public abstract string Result1();
 
-        public abstract long Result2();
+        public abstract string Result2();
 
         public virtual IDayResult[] GetResults()
         {
             Stopwatch sw = new();
             sw.Start();
-            long result1 = this.Result1();
+            string result1 = this.Result1();
             sw.Stop();
             long timing1 = sw.ElapsedMilliseconds;
 
             sw.Restart();
-            long result2 = this.Result2();
+            string result2 = this.Result2();
             sw.Stop();
             long timing2 = sw.ElapsedMilliseconds;
 

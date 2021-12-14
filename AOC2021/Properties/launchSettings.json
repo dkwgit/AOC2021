@@ -9,7 +9,7 @@
     },
     "Day": {
       "commandName": "Project",
-      "commandLineArgs": "--days 12"
+      "commandLineArgs": "--days 13"
     },
     "Profile 1": {
       "commandName": "Project",

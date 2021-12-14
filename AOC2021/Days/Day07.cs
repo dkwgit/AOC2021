@@ -22,7 +22,7 @@ namespace AOC2021.Days
             return "Whales, crabs, fuel.";
         }
 
-        public override long Result1()
+        public override string Result1()
         {
             int[] crabs = this.PrepData();
 
@@ -41,10 +41,10 @@ namespace AOC2021.Days
             }
 
             long result = minConsumption;
-            return result;
+            return result.ToString();
         }
 
-        public override long Result2()
+        public override string Result2()
         {
             int[] crabs = this.PrepData();
 
@@ -62,7 +62,7 @@ namespace AOC2021.Days
             }
 
             long result = minConsumption;
-            return result;
+            return result.ToString();
         }
 
         // Compute the sum of 1 + 2 + . . . + n
