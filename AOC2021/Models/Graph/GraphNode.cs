@@ -6,8 +6,6 @@
 
 namespace AOC2021.Models.Graph
 {
-    using System.Text;
-
     internal class GraphNode
     {
         internal GraphNode(GraphNode? parent, string value)
@@ -21,6 +19,11 @@ namespace AOC2021.Models.Graph
         internal GraphNode? Parent { get; }
 
         internal string Value { get; }
+
+        internal static bool IsSmallCave(string cave)
+        {
+            return char.IsLower(cave[0]);
+        }
 
         // determine, based on visit history in path, whether a single visit value has already been visited
         internal static bool CanVisitSmallCave(List<string> currentPath, string value, string smallCaveAllowingTwoVisits)
@@ -54,31 +57,42 @@ namespace AOC2021.Models.Graph
             this.Children.Add(child);
         }
 
-        internal void BuildGraph(List<string> currentPath, Dictionary<string, List<string>> connectedCaves, HashSet<string> allPaths, string endCave, Func<string, bool> isSmallCave, string smallCaveAllowingTwoVisits)
+        internal void BuildGraph(List<string> currentPath, Dictionary<string, List<string>> connectedCaves, PathCounter counter, string endCave, string smallCaveAllowingTwoVisits)
         {
-            currentPath.Add(this.Value);
             if (this.Value == endCave)
             {
                 // We got to end cave, add this to the list of paths
-                allPaths.Add(string.Join(string.Empty, currentPath.ToArray()));
-                currentPath.RemoveAt(currentPath.Count - 1);
+                if (smallCaveAllowingTwoVisits == string.Empty || currentPath.Count(x => x == smallCaveAllowingTwoVisits) == 2)
+                {
+                    counter.Increment();
+                }
+
                 return;
+            }
+
+            if (GraphNode.IsSmallCave(this.Value))
+            {
+                currentPath.Add(this.Value);
             }
 
             List<string> childValues = connectedCaves[this.Value];
             foreach (var childValue in childValues)
             {
-                if (isSmallCave(childValue) && !CanVisitSmallCave(currentPath, childValue, smallCaveAllowingTwoVisits))
+                if (GraphNode.IsSmallCave(childValue) && !CanVisitSmallCave(currentPath, childValue, smallCaveAllowingTwoVisits))
                 {
                     continue;
                 }
 
                 GraphNode newChild = new(this, childValue);
                 this.AddChild(newChild);
-                newChild.BuildGraph(currentPath, connectedCaves, allPaths, endCave, isSmallCave, smallCaveAllowingTwoVisits);
+                newChild.BuildGraph(currentPath, connectedCaves, counter, endCave, smallCaveAllowingTwoVisits);
             }
 
-            currentPath.RemoveAt(currentPath.Count - 1);
+            if (GraphNode.IsSmallCave(this.Value))
+            {
+                currentPath.RemoveAt(currentPath.Count - 1);
+            }
+
             return;
         }
 

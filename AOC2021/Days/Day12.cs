@@ -6,7 +6,6 @@
 
 namespace AOC2021.Days
 {
-    using System.Text;
     using AOC2021.Data;
     using AOC2021.Models.Graph;
 
@@ -21,8 +20,6 @@ namespace AOC2021.Days
 
         private Dictionary<string, List<string>> ConnectedCaves { get; } = new();
 
-        private HashSet<string> AllPaths { get; } = new();
-
         private HashSet<string> SmallCaves { get; } = new();
 
         public override string GetDescription()
@@ -33,23 +30,26 @@ namespace AOC2021.Days
         public override string Result1()
         {
             this.PrepData();
-
+            PathCounter counter = new();
             GraphNode caveStart = new(null, "start");
-            caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), string.Empty);
+            caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, counter, "end", string.Empty);
 
-            long result = this.AllPaths.Count;
+            long result = counter.Count;
             return result.ToString();
         }
 
         public override string Result2()
         {
-            this.AllPaths.Clear();
             this.PrepData();
+            PathCounter counter = new();
+
+            GraphNode caveStart = new(null, "start");
+            caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, counter, "end", string.Empty);
 
             foreach (var smallCaveWithTwoVisits in this.SmallCaves)
             {
-                GraphNode caveStart = new(null, "start");
-                caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, this.AllPaths, "end", (string s) => char.IsLower(s[0]), smallCaveWithTwoVisits);
+                caveStart = new(null, "start");
+                caveStart.BuildGraph(new List<string>(), this.ConnectedCaves, counter, "end", smallCaveWithTwoVisits);
 
                 /*
                  * int countOfNodes = 0;
@@ -58,7 +58,7 @@ namespace AOC2021.Days
             }
 
             // Dedupe the paths before counting
-            long result = this.AllPaths.Count;
+            long result = counter.Count;
             return result.ToString();
         }
 
