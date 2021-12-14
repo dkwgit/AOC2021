@@ -60,7 +60,7 @@ namespace AOC2021.Days
         {
             int[] depths = this.PrepData();
 
-            List<int> windowedSums = depths.WindowedTraverse(3, (int accumulate, int source) => accumulate + source).ToList();
+            List<int> windowedSums = depths.WindowedAggregation(3, (int accumulate, int source) => accumulate + source).ToList();
 
             long result = windowedSums.Where(
                 (item, index) => (index > 0 && (windowedSums[index - 1] < windowedSums[index]))

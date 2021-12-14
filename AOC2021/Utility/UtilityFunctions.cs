@@ -22,7 +22,7 @@ namespace AOC2021
         /// <param name="windowSize">THe windows size.</param>
         /// <param name="aggregateFunction">An aggregate functio to execute over the windows.</param>
         /// <returns>A windows enumerable across the source enumerable.</returns>
-        internal static IEnumerable<T> WindowedTraverse<T>(this IEnumerable<T> source, int windowSize, Func<T, T, T> aggregateFunction)
+        internal static IEnumerable<T> WindowedAggregation<T>(this IEnumerable<T> source, int windowSize, Func<T, T, T> aggregateFunction)
         {
             IEnumerator<T> enumerator = source.GetEnumerator();
             /*
@@ -49,6 +49,41 @@ namespace AOC2021
                 windowValues.Add(enumerator.Current);
                 var agg = windowValues.Aggregate(aggregateFunction);
                 yield return agg;
+                if (!enumerator.MoveNext())
+                {
+                    yield break;
+                }
+
+                windowValues.RemoveAt(0);
+            }
+        }
+
+        internal static IEnumerable<List<T>> ProduceWindows<T>(this IEnumerable<T> source, int windowSize)
+        {
+            IEnumerator<T> enumerator = source.GetEnumerator();
+            /*
+             * We accumulate the window by pushes onto the end of this list. When a window has been processed,
+             * the first element is dropped off to make room for the next window.
+             */
+            List<T> windowValues = new();
+            if (!enumerator.MoveNext())
+            {
+                yield break;
+            }
+
+            for (int i = 0; i < windowSize - 1; i++)
+            {
+                windowValues.Add(enumerator.Current);
+                if (!enumerator.MoveNext())
+                {
+                    yield break;
+                }
+            }
+
+            while (true)
+            {
+                windowValues.Add(enumerator.Current);
+                yield return new List<T>(windowValues);
                 if (!enumerator.MoveNext())
                 {
                     yield break;
