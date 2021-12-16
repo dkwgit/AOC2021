@@ -22,7 +22,7 @@ namespace AOC2021.Models.Dijkstra
 
         internal List<Vertex> UnvisitedWithKnownDistance { get; set; } = new();
 
-        internal HashSet<Vertex> Visited { get; } = new();
+        internal List<Vertex> Visited { get; } = new();
 
         internal int Size { get; }
 
@@ -99,7 +99,7 @@ namespace AOC2021.Models.Dijkstra
                     break;
                 }
 
-                this.UnvisitedWithKnownDistance = this.UnvisitedWithKnownDistance.OrderBy(x => x.Distance).ToList();
+                this.UnvisitedWithKnownDistance.Sort();
                 currentVertex = this.UnvisitedWithKnownDistance[0];
                 this.UnvisitedWithKnownDistance.RemoveAt(0);
             }

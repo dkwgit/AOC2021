@@ -6,7 +6,7 @@
 
 namespace AOC2021.Models.Dijkstra
 {
-    internal class Vertex
+    internal class Vertex : IComparable<Vertex>
     {
         internal Vertex(int row, int column, int entryCost, Graph graph) => (this.Row, this.Column, this.EntryCost, this.Graph) = (row, column, entryCost, graph);
 
@@ -19,6 +19,49 @@ namespace AOC2021.Models.Dijkstra
         internal int Distance { get; set;  } = int.MaxValue;
 
         internal Graph Graph { get; }
+
+        public int CompareTo(Vertex? other)
+        {
+            if (other == null)
+            {
+                return 1;
+            }
+
+            if (this.Distance < other.Distance)
+            {
+                return -1;
+            }
+            else if (this.Distance > other.Distance)
+            {
+                return 1;
+            }
+            else
+            {
+                if (this.Row < other.Row)
+                {
+                    return -1;
+                }
+                else if (this.Row > other.Row)
+                {
+                    return 1;
+                }
+                else
+                {
+                    if (this.Column < other.Column)
+                    {
+                        return -1;
+                    }
+                    else if (this.Column > other.Column)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+        }
 
         internal bool Equals(Vertex other)
         {
