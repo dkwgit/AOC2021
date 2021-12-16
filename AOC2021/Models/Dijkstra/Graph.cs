@@ -80,8 +80,6 @@ namespace AOC2021.Models.Dijkstra
             Vertex currentVertex = this.Vertices[0, 0];
             Vertex destinationVertex = this.Vertices[this.Size - 1, this.Size - 1];
 
-
-
             while (true)
             {
                 Vertex[] neighbors = this.GetUnvisitedNeighbors(currentVertex);
