@@ -29,15 +29,21 @@ namespace AOC2021.Days
 
             int steps = 0;
             StringBuilder sb = new StringBuilder();
-            while (steps < 10)
+            while (steps++ < 10)
             {
+                bool copyFirstItemOfPair = true;
                 List<List<char>> pairs = template.ProduceWindows(2).ToList();
 
                 foreach (var pair in pairs)
                 {
                     string pairString = string.Join(string.Empty, pair.ToArray());
                     string pairProduces = productionRules[pairString];
-                    sb.Append(pair[0]);
+                    if (copyFirstItemOfPair)
+                    {
+                        sb.Append(pair[0]);
+                        copyFirstItemOfPair = false;
+                    }
+
                     sb.Append(pairProduces);
                     sb.Append(pair[1]);
                 }
@@ -45,7 +51,6 @@ namespace AOC2021.Days
                 template = sb.ToString();
 
                 sb.Clear();
-                steps++;
             }
 
             var groups = template.GroupBy(x => x).Select(g => new { Key = g.Key, Count = g.Count() }).OrderBy(g => g.Count).ToArray();
