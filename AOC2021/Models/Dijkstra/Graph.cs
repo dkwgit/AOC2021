@@ -20,7 +20,7 @@ namespace AOC2021.Models.Dijkstra
 
         internal HashSet<Vertex> Unvisited { get;  } = new();
 
-        internal List<Vertex> UnvisitedWithKnownDistance { get; set; } = new();
+        internal SortedSet<Vertex> UnvisitedWithKnownDistance { get; set; } = new();
 
         internal List<Vertex> Visited { get; } = new();
 
@@ -80,6 +80,8 @@ namespace AOC2021.Models.Dijkstra
             Vertex currentVertex = this.Vertices[0, 0];
             Vertex destinationVertex = this.Vertices[this.Size - 1, this.Size - 1];
 
+
+
             while (true)
             {
                 Vertex[] neighbors = this.GetUnvisitedNeighbors(currentVertex);
@@ -87,6 +89,11 @@ namespace AOC2021.Models.Dijkstra
                 {
                     if (currentVertex.Distance + neighbor.EntryCost < neighbor.Distance)
                     {
+                        if (this.UnvisitedWithKnownDistance.Contains(neighbor))
+                        {
+                            this.UnvisitedWithKnownDistance.Remove(neighbor);
+                        }
+
                         neighbor.Distance = currentVertex.Distance + neighbor.EntryCost;
                         this.UnvisitedWithKnownDistance.Add(neighbor);
                     }
@@ -99,9 +106,8 @@ namespace AOC2021.Models.Dijkstra
                     break;
                 }
 
-                this.UnvisitedWithKnownDistance.Sort();
-                currentVertex = this.UnvisitedWithKnownDistance[0];
-                this.UnvisitedWithKnownDistance.RemoveAt(0);
+                currentVertex = this.UnvisitedWithKnownDistance.First();
+                this.UnvisitedWithKnownDistance.Remove(currentVertex);
             }
 
             return currentVertex;
