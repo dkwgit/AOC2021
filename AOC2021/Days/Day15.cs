@@ -21,7 +21,7 @@ namespace AOC2021.Days
 
         public override string GetDescription()
         {
-            return "Polymers";
+            return "Lowest Cost Path";
         }
 
         public override string Result1()
