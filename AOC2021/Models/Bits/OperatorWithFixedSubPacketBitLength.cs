@@ -11,8 +11,8 @@ namespace AOC2021.Models.Bits
 
     internal class OperatorWithFixedSubPacketBitLength : Operator
     {
-        internal OperatorWithFixedSubPacketBitLength(int version, int type, BitArray bits, Packet? parent)
-           : base(version, type, bits, parent)
+        internal OperatorWithFixedSubPacketBitLength(int version, int type, BitArray bits, Packet? parent, SubPacketLengthDescriptor descriptor, Action<IPacket> packetRegistrationFunction)
+           : base(version, type, bits, parent, descriptor, packetRegistrationFunction)
         {
             int subPacketBitLength = 0;
 
@@ -26,28 +26,48 @@ namespace AOC2021.Models.Bits
             }
 
             this.SubPacketBitLength = subPacketBitLength;
-            this.ConsumedBits = 22;
-            BitArray unprocessed = new BitArray(bits.Cast<bool>().Skip(22).ToArray());
-            ProcessChildren(unprocessed, this);
+            this.consumedBits = 22;
+            this.subPacketBits = bits.CopyBottomBits(bits.Length - this.consumedBits);
         }
 
         internal int SubPacketBitLength { get; }
 
-        internal override int ConsumedBits { get; }
-
-        internal static void ProcessChildren(BitArray bits, OperatorWithFixedSubPacketBitLength parent)
+        public override int ProcessChildPackets()
         {
-            bool processChildren = true;
-            while (processChildren)
+            int totalBitsInChildPackets = 0;
+            int bitsToConsume = this.SubPacketBitLength;
+            while (bitsToConsume > 0)
             {
-                Packet subPacket = Packet.BuildPacket(bits, parent);
-                parent.SubPackets.Add(subPacket);
-                BitArray unprocessed = new BitArray(bits.Cast<bool>().Skip(subPacket.ConsumedBits).ToArray());
-                if (unprocessed.Length < 11)
+                IPacket childPacket = Packet.BuildPacket(this.subPacketBits, this, this.PacketRegistrationFunction);
+                if (childPacket.Bits.Length >= bitsToConsume)
                 {
-                    processChildren = false;
+                    if (childPacket is IOperatorPacket)
+                    {
+                        int bitConsumedByChildren = (childPacket as IOperatorPacket).ProcessChildPackets();
+                        totalBitsInChildPackets += bitConsumedByChildren;
+                        totalBitsInChildPackets += childPacket.ConsumedBits;
+                        if (this.subPacketBits.Length > totalBitsInChildPackets)
+                        {
+                            this.subPacketBits = this.subPacketBits.CopyBottomBits(this.subPacketBits.Length - totalBitsInChildPackets);
+                        }
+                    }
+                    else if (childPacket is Literal)
+                    {
+                        totalBitsInChildPackets += childPacket.ConsumedBits;
+                        this.subPacketBits = this.SubPacketBits.CopyBottomBits(this.SubPacketBits.Length - childPacket.ConsumedBits);
+                    }
+                    else
+                    {
+                        throw new InvalidDataException();
+                    }
                 }
+
+                bitsToConsume -= totalBitsInChildPackets;
+
+                this.Children.Add(childPacket);
             }
+
+            return totalBitsInChildPackets;
         }
     }
 }

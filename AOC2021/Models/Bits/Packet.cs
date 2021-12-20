@@ -7,52 +7,71 @@
 namespace AOC2021.Models.Bits
 {
     using System.Collections;
+    using System.Collections.Generic;
 
-    internal abstract class Packet
+    internal abstract class Packet : IPacket
     {
-        internal Packet(int version, int type, BitArray bits, Packet? parent, int subPacketLengthType = -1)
+        protected int consumedBits = -1;
+
+        internal Packet(int version, int type, BitArray bits, Packet? parent, Action<IPacket> packetRegistrationFunction)
         {
+            this.Bits = bits;
             this.Version = version;
             this.Type = type;
-            this.OriginalPacket = bits;
-            this.RootPacket = parent;
+            this.Bits = bits;
+            this.Parent = parent;
+            this.PacketRegistrationFunction = packetRegistrationFunction;
         }
 
-        internal Packet? RootPacket { get; }
+        public int ConsumedBits => this.consumedBits;
 
-        internal BitArray OriginalPacket { get; }
+        public int Version { get; }
 
-        internal int Version { get; }
+        public int Type { get; }
 
-        internal int Type { get; }
+        public IPacket? Parent { get; }
 
-        internal abstract int ConsumedBits { get; }
+        public BitArray Bits { get; }
 
-        internal static Packet BuildPacket(BitArray bits, Packet? parent)
+        public Action<IPacket> PacketRegistrationFunction { get; }
+
+        internal static IPacket BuildPacket(BitArray bits, Packet? parent, Action<IPacket> packetRegistrationFunction)
         {
             int version = GetVersion(bits);
             int type = GetType(bits);
             if (type == 4)
             {
-                Literal packet = new Literal(version, type, bits, parent);
+                Literal packet = new Literal(version, type, bits, parent, packetRegistrationFunction);
+                packetRegistrationFunction(packet);
                 return packet;
             }
             else
             {
-                int subPacketLengthType = GetSubPacketLengthType(bits);
-                if (subPacketLengthType == 0)
+                SubPacketLengthDescriptor descriptor = GetSubPacketLengthType(bits);
+                if (descriptor == SubPacketLengthDescriptor.BitLength)
                 {
-                    OperatorWithFixedSubPacketBitLength packet = new OperatorWithFixedSubPacketBitLength(version, type, bits, parent);
-                    OperatorWithFixedSubPacketBitLength.ProcessChildren(bits, packet);
+                    OperatorWithFixedSubPacketBitLength packet = new OperatorWithFixedSubPacketBitLength(version, type, bits, parent, descriptor, packetRegistrationFunction);
+                    packetRegistrationFunction(packet);
                     return packet;
                 }
                 else
                 {
-                    OperatorWithCountOfSubPackets packet = new OperatorWithCountOfSubPackets(version, type, bits, parent);
-                    OperatorWithCountOfSubPackets.ProcessChildren(bits, packet);
+                    OperatorWithCountOfSubPackets packet = new OperatorWithCountOfSubPackets(version, type, bits, parent, descriptor, packetRegistrationFunction);
+                    packetRegistrationFunction(packet);
                     return packet;
                 }
             }
+        }
+
+        internal static SubPacketLengthDescriptor GetSubPacketLengthType(BitArray bits)
+        {
+            SubPacketLengthDescriptor descriptor = bits[^7] switch
+            {
+                false => SubPacketLengthDescriptor.BitLength,
+                true => SubPacketLengthDescriptor.SubPacketCount,
+            };
+
+            return descriptor;
         }
 
         internal static int GetVersion(BitArray bits)
@@ -75,11 +94,6 @@ namespace AOC2021.Models.Bits
             type <<= 1;
             type |= bits[^6] ? 1 : 0;
             return type;
-        }
-
-        internal static int GetSubPacketLengthType(BitArray bits)
-        {
-            return bits[^7] ? 1 : 0;
         }
     }
 }

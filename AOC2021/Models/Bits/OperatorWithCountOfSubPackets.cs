@@ -10,8 +10,8 @@ namespace AOC2021.Models.Bits
 
     internal class OperatorWithCountOfSubPackets : Operator
     {
-        internal OperatorWithCountOfSubPackets(int version, int type, BitArray bits, Packet? parent)
-           : base(version, type, bits, parent)
+        internal OperatorWithCountOfSubPackets(int version, int type, BitArray bits, Packet? parent, SubPacketLengthDescriptor descriptor, Action<IPacket> packetRegistrationFunction)
+           : base(version, type, bits, parent, descriptor, packetRegistrationFunction)
         {
             int subPacketCount = 0;
 
@@ -25,18 +25,43 @@ namespace AOC2021.Models.Bits
             }
 
             this.SubPacketCount = subPacketCount;
-            this.ConsumedBits = 18;
-            BitArray unprocessed = new BitArray(bits.Cast<bool>().Skip(18).ToArray());
-            ProcessChildren(unprocessed, this);
+            this.consumedBits = 18; // 3 version bits + 3 type bits + 1 length type bit + 11 count bits.
+            this.subPacketBits = bits.CopyBottomBits(bits.Length - this.consumedBits);
         }
 
         internal int SubPacketCount { get; }
 
-        internal override int ConsumedBits { get; }
-
-        internal static void ProcessChildren(BitArray bits, OperatorWithCountOfSubPackets parent)
+        public override int ProcessChildPackets()
         {
-            Packet.BuildPacket(bits, parent);
+            int totalBitsInChildPackets = 0;
+            int subPacketsToProcess = this.SubPacketCount;
+            while (subPacketsToProcess > 0)
+            {
+                IPacket childPacket = Packet.BuildPacket(this.SubPacketBits, this, this.PacketRegistrationFunction);
+                if (childPacket is IOperatorPacket)
+                {
+                    totalBitsInChildPackets += (childPacket as IOperatorPacket).ProcessChildPackets();
+                    totalBitsInChildPackets += childPacket.ConsumedBits;
+                    if (this.subPacketBits.Length > totalBitsInChildPackets)
+                    {
+                        this.subPacketBits = this.SubPacketBits.CopyBottomBits(this.SubPacketBits.Length - totalBitsInChildPackets);
+                    }
+                }
+                else if (childPacket is Literal)
+                {
+                    totalBitsInChildPackets += childPacket.ConsumedBits;
+                    this.subPacketBits = this.SubPacketBits.CopyBottomBits(this.SubPacketBits.Length - childPacket.ConsumedBits);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+                this.Children.Add(childPacket);
+                subPacketsToProcess--;
+            }
+
+            return totalBitsInChildPackets;
         }
     }
 }

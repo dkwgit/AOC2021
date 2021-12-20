@@ -8,13 +8,22 @@ namespace AOC2021.Models.Bits
 {
     using System.Collections;
 
-    internal abstract class Operator : Packet
+    internal abstract class Operator : Packet, IOperatorPacket
     {
-        internal Operator(int version, int type, BitArray bits, Packet? parent)
-           : base(version, type, bits, parent)
+        protected BitArray subPacketBits;
+
+        internal Operator(int version, int type, BitArray bits, Packet? parent, SubPacketLengthDescriptor descriptor, Action<IPacket> packetRegistrationFunction)
+           : base(version, type, bits, parent, packetRegistrationFunction)
         {
+            this.LengthType = descriptor;
         }
 
-        internal List<Packet> SubPackets { get; } = new();
+        public SubPacketLengthDescriptor LengthType { get; }
+
+        public List<IPacket> Children { get; } = new();
+
+        public BitArray SubPacketBits => this.subPacketBits;
+
+        public abstract int ProcessChildPackets();
     }
 }

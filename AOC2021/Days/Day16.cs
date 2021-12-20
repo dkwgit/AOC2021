@@ -29,9 +29,25 @@ namespace AOC2021.Days
         {
             BitArray bits = this.PrepData();
 
-            Packet p = Packet.BuildPacket(bits, null);
+            Console.WriteLine(bits.Print());
 
-            long result = 0;
+            PacketManager packetManager = new PacketManager();
+
+            Action<IPacket> packageRegistrationFunction = (IPacket packet) => { packetManager.AddPacket(packet); };
+
+            IPacket p = Packet.BuildPacket(bits, null, packageRegistrationFunction);
+            if (p is IOperatorPacket)
+            {
+                (p! as IOperatorPacket).ProcessChildPackets();
+            }
+
+            int versionSum = 0;
+            foreach (IPacket packet in packetManager.Packets)
+            {
+                versionSum += packet.Version;
+            }
+
+            long result = versionSum;
             return result.ToString();
         }
 

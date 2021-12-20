@@ -10,8 +10,8 @@ namespace AOC2021.Models.Bits
 
     internal class Literal : Packet
     {
-        internal Literal(int version, int type, BitArray bits, Packet? parent)
-            : base(version, type, bits, parent)
+        internal Literal(int version, int type, BitArray bits, Packet? parent, Action<IPacket> packetRegistrationFunction)
+            : base(version, type, bits, parent, packetRegistrationFunction)
         {
             int i = 7;
             bool more = true;
@@ -29,11 +29,9 @@ namespace AOC2021.Models.Bits
             }
 
             this.Number = literal;
-            this.ConsumedBits = 6 + (i - 7);
+            this.consumedBits = 6 + (i - 7);
         }
 
         internal int Number { get; }
-
-        internal override int ConsumedBits { get; }
     }
 }

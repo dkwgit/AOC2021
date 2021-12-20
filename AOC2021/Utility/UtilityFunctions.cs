@@ -6,6 +6,9 @@
 
 namespace AOC2021
 {
+    using System.Collections;
+    using System.Text;
+
     /// <summary>
     /// Holds utility functions.
     /// </summary>
@@ -109,6 +112,33 @@ namespace AOC2021
                     yield return source[row, col];
                 }
             }
+        }
+
+        internal static BitArray CopyBottomBits(this BitArray source, int bitCountToCopy)
+        {
+            if (source.Length < bitCountToCopy)
+            {
+                throw new ArgumentException($"Passed in bit array has ${source.Length} bits, but copy amount requested is {bitCountToCopy}");
+            }
+
+            BitArray target = new BitArray(bitCountToCopy);
+            for (int i = 0; i < bitCountToCopy; i++)
+            {
+                target[i] = source[i];
+            }
+
+            return target;
+        }
+
+        internal static string Print(this BitArray source)
+        {
+            var sb = new StringBuilder();
+            for (int i = source.Length - 1; i >= 0; i--)
+            {
+                sb.Append(source[i] ? "1" : "0");
+            }
+
+            return sb.ToString();
         }
     }
 }
