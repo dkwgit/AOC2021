@@ -16,20 +16,78 @@ namespace AOC2021.Days
     {
         private readonly DataStore datastore;
 
-        private BitArray bits;
+        private BitArray? bits;
 
         public Day16(DataStore datastore)
         {
             this.datastore = datastore;
         }
 
-        public BitArray Bits => this.bits;
+        public BitArray Bits
+        {
+            get
+            {
+                if (this.bits == null)
+                {
+                    throw new InvalidOperationException("Call to Bits Property, but underlying field has not been initialized.");
+                }
+
+                return this.bits;
+            }
+        }
 
         internal Stack<IOperatorPacket> ParseStack { get; } = new();
 
         public override string GetDescription()
         {
             return "BITS";
+        }
+
+        public override string Result1()
+        {
+            this.bits = this.PrepData();
+
+            Console.WriteLine(this.Bits.Print());
+
+            PacketManager packetManager = new();
+            Dictionary<int, IPacket> positionsToPackets = new();
+
+            void PackageRegistrationFunction(IPacket packet, int distanceFromTop)
+            {
+                packetManager.AddPacket(packet);
+                positionsToPackets.Add(distanceFromTop, packet);
+            }
+
+            IPacket packet = Packet.BuildPacket(this.Bits, 0, PackageRegistrationFunction);
+            packet.Should().BeAssignableTo<IOperatorPacket>();
+            this.ParseStack.Push((IOperatorPacket)packet);
+            this.FulfillOperator(0);
+
+            int versionSum = 0;
+            foreach (IPacket p in packetManager.Packets)
+            {
+                versionSum += p.Version;
+            }
+
+            long result = versionSum;
+            return result.ToString();
+        }
+
+        public override string Result2()
+        {
+            long result = 0;
+            return result.ToString();
+        }
+
+        internal BitArray PrepData()
+        {
+            string[] lines = this.datastore.GetRawData(this.GetName());
+            lines.Length.Should().Be(1);
+            string line = lines[0];
+            Console.WriteLine(line);
+
+            BitArray bits = new(Convert.FromHexString(line).Reverse().ToArray());
+            return bits;
         }
 
         internal int FulfillOperatorWithCount(int bitPosition)
@@ -89,7 +147,7 @@ namespace AOC2021.Days
             return bitPosition;
         }
 
-        public int FulfillOperator(int bitPosition)
+        internal int FulfillOperator(int bitPosition)
         {
             IOperatorPacket packet = this.ParseStack.Peek();
             int newBitPosition = packet switch
@@ -101,53 +159,6 @@ namespace AOC2021.Days
             IOperatorPacket fulfilled = this.ParseStack.Pop();
             fulfilled.Should().BeSameAs(packet);
             return newBitPosition;
-        }
-
-        public override string Result1()
-        {
-            this.bits = this.PrepData();
-
-            Console.WriteLine(Bits.Print());
-
-            PacketManager packetManager = new();
-            Dictionary<int, IPacket> positionsToPackets = new();
-
-            void PackageRegistrationFunction(IPacket packet, int distanceFromTop)
-            {
-                packetManager.AddPacket(packet);
-                positionsToPackets.Add(distanceFromTop, packet);
-            }
-
-            IPacket packet = Packet.BuildPacket(this.Bits, 0, PackageRegistrationFunction);
-            packet.Should().BeAssignableTo<IOperatorPacket>();
-            this.ParseStack.Push((IOperatorPacket)packet);
-            this.FulfillOperator(0);
-
-            int versionSum = 0;
-            foreach (IPacket p in packetManager.Packets)
-            {
-                versionSum += p.Version;
-            }
-
-            long result = versionSum;
-            return result.ToString();
-        }
-
-        public override string Result2()
-        {
-            long result = 0;
-            return result.ToString();
-        }
-
-        internal BitArray PrepData()
-        {
-            string[] lines = this.datastore.GetRawData(this.GetName());
-            lines.Length.Should().Be(1);
-            string line = lines[0];
-            Console.WriteLine(line);
-
-            BitArray bits = new(Convert.FromHexString(line).Reverse().ToArray());
-            return bits;
         }
     }
 }
