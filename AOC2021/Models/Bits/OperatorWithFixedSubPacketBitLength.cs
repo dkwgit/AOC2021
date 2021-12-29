@@ -11,63 +11,24 @@ namespace AOC2021.Models.Bits
 
     internal class OperatorWithFixedSubPacketBitLength : Operator
     {
-        internal OperatorWithFixedSubPacketBitLength(int version, int type, BitArray bits, Packet? parent, SubPacketLengthDescriptor descriptor, Action<IPacket> packetRegistrationFunction)
-           : base(version, type, bits, parent, descriptor, packetRegistrationFunction)
+        internal OperatorWithFixedSubPacketBitLength(BitArray bits, int distanceFromTop, int version, int type, SubPacketLengthDescriptor descriptor, Action<IPacket, int> packetRegistrationFunction)
+           : base(version, type, descriptor, packetRegistrationFunction)
         {
             int subPacketBitLength = 0;
 
-            for (int i = 0; i < 15; i++)
+            for (int i = 0 + distanceFromTop; i < 15 + distanceFromTop; i++)
             {
                 subPacketBitLength |= bits[^(8 + i)] ? 1 : 0;
-                if (i + 1 < 15)
+                if (i + 1 < 15 + distanceFromTop)
                 {
                     subPacketBitLength <<= 1;
                 }
             }
 
             this.SubPacketBitLength = subPacketBitLength;
-            this.consumedBits = 22;
-            this.subPacketBits = bits.CopyBottomBits(bits.Length - this.consumedBits);
+            this.consumedBits = 22; // 3 version bits + 3 type bits + 1 length descriptor bit + 15 length count bits
         }
 
         internal int SubPacketBitLength { get; }
-
-        public override int ProcessChildPackets()
-        {
-            int totalBitsInChildPackets = 0;
-            int bitsToConsume = this.SubPacketBitLength;
-            while (bitsToConsume > 0)
-            {
-                IPacket childPacket = Packet.BuildPacket(this.subPacketBits, this, this.PacketRegistrationFunction);
-                if (childPacket.Bits.Length >= bitsToConsume)
-                {
-                    if (childPacket is IOperatorPacket)
-                    {
-                        int bitConsumedByChildren = (childPacket as IOperatorPacket).ProcessChildPackets();
-                        totalBitsInChildPackets += bitConsumedByChildren;
-                        totalBitsInChildPackets += childPacket.ConsumedBits;
-                        if (this.subPacketBits.Length > totalBitsInChildPackets)
-                        {
-                            this.subPacketBits = this.subPacketBits.CopyBottomBits(this.subPacketBits.Length - totalBitsInChildPackets);
-                        }
-                    }
-                    else if (childPacket is Literal)
-                    {
-                        totalBitsInChildPackets += childPacket.ConsumedBits;
-                        this.subPacketBits = this.SubPacketBits.CopyBottomBits(this.SubPacketBits.Length - childPacket.ConsumedBits);
-                    }
-                    else
-                    {
-                        throw new InvalidDataException();
-                    }
-                }
-
-                bitsToConsume -= totalBitsInChildPackets;
-
-                this.Children.Add(childPacket);
-            }
-
-            return totalBitsInChildPackets;
-        }
     }
 }

@@ -10,10 +10,6 @@ namespace AOC2021.Models.Bits
 
     internal interface IPacket
     {
-        IPacket? Parent { get; }
-
-        BitArray Bits { get; }
-
         int Version { get; }
 
         int Type { get; }

@@ -10,20 +10,12 @@ namespace AOC2021.Models.Bits
 
     internal abstract class Operator : Packet, IOperatorPacket
     {
-        protected BitArray subPacketBits;
-
-        internal Operator(int version, int type, BitArray bits, Packet? parent, SubPacketLengthDescriptor descriptor, Action<IPacket> packetRegistrationFunction)
-           : base(version, type, bits, parent, packetRegistrationFunction)
+        internal Operator(int version, int type, SubPacketLengthDescriptor descriptor, Action<IPacket, int> packetRegistrationFunction)
+           : base(version, type, packetRegistrationFunction)
         {
             this.LengthType = descriptor;
         }
 
         public SubPacketLengthDescriptor LengthType { get; }
-
-        public List<IPacket> Children { get; } = new();
-
-        public BitArray SubPacketBits => this.subPacketBits;
-
-        public abstract int ProcessChildPackets();
     }
 }

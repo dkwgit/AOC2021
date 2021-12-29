@@ -121,7 +121,7 @@ namespace AOC2021
                 throw new ArgumentException($"Passed in bit array has ${source.Length} bits, but copy amount requested is {bitCountToCopy}");
             }
 
-            BitArray target = new BitArray(bitCountToCopy);
+            BitArray target = new(bitCountToCopy);
             for (int i = 0; i < bitCountToCopy; i++)
             {
                 target[i] = source[i];

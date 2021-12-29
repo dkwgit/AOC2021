@@ -10,12 +10,13 @@ namespace AOC2021.Models.Bits
 
     internal class Literal : Packet
     {
-        internal Literal(int version, int type, BitArray bits, Packet? parent, Action<IPacket> packetRegistrationFunction)
-            : base(version, type, bits, parent, packetRegistrationFunction)
+        internal Literal(BitArray bits, int distanceFromTop, int version, int type,  Action<IPacket, int> packetRegistrationFunction)
+            : base(version, type, packetRegistrationFunction)
         {
-            int i = 7;
+            int i = 7 + distanceFromTop;
             bool more = true;
             int literal = 0;
+            int bitCount = 6; // already handled version and type
             while (more)
             {
                 more = bits[^i++];
@@ -26,10 +27,11 @@ namespace AOC2021.Models.Bits
                 literal |= bits[^i++] ? 1 : 0;
                 literal <<= 1;
                 literal |= bits[^i++] ? 1 : 0;
+                bitCount += 5;
             }
 
             this.Number = literal;
-            this.consumedBits = 6 + (i - 7);
+            this.consumedBits = bitCount;
         }
 
         internal int Number { get; }

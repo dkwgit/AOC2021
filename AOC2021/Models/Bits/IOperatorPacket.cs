@@ -17,11 +17,5 @@ namespace AOC2021.Models.Bits
     internal interface IOperatorPacket : IPacket
     {
         SubPacketLengthDescriptor LengthType { get; }
-
-        BitArray SubPacketBits { get; }
-
-        List<IPacket> Children { get; }
-
-        int ProcessChildPackets();
     }
 }

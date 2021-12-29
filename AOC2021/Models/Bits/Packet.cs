@@ -13,13 +13,10 @@ namespace AOC2021.Models.Bits
     {
         protected int consumedBits = -1;
 
-        internal Packet(int version, int type, BitArray bits, Packet? parent, Action<IPacket> packetRegistrationFunction)
+        internal Packet(int version, int type, Action<IPacket, int> packetRegistrationFunction)
         {
-            this.Bits = bits;
             this.Version = version;
             this.Type = type;
-            this.Bits = bits;
-            this.Parent = parent;
             this.PacketRegistrationFunction = packetRegistrationFunction;
         }
 
@@ -29,43 +26,40 @@ namespace AOC2021.Models.Bits
 
         public int Type { get; }
 
-        public IPacket? Parent { get; }
+        public Action<IPacket, int> PacketRegistrationFunction { get; }
 
-        public BitArray Bits { get; }
-
-        public Action<IPacket> PacketRegistrationFunction { get; }
-
-        internal static IPacket BuildPacket(BitArray bits, Packet? parent, Action<IPacket> packetRegistrationFunction)
+        internal static IPacket BuildPacket(BitArray bits, int distanceFromTop, Action<IPacket, int> packetRegistrationFunction)
         {
-            int version = GetVersion(bits);
-            int type = GetType(bits);
+            int version = GetVersion(bits, distanceFromTop);
+            int type = GetType(bits, distanceFromTop);
             if (type == 4)
             {
-                Literal packet = new Literal(version, type, bits, parent, packetRegistrationFunction);
-                packetRegistrationFunction(packet);
+                Literal packet = new(bits, distanceFromTop, version, type, packetRegistrationFunction);
+                packetRegistrationFunction(packet, distanceFromTop);
                 return packet;
             }
             else
             {
-                SubPacketLengthDescriptor descriptor = GetSubPacketLengthType(bits);
+                SubPacketLengthDescriptor descriptor = GetSubPacketLengthType(bits, distanceFromTop);
                 if (descriptor == SubPacketLengthDescriptor.BitLength)
                 {
-                    OperatorWithFixedSubPacketBitLength packet = new OperatorWithFixedSubPacketBitLength(version, type, bits, parent, descriptor, packetRegistrationFunction);
-                    packetRegistrationFunction(packet);
+                    OperatorWithFixedSubPacketBitLength packet = new(bits, distanceFromTop, version, type, descriptor, packetRegistrationFunction);
+                    packetRegistrationFunction(packet, distanceFromTop);
                     return packet;
                 }
                 else
                 {
-                    OperatorWithCountOfSubPackets packet = new OperatorWithCountOfSubPackets(version, type, bits, parent, descriptor, packetRegistrationFunction);
-                    packetRegistrationFunction(packet);
+                    OperatorWithCountOfSubPackets packet = new(bits, distanceFromTop, version, type,  descriptor, packetRegistrationFunction);
+                    packetRegistrationFunction(packet, distanceFromTop);
                     return packet;
                 }
             }
         }
 
-        internal static SubPacketLengthDescriptor GetSubPacketLengthType(BitArray bits)
+        internal static SubPacketLengthDescriptor GetSubPacketLengthType(BitArray bits, int distanceFromTop)
         {
-            SubPacketLengthDescriptor descriptor = bits[^7] switch
+            int bitPosition = 7 + distanceFromTop;
+            SubPacketLengthDescriptor descriptor = bits[^bitPosition] switch
             {
                 false => SubPacketLengthDescriptor.BitLength,
                 true => SubPacketLengthDescriptor.SubPacketCount,
@@ -74,25 +68,25 @@ namespace AOC2021.Models.Bits
             return descriptor;
         }
 
-        internal static int GetVersion(BitArray bits)
+        internal static int GetVersion(BitArray bits, int distanceFromTop)
         {
             int version = 0;
-            version |= bits[^1] ? 1 : 0;
+            version |= bits[^(1 + distanceFromTop)] ? 1 : 0;
             version <<= 1;
-            version |= bits[^2] ? 1 : 0;
+            version |= bits[^(2 + distanceFromTop)] ? 1 : 0;
             version <<= 1;
-            version |= bits[^3] ? 1 : 0;
+            version |= bits[^(3 + distanceFromTop)] ? 1 : 0;
             return version;
         }
 
-        internal static int GetType(BitArray bits)
+        internal static int GetType(BitArray bits, int distanceFromTop)
         {
             int type = 0;
-            type |= bits[^4] ? 1 : 0;
+            type |= bits[^(4 + distanceFromTop)] ? 1 : 0;
             type <<= 1;
-            type |= bits[^5] ? 1 : 0;
+            type |= bits[^(5 + distanceFromTop)] ? 1 : 0;
             type <<= 1;
-            type |= bits[^6] ? 1 : 0;
+            type |= bits[^(6 + distanceFromTop)] ? 1 : 0;
             return type;
         }
     }

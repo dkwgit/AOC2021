@@ -28,7 +28,7 @@ namespace AOC2021.Days
             (string template, Dictionary<string, string> productionRules) = this.PrepData();
 
             int steps = 0;
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             while (steps++ < 10)
             {
                 bool copyFirstItemOfPair = true;
@@ -53,7 +53,7 @@ namespace AOC2021.Days
                 sb.Clear();
             }
 
-            var groups = template.GroupBy(x => x).Select(g => new { Key = g.Key, Count = g.Count() }).OrderBy(g => g.Count).ToArray();
+            var groups = template.GroupBy(x => x).Select(g => new { g.Key, Count = g.Count() }).OrderBy(g => g.Count).ToArray();
 
             long result = groups[^1].Count - groups[0].Count;
             return result.ToString();
