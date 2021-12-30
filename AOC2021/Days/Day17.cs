@@ -127,7 +127,7 @@ namespace AOC2021.Days
                 }
 
                 return ((pair.X, pair.Y), result);
-            }).ToArray().Where(x => x.result).ToArray(); // ToArray simply ensures we push through the lazy evaluation of IEnumerable
+            }).ToArray(); // ToArray simply ensures we push through the lazy evaluation of IEnumerable
 
             long result = goodCombos;
             return result.ToString();
