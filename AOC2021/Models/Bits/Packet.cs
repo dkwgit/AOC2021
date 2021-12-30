@@ -28,6 +28,8 @@ namespace AOC2021.Models.Bits
 
         public Action<IPacket, int> PacketRegistrationFunction { get; }
 
+        public abstract long Value { get; }
+
         internal static IPacket BuildPacket(BitArray bits, int distanceFromTop, Action<IPacket, int> packetRegistrationFunction)
         {
             int version = GetVersion(bits, distanceFromTop);

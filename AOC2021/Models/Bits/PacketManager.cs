@@ -14,5 +14,10 @@ namespace AOC2021.Models.Bits
         {
             this.Packets.Add(packet);
         }
+
+        internal void Clear()
+        {
+            this.Packets.Clear();
+        }
     }
 }

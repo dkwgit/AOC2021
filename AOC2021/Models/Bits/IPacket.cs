@@ -15,5 +15,7 @@ namespace AOC2021.Models.Bits
         int Type { get; }
 
         int ConsumedBits { get; }
+
+        long Value { get; }
     }
 }

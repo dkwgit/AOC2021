@@ -7,6 +7,7 @@
 namespace AOC2021.Models.Bits
 {
     using System.Collections;
+    using AOC2021.Models.Bits.ValueCalculator;
 
     internal enum SubPacketLengthDescriptor
     {
@@ -17,5 +18,11 @@ namespace AOC2021.Models.Bits
     internal interface IOperatorPacket : IPacket
     {
         SubPacketLengthDescriptor LengthType { get; }
+
+        List<IPacket> Children { get; }
+
+        IValueCalculator Calculator { get; }
+
+        void CalculateValue();
     }
 }

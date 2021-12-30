@@ -36,6 +36,10 @@ namespace AOC2021.Days
             }
         }
 
+        internal PacketManager PacketManager { get; } = new();
+
+        internal Dictionary<int, IPacket> PositionsToPackets { get; } = new();
+
         internal Stack<IOperatorPacket> ParseStack { get; } = new();
 
         public override string GetDescription()
@@ -45,26 +49,10 @@ namespace AOC2021.Days
 
         public override string Result1()
         {
-            this.bits = this.PrepData();
-
-            Console.WriteLine(this.Bits.Print());
-
-            PacketManager packetManager = new();
-            Dictionary<int, IPacket> positionsToPackets = new();
-
-            void PackageRegistrationFunction(IPacket packet, int distanceFromTop)
-            {
-                packetManager.AddPacket(packet);
-                positionsToPackets.Add(distanceFromTop, packet);
-            }
-
-            IPacket packet = Packet.BuildPacket(this.Bits, 0, PackageRegistrationFunction);
-            packet.Should().BeAssignableTo<IOperatorPacket>();
-            this.ParseStack.Push((IOperatorPacket)packet);
-            this.FulfillOperator(0);
+            this.DoParse();
 
             int versionSum = 0;
-            foreach (IPacket p in packetManager.Packets)
+            foreach (IPacket p in this.PacketManager.Packets)
             {
                 versionSum += p.Version;
             }
@@ -75,7 +63,9 @@ namespace AOC2021.Days
 
         public override string Result2()
         {
-            long result = 0;
+            IPacket packet = this.PacketManager.Packets[0];
+
+            long result = packet.Value;
             return result.ToString();
         }
 
@@ -84,10 +74,19 @@ namespace AOC2021.Days
             string[] lines = this.datastore.GetRawData(this.GetName());
             lines.Length.Should().Be(1);
             string line = lines[0];
-            Console.WriteLine(line);
 
             BitArray bits = new(Convert.FromHexString(line).Reverse().ToArray());
             return bits;
+        }
+
+        internal void DoParse()
+        {
+            this.bits = this.PrepData();
+
+            IPacket packet = Packet.BuildPacket(this.Bits, 0, this.PackageRegistrationFunction);
+            packet.Should().BeAssignableTo<IOperatorPacket>();
+            this.ParseStack.Push((IOperatorPacket)packet);
+            int position = this.FulfillOperator(0);
         }
 
         internal int FulfillOperatorWithCount(int bitPosition)
@@ -112,6 +111,7 @@ namespace AOC2021.Days
                 };
                 bitPosition = advanceByBits();
                 countNeeded--;
+                op.Children.Add(packet);
             }
 
             return bitPosition;
@@ -142,6 +142,7 @@ namespace AOC2021.Days
                 int newBitPosition = advanceByBits();
                 currentBits += newBitPosition - bitPosition;
                 bitPosition = newBitPosition;
+                op.Children.Add(packet);
             }
 
             return bitPosition;
@@ -156,9 +157,17 @@ namespace AOC2021.Days
                 OperatorWithFixedSubPacketBitLength _ => this.FulfillOperatorWithBitLength(bitPosition),
                 _ => throw new InvalidDataException(),
             };
+
             IOperatorPacket fulfilled = this.ParseStack.Pop();
+            fulfilled.CalculateValue();
             fulfilled.Should().BeSameAs(packet);
             return newBitPosition;
+        }
+
+        internal void PackageRegistrationFunction(IPacket packet, int distanceFromTop)
+        {
+            this.PacketManager.AddPacket(packet);
+            this.PositionsToPackets.Add(distanceFromTop, packet);
         }
     }
 }

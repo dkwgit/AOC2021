@@ -15,25 +15,30 @@ namespace AOC2021.Models.Bits
         {
             int i = 7 + distanceFromTop;
             bool more = true;
-            int literal = 0;
+            long literal = 0;
             int bitCount = 6; // already handled version and type
             while (more)
             {
                 more = bits[^i++];
-                literal |= bits[^i++] ? 1 : 0;
+                literal |= bits[^i++] ? 1L : 0;
                 literal <<= 1;
-                literal |= bits[^i++] ? 1 : 0;
+                literal |= bits[^i++] ? 1L : 0;
                 literal <<= 1;
-                literal |= bits[^i++] ? 1 : 0;
+                literal |= bits[^i++] ? 1L : 0;
                 literal <<= 1;
-                literal |= bits[^i++] ? 1 : 0;
+                literal |= bits[^i++] ? 1L : 0;
+                if (more)
+                {
+                    literal <<= 1;
+                }
+
                 bitCount += 5;
             }
 
-            this.Number = literal;
+            this.Value = literal;
             this.consumedBits = bitCount;
         }
 
-        internal int Number { get; }
+        public override long Value { get; }
     }
 }
