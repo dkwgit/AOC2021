@@ -21,6 +21,8 @@ namespace AOC2021.Days
 
         private int maxY;
 
+        private (int XVelocity, int MaxGoodTurn)[]? xVelocitiesAndMaxTurns;
+
         private (int YVelocity, int MaxY)[]? yVelocitiesAndMaxYPositions;
 
         public Day17(DataStore datastore)
@@ -35,6 +37,19 @@ namespace AOC2021.Days
         public int MinY => this.minY;
 
         public int MaxY => this.maxY;
+
+        public (int XVelocity, int MaxGoodTurn)[] XVelocitiesAndMaxTurns
+        {
+            get
+            {
+                if (this.xVelocitiesAndMaxTurns == null)
+                {
+                    throw new InvalidOperationException("Accessing XVelocitiesAndMaxTurns before initialized.");
+                }
+
+                return this.xVelocitiesAndMaxTurns;
+            }
+        }
 
         public (int YVelocity, int MaxY)[] YVelocitiesAndMaxYPositions
         {
@@ -58,7 +73,10 @@ namespace AOC2021.Days
         {
             this.PrepData();
 
-            int bestXVelocity = this.GetXVelocityThatMaximizesTurns();
+            this.xVelocitiesAndMaxTurns = this.GetXVelocitiesAndMaxTurns();
+
+            // ordered in descending order by max turns, so first element is best
+            int bestXVelocity = this.XVelocitiesAndMaxTurns[0].XVelocity;
             this.yVelocitiesAndMaxYPositions = this.GetYVelocitiesAndMaxYPositions(bestXVelocity);
 
             int maxY = this.YVelocitiesAndMaxYPositions.OrderByDescending(y => y.MaxY).First().MaxY;
@@ -74,7 +92,7 @@ namespace AOC2021.Days
             int goodCombos = 0;
 
             List<(int X, int Y)> velocityPairs = new();
-            foreach (int x in Enumerable.Range(0, this.MaxX + 1))
+            foreach (int x in this.XVelocitiesAndMaxTurns.Select(x => x.XVelocity))
             {
                 foreach (int y in Enumerable.Range(this.MinY, Math.Abs(this.MinY) + maximumYVelocity + 1))
                 {
@@ -129,9 +147,9 @@ namespace AOC2021.Days
             return ((xVelocity, yVelocity), (xPosition, yPosition), turn);
         }
 
-        internal int GetXVelocityThatMaximizesTurns()
+        internal (int XVelocity, int MaxGoodTurn)[] GetXVelocitiesAndMaxTurns()
         {
-            int bestXVelocity = Enumerable.Range(0, this.MaxX + 1).Select(xVelocity =>
+            return Enumerable.Range(0, this.MaxX + 1).Select(xVelocity =>
             {
                 int currentXVelocity = xVelocity;
                 int currentYVelocity = 0;
@@ -159,14 +177,14 @@ namespace AOC2021.Days
                 }
 
                 return (xVelocity, maxGoodTurn);
-            }).OrderByDescending(result => result.maxGoodTurn).Where(pair => pair.maxGoodTurn > 0).First().xVelocity;
-
-            return bestXVelocity;
+            }).OrderByDescending(result => result.maxGoodTurn).Where(pair => pair.maxGoodTurn > 0).ToArray();
         }
 
         internal (int YVelocity, int MaxY)[] GetYVelocitiesAndMaxYPositions(int bestXVelocity)
         {
-            var results = Enumerable.Range(0, 1000).Select(yVelocity =>
+            // Not happy that I just picked 500 out of a hat.
+            // Didn't think of a way to calculate an upper bound, but it worked.
+            var results = Enumerable.Range(0, 500).Select(yVelocity =>
             {
                 int currentXVelocity = bestXVelocity;
                 int currentYVelocity = yVelocity;
