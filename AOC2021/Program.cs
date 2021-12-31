@@ -123,6 +123,7 @@ namespace AOC2021
                 .AddTransient<IDay, Day16>()
                 .AddTransient<IDay, Day17>()
                 .AddTransient<IDay, Day18>()
+                .AddTransient<IDay, Day19>()
                 .AddTransient<ResultReporter>()
                 .AddTransient<DayRunner>();
         }
