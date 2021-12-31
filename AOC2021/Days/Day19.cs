@@ -300,7 +300,7 @@ namespace AOC2021.Days
              * if there is a shared pair.
              *
              * Initially I thought this would cause major problems for my approach. However, I realized that I don't need all 12 points,
-             * just the knowledge that their are 12 shared points.  So, I could leave off the distance that had two possible point pairs.
+             * just the knowledge that there are 12 shared points.  So, I could leave off the distance that had two possible point pairs.
              * I dropped the ambiguous distance via an expression like: DistancesToPoints.Keys.Where(k => s.DistancesToPoints[k].Count == 1).
              *
              * Dropping the ambiguous distance meant I had to adjust my notion of enough overalapped distance down by 1. 66 became 65.
