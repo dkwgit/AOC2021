@@ -7,10 +7,13 @@
 namespace AOC2021.Days
 {
     using AOC2021.Data;
+    using AOC2021.Models.Dirac;
 
     internal class Day21 : BaseDay, IDay
     {
         private readonly DataStore datastore;
+
+        private Game? game;
 
         public Day21(DataStore datastore)
         {
@@ -22,11 +25,34 @@ namespace AOC2021.Days
             return "Dirac Dice";
         }
 
+        internal Game Game
+        {
+            get
+            {
+                if (this.game == null)
+                {
+                    throw new InvalidOperationException("Use of Game property before initialized");
+                }
+
+                return game;
+            }
+        }
+
         public override string Result1()
         {
             this.PrepData();
 
-            long result = 0;
+            int win = -1;
+
+            while (win == -1)
+            {
+                win = this.Game.DoTurn();
+            }
+
+            int losingScore = this.Game.PlayerScores.OrderBy(s => s).First();
+            int rollCount = this.Game.Dice.RollCount;
+
+            long result = losingScore * rollCount;
             return result.ToString();
         }
 
@@ -39,6 +65,16 @@ namespace AOC2021.Days
         internal void PrepData()
         {
             string[] lines = this.datastore.GetRawData(this.GetName());
+
+
+            List<int> playerPositions = new();
+            foreach (string line in lines)
+            {
+                char[] chars = line.ToCharArray();
+                playerPositions.Add(chars[^1] - '0');
+            }
+
+            this.game = new Game(new DeterministicDice(), playerPositions);
         }
     }
 }
