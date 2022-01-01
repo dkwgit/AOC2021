@@ -7,36 +7,36 @@
 namespace AOC2021.Models.ImageEnhancement
 {
     using System.Collections;
+    using System.Text;
 
     internal class Image
     {
-        private int enhancementTurn = 0;
+        private int turn = 0;
 
-        private bool[,] data;
+        private char[,] data;
 
-        internal Image(int rows, int columns, int padding, BitArray enhancementTable, bool initialValue)
+        private ImageCursor? cursor;
+
+        internal Image(int rows, int columns, int padding, char[] enhancementTable)
         {
             this.UnpaddedRows = rows;
             this.UnpaddedColumns = columns;
             this.Rows = rows + (2 * padding);
             this.Columns = columns + (2 * padding);
             this.Padding = padding;
-            this.data = new bool[this.Rows, this.Columns];
-            if (initialValue)
+            this.data = new char[this.Rows, this.Columns];
+            for (int row = 0; row < this.Rows; row++)
             {
-                for (int row = 0; row < this.Rows; row++)
+                for (int column = 0; column < this.Columns; column++)
                 {
-                    for (int column = 0; column < this.Columns; column++)
-                    {
-                        this.data[row, column] = initialValue;
-                    }
+                    this.data[row, column] = '.';
                 }
             }
 
             this.EnhancementTable = enhancementTable;
         }
 
-        public BitArray EnhancementTable { get; } = new(512);
+        public char[] EnhancementTable { get; }
 
         internal int Rows { get; }
 
@@ -48,25 +48,44 @@ namespace AOC2021.Models.ImageEnhancement
 
         internal int Padding { get; }
 
-        internal int EnhancementTurn
+        internal int Turn
         {
             get
             {
-                return this.enhancementTurn;
+                return this.turn;
+            }
+        }
+
+        internal ImageCursor Cursor
+        {
+            get
+            {
+                if (this.cursor == null)
+                {
+                    throw new InvalidOperationException("Use of Cursor property before initialized");
+                }
+
+                return this.cursor;
             }
         }
 
         internal ImageCursor GetCursor()
         {
-            return new ImageCursor(0, this.Padding + this.UnpaddedRows + this.Padding - 3, 0, this.Padding + this.UnpaddedColumns + this.Padding - 3);
+            ImageCursor cursor = new(
+                upperRow: this.Padding - this.Turn - 2,
+                lowerRow: this.Padding + this.UnpaddedRows + this.Turn - 1,
+                leftColumn: this.Padding - this.Turn - 2,
+                rightColumn: this.Padding + this.UnpaddedColumns + this.Turn - 1);
+
+            return cursor;
         }
 
-        internal void Set(int row, int column, bool set)
+        internal void Set(int row, int column, char item)
         {
-            this.data[row, column] = set;
+            this.data[row, column] = item;
         }
 
-        internal bool Get(int row, int column)
+        internal char Get(int row, int column)
         {
             if (row < 0 || column < 0 || row >= this.Rows || column >= this.Columns)
             {
@@ -78,24 +97,31 @@ namespace AOC2021.Models.ImageEnhancement
 
         internal void Enhance()
         {
-            ImageCursor cursor = this.GetCursor();
+            this.cursor = this.GetCursor();
 
-            bool[,] newData = new bool[this.data.GetLength(0), this.data.GetLength(1)];
+            char[,] newData = new char[this.data.GetLength(0), this.data.GetLength(1)];
+            for (int row = 0; row < this.Rows; row++)
+            {
+                for (int column = 0; column < this.Columns; column++)
+                {
+                    newData[row, column] = '.';
+                }
+            }
 
             while (true)
             {
-                cursor.Fill(this);
-                (int row, int column) = cursor.Position;
-                int bitValue = cursor.BitValue;
-                bool value = this.EnhancementTable[bitValue];
+                this.Cursor.Fill(this);
+                (int row, int column) = this.Cursor.Position;
+                int bitValue = this.Cursor.BitValue;
+                char value = this.EnhancementTable[bitValue];
                 newData[row, column] = value;
-                if (cursor.CanMoveRight)
+                if (this.Cursor.CanMoveRight)
                 {
-                    cursor.MoveRight();
+                    this.Cursor.MoveRight();
                 }
-                else if (cursor.CanMoveDown)
+                else if (this.Cursor.CanMoveDown)
                 {
-                    cursor.CarriageReturn();
+                    this.Cursor.CarriageReturn();
                 }
                 else
                 {
@@ -104,7 +130,16 @@ namespace AOC2021.Models.ImageEnhancement
             }
 
             this.data = newData;
-            this.enhancementTurn++;
+            if (this.Turn % 2 == 0)
+            {
+                this.SetEdge('#');
+            }
+            else
+            {
+                this.SetEdge('.');
+            }
+
+            this.turn++;
         }
 
         internal int CountOnPixels()
@@ -115,7 +150,7 @@ namespace AOC2021.Models.ImageEnhancement
             {
                 for (int column = 0; column < this.Columns; column++)
                 {
-                    if (this.Get(row, column))
+                    if (this.Get(row, column) == '#')
                     {
                         on++;
                     }
@@ -125,22 +160,77 @@ namespace AOC2021.Models.ImageEnhancement
             return on;
         }
 
-        internal void FlipEdges()
+        internal void SetEdge(char edgeChar)
         {
-            foreach (int row in new List<int> { 0, this.Rows - 1 })
+            /*
+             * The 'Edge' is a 2 wide hollow rectangle, that, at the start of things, is 2 to 3 away from the loaded data.
+             * This allows each turn to grow the data into the space 1 away from the data,
+             * with the edge being the last bit of uniform infinity before we reach the data.
+             *
+             * We can use the cursor to caculate the edge, because we have the upper left corner of the cursor box start
+             * two away from the upper left corner of the data.
+             *
+             * The final cursor 'Position', the center of the cursor box, not a corner. is 1 away from the data at the
+             * lower right hand. (The cursor positions traverse the space one away from the data, the growth area, and
+             * the data).
+             *
+             * Here is the starting box of the cursor, with E being edge area, G being Growth area and D being the upper
+             * left of the data. Note that e is the starting upper left corner of the cursor box.
+             * The g at the center is the first cursor position (where the calculation result of ths box is placed).
+             *
+             * EEEE
+             * EeEE
+             * EEgG
+             * EEGD
+             *
+             * Here is the final position of the cursor with E being Edge area, G being growth area and D being the
+             * lower right of the data. Note that the final 'Position' of the cursor is at g. The cursor does not
+             * track e, but that is its box's lower right corner.
+             *
+             * DGEE
+             * GgEE
+             * EEeE
+             * EEEE
+             */
+
+            int topEdgeRow = this.Cursor.UpperRow - 1;
+            int leftEdgeColumn = this.Cursor.LeftColumn - 1;
+            int bottomEdgeRow = this.Cursor.Position.Row + 2;
+            int rightEdgeColumn = this.Cursor.Position.Column + 2;
+
+            foreach (int row in new List<int> { topEdgeRow, topEdgeRow + 1, bottomEdgeRow - 1, bottomEdgeRow })
             {
-                for (int column = 0; column < this.Columns; column++)
+                for (int column = leftEdgeColumn; column <= rightEdgeColumn; column++)
                 {
-                    this.Set(row, column, !this.Get(row, column));
+                    this.Set(row, column, edgeChar);
                 }
             }
 
-            for (int row = 1; row < this.Rows - 1; row++)
+            /*
+             * We already handled bottom and top edge rows, now do the left and right columns,
+             * minus the top and bottom most cells, already handled when we did the rows.
+             */
+            for (int row = topEdgeRow + 2; row <= bottomEdgeRow - 2; row++)
             {
-                foreach (int column in new List<int> { 0, this.Columns - 1 })
+                foreach (int column in new List<int> { leftEdgeColumn, leftEdgeColumn + 1, rightEdgeColumn - 1, rightEdgeColumn })
                 {
-                    this.Set(row, column, !this.Get(row, column));
+                    this.Set(row, column, edgeChar);
                 }
+            }
+        }
+
+        internal void Print()
+        {
+            Console.WriteLine($"Turn {this.Turn}");
+            for (int row = 0; row < this.Rows; row++)
+            {
+                StringBuilder sb = new();
+                for (int column = 0; column < this.Columns; column++)
+                {
+                    sb.Append(this.Get(row, column));
+                }
+
+                Console.WriteLine(sb.ToString());
             }
         }
     }

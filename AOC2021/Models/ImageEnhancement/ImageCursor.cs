@@ -20,9 +20,10 @@ namespace AOC2021.Models.ImageEnhancement
             this.RightColumn = rightColumn;
             this.currentRow = upperRow;
             this.currentColumn = leftColumn;
+            this.Erase();
         }
 
-        internal bool[,] Data { get; } = new bool[3, 3];
+        internal char[,] Data { get; } = new char[3, 3];
 
         internal int UpperRow { get; }
 
@@ -66,7 +67,7 @@ namespace AOC2021.Models.ImageEnhancement
                 {
                     for (int column = 0; column < 3; column++)
                     {
-                        bitValue |= this.Data[row, column] ? 1 : 0;
+                        bitValue |= this.Data[row, column] == '#' ? 1 : 0;
                         if (row != 2)
                         {
                             bitValue <<= 1;
@@ -155,15 +156,15 @@ namespace AOC2021.Models.ImageEnhancement
 
         internal void Erase()
         {
-            this.Data[0, 0] = false;
-            this.Data[0, 1] = false;
-            this.Data[0, 2] = false;
-            this.Data[1, 0] = false;
-            this.Data[1, 1] = false;
-            this.Data[1, 2] = false;
-            this.Data[2, 0] = false;
-            this.Data[2, 1] = false;
-            this.Data[2, 2] = false;
+            this.Data[0, 0] = '.';
+            this.Data[0, 1] = '.';
+            this.Data[0, 2] = '.';
+            this.Data[1, 0] = '.';
+            this.Data[1, 1] = '.';
+            this.Data[1, 2] = '.';
+            this.Data[2, 0] = '.';
+            this.Data[2, 1] = '.';
+            this.Data[2, 2] = '.';
         }
     }
 }

@@ -44,20 +44,10 @@ namespace AOC2021.Days
         {
             this.PrepData();
 
-            this.Image.Enhance();
-            this.Image.FlipEdges();
-            Image image = new(this.Image.UnpaddedRows + 6, this.Image.UnpaddedColumns + 6, this.Image.Padding, this.Image.EnhancementTable, true);
-            for (int row = 0; row < this.Image.Rows; row++)
+            for (int i = 0; i < 2; i++)
             {
-                for (int column = 0; column < this.Image.Columns; column++)
-                {
-                    bool value = this.Image.Get(row, column);
-                    image.Set(row + 3, column + 3, value);
-                }
+                this.Image.Enhance();
             }
-
-            this.image = image;
-            this.Image.Enhance();
 
             long result = this.Image.CountOnPixels();
             return result.ToString();
@@ -65,7 +55,16 @@ namespace AOC2021.Days
 
         public override string Result2()
         {
-            long result = 0;
+            this.PrepData();
+
+            // this.Image.Print();
+            for (int i = 0; i < 50; i++)
+            {
+                this.Image.Enhance();
+            }
+
+            // this.Image.Print();
+            long result = this.Image.CountOnPixels();
             return result.ToString();
         }
 
@@ -74,23 +73,24 @@ namespace AOC2021.Days
             string[] lines = this.datastore.GetRawData(this.GetName());
             lines[0].Length.Should().Be(512);
 
-            BitArray enhancementTable = new(512);
+            char[] enhancementTable = new char[512];
             for (int i = 0; i < lines[0].Length; i++)
             {
-                enhancementTable[i] = lines[0][i] == '#';
+                enhancementTable[i] = lines[0][i];
             }
 
             string[] imageLines = lines[2..];
             int lineCount = imageLines.Length;
 
-            this.image = new Image(lineCount, lineCount, 3, enhancementTable, false);
+            int padding = 52;
+            this.image = new Image(lineCount, lineCount, padding, enhancementTable);
 
             int row = 0;
             foreach (string line in imageLines)
             {
                 for (int column = 0; column < line.Length; column++)
                 {
-                    this.Image.Set(row + 3, column + 3, line[column] == '#');
+                    this.Image.Set(row + padding, column + padding, line[column]);
                 }
 
                 row++;
