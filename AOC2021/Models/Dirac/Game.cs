@@ -12,12 +12,13 @@ namespace AOC2021.Models.Dirac
     {
         private int turn;
 
-        internal Game(IDice dice, List<int> playerPositions)
+        internal Game(IDice dice, List<int> playerPositions, int winningScore)
         {
             this.Dice = dice;
             this.PlayerPositions = playerPositions;
             this.PlayerScores = new() { 0, 0 };
             this.turn = 0;
+            this.WinningScore = winningScore;
         }
 
         internal IDice Dice { get; }
@@ -27,6 +28,8 @@ namespace AOC2021.Models.Dirac
         internal List<int> PlayerScores { get; }
 
         internal int Turn => this.turn;
+
+        internal int WinningScore { get; }
 
         internal int DoTurn()
         {
@@ -55,7 +58,7 @@ namespace AOC2021.Models.Dirac
                 int currentScore = initialScore + playerPos;
                 this.PlayerScores[index] = currentScore;
 
-                if (this.PlayerScores[index] >= 1000)
+                if (this.PlayerScores[index] >= this.WinningScore)
                 {
                     return index;
                 }

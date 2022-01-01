@@ -20,11 +20,6 @@ namespace AOC2021.Days
             this.datastore = datastore;
         }
 
-        public override string GetDescription()
-        {
-            return "Dirac Dice";
-        }
-
         internal Game Game
         {
             get
@@ -34,8 +29,13 @@ namespace AOC2021.Days
                     throw new InvalidOperationException("Use of Game property before initialized");
                 }
 
-                return game;
+                return this.game;
             }
+        }
+
+        public override string GetDescription()
+        {
+            return "Dirac Dice";
         }
 
         public override string Result1()
@@ -66,7 +66,6 @@ namespace AOC2021.Days
         {
             string[] lines = this.datastore.GetRawData(this.GetName());
 
-
             List<int> playerPositions = new();
             foreach (string line in lines)
             {
@@ -74,7 +73,7 @@ namespace AOC2021.Days
                 playerPositions.Add(chars[^1] - '0');
             }
 
-            this.game = new Game(new DeterministicDice(), playerPositions);
+            this.game = new Game(new DeterministicDice(), playerPositions, 1000);
         }
     }
 }
