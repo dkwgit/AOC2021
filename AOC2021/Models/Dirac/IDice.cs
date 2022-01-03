@@ -10,6 +10,6 @@ namespace AOC2021.Models.Dirac
     {
         int RollCount { get; set; }
 
-        int RollDice();
+        int RollDice(int times, int playerIndex);
     }
 }

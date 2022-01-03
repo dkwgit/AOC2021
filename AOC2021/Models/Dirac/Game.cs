@@ -10,42 +10,93 @@ namespace AOC2021.Models.Dirac
 
     internal class Game
     {
-        private int turn;
+        private int turn = 0;
 
-        internal Game(IDice dice, List<int> playerPositions, int winningScore)
+        private List<int> playerScores = new() { 0, 0 };
+
+        private IDice? dice;
+
+        private int win = -1;
+
+        internal Game(IDice dice, List<int> playerPositions, int winningScore, int numberOfRolls)
         {
-            this.Dice = dice;
-            this.PlayerPositions = playerPositions;
-            this.PlayerScores = new() { 0, 0 };
+            this.dice = dice;
+            this.StartingPlayerPositions = playerPositions;
+            this.PlayerPositions = new(playerPositions);
             this.turn = 0;
             this.WinningScore = winningScore;
+            this.NumberOfRolls = numberOfRolls;
         }
 
-        internal IDice Dice { get; }
+        internal int Win => this.win;
+
+        internal IDice Dice
+        {
+            get
+            {
+                if (this.dice == null)
+                {
+                    throw new InvalidOperationException("Using Dice property before it is initialized.");
+                }
+
+                return this.dice;
+            }
+        }
 
         internal List<int> PlayerPositions { get; }
 
-        internal List<int> PlayerScores { get; }
+        internal List<int> PlayerScores => this.playerScores;
 
         internal int Turn => this.turn;
 
         internal int WinningScore { get; }
 
+        internal int NumberOfRolls { get; }
+
+        internal List<int> StartingPlayerPositions { get; }
+
+        internal void Reset()
+        {
+            this.win = -1;
+            this.playerScores = new() { 0, 0 };
+            this.turn = 0;
+            this.PlayerPositions[0] = this.StartingPlayerPositions[0];
+            this.PlayerPositions[1] = this.StartingPlayerPositions[1];
+        }
+
+        internal void Reset(IDice dice)
+        {
+            this.win = -1;
+            this.dice = dice;
+            this.playerScores = new() { 0, 0 };
+            this.turn = 0;
+            this.PlayerPositions[0] = this.StartingPlayerPositions[0];
+            this.PlayerPositions[1] = this.StartingPlayerPositions[1];
+        }
+
+        internal int DoTurns(int turnCount)
+        {
+            for (int turn = 0; turn < turnCount; turn++)
+            {
+                this.DoTurn();
+                if (this.Win != -1)
+                {
+                    break;
+                }
+            }
+
+            return this.Win;
+        }
+
         internal int DoTurn()
         {
-            int noWin = -1;
-
             int index = 0;
             List<int> positionsCopy = new(this.PlayerPositions);
             foreach (var player in positionsCopy)
             {
                 int playerPos = player;
 
-                int sum = 0;
-                for (int roll = 0; roll < 3; roll++)
-                {
-                    sum += this.Dice.RollDice();
-                }
+                int sum = this.Dice.RollDice(this.NumberOfRolls, index);
 
                 playerPos += sum;
                 while (playerPos > 10)
@@ -60,14 +111,15 @@ namespace AOC2021.Models.Dirac
 
                 if (this.PlayerScores[index] >= this.WinningScore)
                 {
-                    return index;
+                    this.win = index;
+                    return this.win;
                 }
 
                 index++;
             }
 
             this.turn++;
-            return noWin;
+            return this.win;
         }
     }
 }

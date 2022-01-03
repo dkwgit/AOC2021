@@ -10,7 +10,7 @@ namespace AOC2021.Models.Dirac
     {
         private int NextDiceValue { get; set; } = 1;
 
-        protected override int GetRollValue()
+        protected override int GetRollValue(int playerIndex /* ignored */)
         {
             int value = this.NextDiceValue++;
 

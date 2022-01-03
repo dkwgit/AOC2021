@@ -10,13 +10,18 @@ namespace AOC2021.Models.Dirac
     {
         public int RollCount { get; set; } = 0;
 
-        public int RollDice()
+        public int RollDice(int times, int playerIndex)
         {
-            this.RollCount++;
+            int sum = 0;
+            for (int t = 0; t < times; t++)
+            {
+                sum += this.GetRollValue(playerIndex);
+                this.RollCount++;
+            }
 
-            return this.GetRollValue();
+            return sum;
         }
 
-        protected abstract int GetRollValue();
+        protected abstract int GetRollValue(int playerIndex);
     }
 }
