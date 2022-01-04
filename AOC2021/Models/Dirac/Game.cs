@@ -10,22 +10,29 @@ namespace AOC2021.Models.Dirac
 
     internal class Game
     {
-        private int turn = 0;
+        protected (int Player1Score, int Player2Score) playerScores = (0, 0);
 
-        private List<int> playerScores = new() { 0, 0 };
+        protected (int Player1Position, int Player2Position) playerPositions;
 
-        private IDice? dice;
+        protected IDice? dice;
 
-        private int win = -1;
+        protected int win = -1;
 
-        internal Game(IDice dice, List<int> playerPositions, int winningScore, int numberOfRolls)
+        internal Game(IDice dice, (int Player1Position, int Player2Position) playerPositions, int winningScore, int numberOfRolls)
         {
             this.dice = dice;
-            this.StartingPlayerPositions = playerPositions;
-            this.PlayerPositions = new(playerPositions);
-            this.turn = 0;
+            this.playerPositions = playerPositions;
             this.WinningScore = winningScore;
             this.NumberOfRolls = numberOfRolls;
+        }
+
+        internal Game(IDice dice, (int Player1Position, int Player2Position) playerPositions, (int Player1Score, int Player2Score) playerScores, int winningScore, int numberOfRolls)
+        {
+            this.dice = dice;
+            this.playerPositions = playerPositions;
+            this.WinningScore = winningScore;
+            this.NumberOfRolls = numberOfRolls;
+            this.playerScores = playerScores;
         }
 
         internal int Win => this.win;
@@ -43,82 +50,67 @@ namespace AOC2021.Models.Dirac
             }
         }
 
-        internal List<int> PlayerPositions { get; }
+        internal (int Player1Position, int Player2Position) PlayerPositions => this.playerPositions;
 
-        internal List<int> PlayerScores => this.playerScores;
-
-        internal int Turn => this.turn;
+        internal (int Player1Score, int Player2Score) PlayerScores => this.playerScores;
 
         internal int WinningScore { get; }
 
         internal int NumberOfRolls { get; }
 
-        internal List<int> StartingPlayerPositions { get; }
-
-        internal void Reset()
+        internal virtual int GetRollResult(int playerIndex)
         {
-            this.win = -1;
-            this.playerScores = new() { 0, 0 };
-            this.turn = 0;
-            this.PlayerPositions[0] = this.StartingPlayerPositions[0];
-            this.PlayerPositions[1] = this.StartingPlayerPositions[1];
+            return this.Dice.RollDice(this.NumberOfRolls, playerIndex);
         }
 
-        internal void Reset(IDice dice)
+        internal virtual int DoTurn()
         {
-            this.win = -1;
-            this.dice = dice;
-            this.playerScores = new() { 0, 0 };
-            this.turn = 0;
-            this.PlayerPositions[0] = this.StartingPlayerPositions[0];
-            this.PlayerPositions[1] = this.StartingPlayerPositions[1];
-        }
+            (int player1Position, int player2Position) = this.PlayerPositions;
+            (int player1Score, int player2Score) = this.PlayerScores;
 
-        internal int DoTurns(int turnCount)
-        {
-            for (int turn = 0; turn < turnCount; turn++)
+            for (int player = 0; player < 2; player++)
             {
-                this.DoTurn();
-                if (this.Win != -1)
+                int position = player == 0 ? player1Position : player2Position;
+
+                int sum = this.GetRollResult(player);
+
+                position += sum;
+                while (position > 10)
                 {
+                    position -= 10;
+                }
+
+                if (player == 0)
+                {
+                    player1Position = position;
+                }
+                else
+                {
+                    player2Position = position;
+                }
+
+                int initialScore = player == 0 ? player1Score : player2Score;
+                int newScore = initialScore + position;
+
+                if (player == 0)
+                {
+                    player1Score = newScore;
+                }
+                else
+                {
+                    player2Score = newScore;
+                }
+
+                if (newScore >= this.WinningScore)
+                {
+                    this.win = player;
                     break;
                 }
             }
 
-            return this.Win;
-        }
+            this.playerPositions = (player1Position, player2Position);
+            this.playerScores = (player1Score, player2Score);
 
-        internal int DoTurn()
-        {
-            int index = 0;
-            List<int> positionsCopy = new(this.PlayerPositions);
-            foreach (var player in positionsCopy)
-            {
-                int playerPos = player;
-
-                int sum = this.Dice.RollDice(this.NumberOfRolls, index);
-
-                playerPos += sum;
-                while (playerPos > 10)
-                {
-                    playerPos -= 10;
-                }
-
-                this.PlayerPositions[index] = playerPos;
-                int initialScore = this.PlayerScores[index];
-                int currentScore = initialScore + playerPos;
-                this.PlayerScores[index] = currentScore;
-
-                if (this.PlayerScores[index] >= this.WinningScore)
-                {
-                    this.win = index;
-                    return this.win;
-                }
-
-                index++;
-            }
-
-            this.turn++;
             return this.win;
         }
     }
