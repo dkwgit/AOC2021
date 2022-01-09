@@ -73,7 +73,7 @@ namespace AOC2021.Days
             for (int turn = 1; turn <= 20; turn++)
             {
                 var nextTurnInput = nextTurnInputs[^1].
-                    /* When processinstance return the result contains the index of the opposite players, so that calls for player 1 and 2 alternate back and forth */
+                    /* When processinstance returns, the result contains the index of the opposite player, so that calls for player 1 and 2 alternate back and forth */
                     Select(instance => this.ProcessInstance(instance.Score1, instance.Score2, instance.Position1, instance.Position2, instance.InstanceCount, instance.Roll, instance.Player)).
                     Where(r => r.Win == -1).
                     SelectMany(result => diceValues, (result, roll) => (result.Score1, result.Score2, result.Position1, result.Position2, result.InstanceCount, roll, result.Player));
