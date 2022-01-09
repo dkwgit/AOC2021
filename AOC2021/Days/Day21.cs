@@ -68,9 +68,12 @@ namespace AOC2021.Days
 
             List<IEnumerable<(int Score1, int Score2, int Position1, int Position2, long InstanceCount, int Roll, int Player)>> nextTurnInputs = new();
             nextTurnInputs.Add(startingInstancesToProcess);
+
+            // showed myself on paper that 10 turns for both players are the maximum.
             for (int turn = 1; turn <= 20; turn++)
             {
                 var nextTurnInput = nextTurnInputs[^1].
+                    /* When processinstance return the result contains the index of the opposite players, so that calls for player 1 and 2 alternate back and forth */
                     Select(instance => this.ProcessInstance(instance.Score1, instance.Score2, instance.Position1, instance.Position2, instance.InstanceCount, instance.Roll, instance.Player)).
                     Where(r => r.Win == -1).
                     SelectMany(result => diceValues, (result, roll) => (result.Score1, result.Score2, result.Position1, result.Position2, result.InstanceCount, roll, result.Player));
@@ -78,7 +81,7 @@ namespace AOC2021.Days
                 nextTurnInputs.Add(nextTurnInput);
             }
 
-            long count = nextTurnInputs[^1].ToList().Count; // Everything in the IEnumerables is lazy, this forces evaluation, back through the turns
+            long count = nextTurnInputs[^1].ToList().Count; // Everything in the IEnumerables in is lazy, this forces evaluation, back through the turns
 
             long result = Math.Max(this.player1Wins, this.player2Wins);
             return result.ToString();
