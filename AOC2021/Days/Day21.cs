@@ -71,9 +71,8 @@ namespace AOC2021.Days
             for (int turn = 1; turn <= 20; turn++)
             {
                 var nextTurnInput = turnInputs[^1].
-                    Select(
-                           instance => this.ProcessInstance(instance.Score1, instance.Score2, instance.Position1, instance.Position2, instance.InstanceCount, instance.Roll, instance.Player)
-                    ).Where(r => r.Win == -1).
+                    Select(instance => this.ProcessInstance(instance.Score1, instance.Score2, instance.Position1, instance.Position2, instance.InstanceCount, instance.Roll, instance.Player)).
+                    Where(r => r.Win == -1).
                     SelectMany(result => diceValues, (result, roll) => (result.Score1, result.Score2, result.Position1, result.Position2, result.InstanceCount, roll, result.Player));
 
                 turnInputs.Add(nextTurnInput);
@@ -96,7 +95,7 @@ namespace AOC2021.Days
             }
         }
 
-        private (int Win, int Score, int Position) ProcessPlayer(int score, int position, int roll, int player)
+        private static (int Win, int Score, int Position) ProcessPlayer(int score, int position, int roll, int player)
         {
             position = (position + roll > 10) ? position + roll - 10 : position + roll;
             score += position;
@@ -116,11 +115,11 @@ namespace AOC2021.Days
             int win;
             if (player == 1)
             {
-                (win, score1, position1) = this.ProcessPlayer(score1, position1, roll, player);
+                (win, score1, position1) = ProcessPlayer(score1, position1, roll, player);
             }
             else
             {
-                (win, score2, position2) = this.ProcessPlayer(score2, position2, roll, player);
+                (win, score2, position2) = ProcessPlayer(score2, position2, roll, player);
             }
 
             instanceCount *= comboCount;

@@ -10,13 +10,13 @@ namespace AOC2021.Models.Dirac
 
     internal class Game : IGame
     {
+        private readonly IDice dice;
+
         private (int Player1Score, int Player2Score) playerScores = (0, 0);
 
         private (int Player1Position, int Player2Position) playerPositions;
 
-        protected IDice? dice;
-
-        protected int win = -1;
+        private int win = -1;
 
         internal Game(IDice dice, (int Player1Position, int Player2Position) playerPositions, int winningScore, int numberOfRolls)
         {
@@ -28,18 +28,7 @@ namespace AOC2021.Models.Dirac
 
         internal int Win => this.win;
 
-        internal IDice Dice
-        {
-            get
-            {
-                if (this.dice == null)
-                {
-                    throw new InvalidOperationException("Using Dice property before it is initialized.");
-                }
-
-                return this.dice;
-            }
-        }
+        internal IDice Dice => this.dice;
 
         internal (int Player1Position, int Player2Position) PlayerPositions => this.playerPositions;
 
