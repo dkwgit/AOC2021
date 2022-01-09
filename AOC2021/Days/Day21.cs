@@ -66,19 +66,19 @@ namespace AOC2021.Days
                 from roll in diceValues
                 select (startScore1, startScore2, startPosition1, startPosition2, 1L, roll, 1);
 
-            List<IEnumerable<(int Score1, int Score2, int Position1, int Position2, long InstanceCount, int Roll, int Player)>> turnInputs = new();
-            turnInputs.Add(startingInstancesToProcess);
+            List<IEnumerable<(int Score1, int Score2, int Position1, int Position2, long InstanceCount, int Roll, int Player)>> nextTurnInputs = new();
+            nextTurnInputs.Add(startingInstancesToProcess);
             for (int turn = 1; turn <= 20; turn++)
             {
-                var nextTurnInput = turnInputs[^1].
+                var nextTurnInput = nextTurnInputs[^1].
                     Select(instance => this.ProcessInstance(instance.Score1, instance.Score2, instance.Position1, instance.Position2, instance.InstanceCount, instance.Roll, instance.Player)).
                     Where(r => r.Win == -1).
                     SelectMany(result => diceValues, (result, roll) => (result.Score1, result.Score2, result.Position1, result.Position2, result.InstanceCount, roll, result.Player));
 
-                turnInputs.Add(nextTurnInput);
+                nextTurnInputs.Add(nextTurnInput);
             }
 
-            long count = turnInputs[^1].ToList().Count; // Everything in the IEnumerables is lazy, this forces evaluation, back through the turns
+            long count = nextTurnInputs[^1].ToList().Count; // Everything in the IEnumerables is lazy, this forces evaluation, back through the turns
 
             long result = Math.Max(this.player1Wins, this.player2Wins);
             return result.ToString();
